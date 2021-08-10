@@ -704,12 +704,16 @@ runservice.Stepped:Connect(function()
 				game.ReplicatedStorage.TreasureEvent:FireServer()
 			end
 
-			if _G.BossCerberFarm then
-				game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
+			if _G.BossGorillaFarm then
+				if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
+				end
 			end
 
-			if _G.BossGorillaFarm then
-				game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
+			if _G.BossCerberFarm then
+				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
+				end
 			end
 		end
 		--------- END ANIMAL
