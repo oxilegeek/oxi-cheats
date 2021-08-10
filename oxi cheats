@@ -27,6 +27,7 @@ local eToTeleport = false
 local oldMaxZoom = game.Players.LocalPlayer.CameraMaxZoomDistance
 local createPackName = nil
 local RoleplayName = nil
+local ShowPosition = false
 
 -- function
 local vu = game:GetService("VirtualUser")
@@ -193,6 +194,28 @@ BasicHack:addSlider("fly speed", 50, 1, 1000, function(value)
 end)
 
 
+
+HumanoidStat:addToggle("Coordinate", nil, function(value)
+	if value then
+		local CoUi = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
+		CoUi.Name = "PositionGui"
+		CoUi.ResetOnSpawn = false
+		
+		local CoLabel = Instance.new("TextLabel", CoUi)
+		CoLabel.Name = "Pos"
+		CoLabel.BackgroundTransparency = 1
+		CoLabel.TextScaled = true
+		CoLabel.Size = UDim2.new(0.3, 0, 0.1, 0)
+		CoLabel.Position = UDim2.new(0.7, 0,0.2, 0)
+		CoLabel.TextColor3 = Color3.new(255, 255, 255)
+		CoLabel.TextStrokeTransparency = 0
+		
+		ShowPosition = true
+	else
+		ShowPosition = false
+		game.Players.LocalPlayer.PlayerGui.PositionGui:Destroy()
+	end
+end)
 
 HumanoidStat:addSlider("Speed", 16, 0, 300, function(value)
 	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
@@ -506,6 +529,10 @@ if game.GameId == 2023680558 then
 	TpPage:addButton("Cerber spawn", function()
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(174.325, -63.0008, 2399.76)
 	end)
+	
+	TpPage:addButton("Secret base", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(89, -63, 2360)
+	end)
 end
 
 
@@ -637,6 +664,10 @@ runservice.Stepped:Connect(function()
 			else
 				game.Players.LocalPlayer.Character.Humanoid:MoveTo(plrtrack.HumanoidRootPart.Position)
 			end
+		end
+		
+		if ShowPosition then
+			game.Players.LocalPlayer.PlayerGui.PositionGui.Pos.Text = "X : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X) .."  Y : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y) .."  Z : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
 		end
 
 
