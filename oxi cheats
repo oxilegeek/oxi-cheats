@@ -11,6 +11,7 @@ local autocollect = false
 local HideReward = false
 local baseSpeed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
 local baseJump = game.Players.LocalPlayer.Character.Humanoid.JumpPower
+local baseLevit = game.Players.LocalPlayer.Character.Humanoid.HipHeight
 local killAuraTarget = nil
 local spamHit = false
 local KillAura = false
@@ -225,9 +226,14 @@ HumanoidStat:addSlider("Jump power", 50, 0, 500, function(value)
 	game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
 end)
 
+HumanoidStat:addSlider("Levitation", 1, 0, 500, function(value)
+	game.Players.LocalPlayer.Character.Humanoid.HipHeight = value / 10
+end)
+
 HumanoidStat:addButton("Reset", function()
 	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = baseSpeed
 	game.Players.LocalPlayer.Character.Humanoid.JumpPower = baseJump
+	game.Players.LocalPlayer.Character.Humanoid.HipHeight = baseLevit
 end)
 
 
@@ -597,8 +603,9 @@ for theme, color in pairs(themes) do -- all in one theme changer, i know, im coo
 end
 
 -- SETTING
-local setting = venyx:addPage("Setting", 5012544693)
+local setting = venyx:addPage("Core", 5012544693)
 local BasicSetting = setting:addSection("Basic setting")
+local OtherGui = setting:addSection("Other Gui")
 
 BasicSetting:addKeybind("Toggle Keybind", Enum.KeyCode.RightShift, function()
 	venyx:toggle()
@@ -606,11 +613,16 @@ end, function()
 end)
 
 BasicSetting:addButton("Refresh Gui", function()
-	loadstring(game:HttpGet("https://pastebin.com/raw/e4aJWt1Q", true))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/oxi-cheats/c1ceb65cc21cf70a8bc8d42b34b8a00dab833928/oxi%20cheats", true))()
 end)
 
 BasicSetting:addButton("Delete Gui", function()
 	deleteGui()
+end)
+
+
+OtherGui:addButton("Dex explorer", function()
+	loadstring(game:HttpGet('https://pastebin.com/raw/gw8tpD25', true))()
 end)
 
 -- cheat engine
