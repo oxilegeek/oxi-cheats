@@ -47,6 +47,7 @@ local oldMaxZoom = game.Players.LocalPlayer.CameraMaxZoomDistance
 local createPackName = nil
 local RoleplayName = nil
 local ShowPosition = false
+local BossKillFarm = false
 
 -- function
 local vu = game:GetService("VirtualUser")
@@ -350,7 +351,6 @@ if game.GameId == 2023680558 then
 	local page = venyx:addPage("Animal simulator", 5012544693)
 
 	local ChestPage = page:addSection("Chest")
-	local farmPage = page:addSection("farm")
 	local packPage = page:addSection("Pack and Name")
 	local BossPage = page:addSection("Boss (beta)")
 	local trollPage = page:addSection("Troll")
@@ -383,47 +383,6 @@ if game.GameId == 2023680558 then
 		HideReward = value
 	end)
 
-
-
-	farmPage:addToggle("Autofarm", nil, function(value)
-		local dummy = game.Workspace.Map.snow:FindFirstChild("training area").dummy:GetChildren()
-		for i = 1, #dummy do
-			if i == 3 then
-				dummy[i].Name = "Dummy3"
-			end
-		end
-
-		local training = game.Workspace.pleaseno:GetChildren()
-		for i = 1, #training do
-			if i == 3 then
-				training[i].Name = "cheatSpot"
-			end
-		end
-		if value then
-			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 0
-			game.Players.LocalPlayer.Character.Humanoid.JumpPower = 0
-			local terrain = game.Workspace.Map.forest.terrain.forest_terrain3:GetChildren()
-
-			for i = 1, #terrain do
-				terrain[i].CanCollide = false
-			end
-			if game.Players.LocalPlayer.leaderstats.Level.Value >= 5000 then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.Map.snow:FindFirstChild("training area").dummy.Dummy3.HumanoidRootPart.Position.X, game.Workspace.Map.snow:FindFirstChild("training area").dummy.Dummy3.HumanoidRootPart.Position.Y - 5, game.Workspace.Map.snow:FindFirstChild("training area").dummy.Dummy3.HumanoidRootPart.Position.Z)
-			else
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.pleaseno.cheatSpot.HumanoidRootPart.Position)
-			end
-		else
-			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
-			game.Players.LocalPlayer.Character.Humanoid.JumpPower = 60
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(272.455, -12.6042, 3052.27)	
-			local terrain = game.Workspace.Map.forest.terrain.forest_terrain3:GetChildren()
-
-			for i = 1, #terrain do
-				terrain[i].CanCollide = true
-			end
-		end
-		autofarm = value
-	end)
 
 
 
@@ -634,6 +593,82 @@ if game.GameId == 2023680558 then
 	KillAuraPage4:addToggle("spam hit", nil, function(value)
 		spamHit4 = value
 	end)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	-- Autofarm
+	local page = venyx:addPage("Autofarm", 5012544693)
+
+	local onlineAutofarmPage = page:addSection("Online autofarm")
+	local afkAutofarmPage = page:addSection("afk autofarm")
+	
+	
+	onlineAutofarmPage:addToggle("boss kill farm", nil, function(value)
+		BossKillFarm = value
+	end)
+	
+	
+	
+	afkAutofarmPage:addToggle("training area farm", nil, function(value)
+		local dummy = game.Workspace.Map.snow:FindFirstChild("training area").dummy:GetChildren()
+		for i = 1, #dummy do
+			if i == 3 then
+				dummy[i].Name = "Dummy3"
+			end
+		end
+
+		local training = game.Workspace.pleaseno:GetChildren()
+		for i = 1, #training do
+			if i == 3 then
+				training[i].Name = "cheatSpot"
+			end
+		end
+		if value then
+			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 0
+			game.Players.LocalPlayer.Character.Humanoid.JumpPower = 0
+			local terrain = game.Workspace.Map.forest.terrain.forest_terrain3:GetChildren()
+
+			for i = 1, #terrain do
+				terrain[i].CanCollide = false
+			end
+			if game.Players.LocalPlayer.leaderstats.Level.Value >= 5000 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.Map.snow:FindFirstChild("training area").dummy.Dummy3.HumanoidRootPart.Position.X, game.Workspace.Map.snow:FindFirstChild("training area").dummy.Dummy3.HumanoidRootPart.Position.Y - 5, game.Workspace.Map.snow:FindFirstChild("training area").dummy.Dummy3.HumanoidRootPart.Position.Z)
+			else
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.pleaseno.cheatSpot.HumanoidRootPart.Position)
+			end
+		else
+			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+			game.Players.LocalPlayer.Character.Humanoid.JumpPower = 60
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(272.455, -12.6042, 3052.27)	
+			local terrain = game.Workspace.Map.forest.terrain.forest_terrain3:GetChildren()
+
+			for i = 1, #terrain do
+				terrain[i].CanCollide = true
+			end
+		end
+		autofarm = value
+	end)
+	
+	
+	afkAutofarmPage:addToggle("boss kill farm fix", nil, function(value)
+		if value then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(89, -63, 2360)
+			vu:SetKeyDown("t")
+			vu:SetKeyUp("t")
+		else
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(259.826, -12.396, 3053.77)
+		end
+		BossKillFarmFix = value
+	end)
 end
 
 
@@ -779,7 +814,13 @@ mouse.KeyDown:connect(function(key)
 	end
 end)
 
--- Boucle
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------BOUCLE-------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
 runservice.Stepped:Connect(function()
 	if alive then
 
@@ -895,6 +936,21 @@ runservice.Stepped:Connect(function()
 			end
 
 			if _G.BossCerberFarm then
+				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
+				end
+			end
+			
+			
+			
+			-- AUTOFARM
+			if BossKillFarm then
+				game.ReplicatedStorage.TreasureEvent:FireServer()
+				
+				if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
+				end
+				
 				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
 					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
 				end
