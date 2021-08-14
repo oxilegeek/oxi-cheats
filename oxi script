@@ -960,12 +960,12 @@ runservice.Stepped:Connect(function()
 			if BossKillFarmFix then
 				game.ReplicatedStorage.TreasureEvent:FireServer()
 
-				if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
-					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
-				end
-
 				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
 					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
+				end
+				
+				if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
 				end
 			end
 		end
