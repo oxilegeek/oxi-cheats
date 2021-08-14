@@ -1,0 +1,930 @@
+local canUse = false
+
+if game.Players.LocalPlayer.Name == "oxigeek_youtube" then
+	canUse = true
+end
+
+if game.Players.LocalPlayer.Name == "oxigeek_youtube4" then
+	canUse = true
+end
+
+repeat wait(0.2) until canUse
+
+-- var
+local alive = true
+local UserInputService = game:GetService("UserInputService")
+local infiniJump = false
+local runservice = game:GetService("RunService")
+local noclip = false
+local bot = false
+local bringChest = false
+local toChest = false
+local autocollect = false
+local HideReward = false
+local baseSpeed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
+local baseJump = game.Players.LocalPlayer.Character.Humanoid.JumpPower
+local baseLevit = game.Players.LocalPlayer.Character.Humanoid.HipHeight
+local killAuraTarget1 = nil
+local killAuraTarget2 = nil
+local killAuraTarget3 = nil
+local killAuraTarget4 = nil
+local spamHit1 = false
+local spamHit2 = false
+local spamHit3 = false
+local spamHit4 = false
+local KillAura = false
+local autoHit = false
+local tpPlayerFocus = nil
+local autofarm = false
+local BotFocus = nil
+local FollowBot = false
+local autoEat = false
+local cooldownEat = 0
+local CanKillGorilla = true
+local CanKillCerber = true
+local eToTeleport = false
+local oldMaxZoom = game.Players.LocalPlayer.CameraMaxZoomDistance
+local createPackName = nil
+local RoleplayName = nil
+local ShowPosition = false
+
+-- function
+local vu = game:GetService("VirtualUser")
+game:GetService("Players").LocalPlayer.Idled:connect(function()
+	vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+	wait(1)
+	vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+
+end)
+
+function bot()
+	while wait() do
+		local goal = game.Players:FindFirstChild(FollowBot).Character.HumanoidRootPart
+
+		local pathfinding = game:GetService("PathfindingService")
+
+		local path = pathfinding:CreatePath()
+		path:ComputeAsync(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, goal.Position)
+
+		local waypoints = path:GetWaypoints()
+
+
+		for i, waypoint in pairs(waypoints) do
+
+			if waypoint.Action == Enum.PathWaypointAction.Jump then
+
+				game.Players.LocalPlayer.Character.Humanoid.Jump = true
+			end
+
+			game.Players.LocalPlayer.Character.Humanoid:MoveTo(waypoint.Position)
+
+			game.Players.LocalPlayer.Character.Humanoid.MoveToFinished:Wait()
+
+		end
+	end
+end
+
+_G.FLYING = false
+local CONTROL = {F = 0, B = 0, L = 0, R = 0}
+local lCONTROL = {F = 0, B = 0, L = 0, R = 0}
+local SPEED = 5
+local MOUSE = game.Players.LocalPlayer:GetMouse()
+local flySpeed = 50
+
+
+local function FLY()
+	local BG = Instance.new('BodyGyro', game.Players.LocalPlayer.Character.HumanoidRootPart)
+	local BV = Instance.new('BodyVelocity', game.Players.LocalPlayer.Character.HumanoidRootPart)
+	BG.P = 9e4
+	BG.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+	BG.cframe = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+	BV.velocity = Vector3.new(0, 0.1, 0)
+	BV.maxForce = Vector3.new(9e9, 9e9, 9e9)
+
+
+	spawn(function()
+		repeat wait()
+			game.Players.LocalPlayer.Character.Humanoid.PlatformStand = true
+			if CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 then
+				SPEED = flySpeed
+			elseif not (CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0) and SPEED ~= 0 then
+				SPEED = 0
+			end
+			if (CONTROL.L + CONTROL.R) ~= 0 or (CONTROL.F + CONTROL.B) ~= 0 then
+				BV.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (CONTROL.F + CONTROL.B)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(CONTROL.L + CONTROL.R, (CONTROL.F + CONTROL.B) * 0.2, 0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+				lCONTROL = {F = CONTROL.F, B = CONTROL.B, L = CONTROL.L, R = CONTROL.R}
+			elseif (CONTROL.L + CONTROL.R) == 0 and (CONTROL.F + CONTROL.B) == 0 and SPEED ~= 0 then
+				BV.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (lCONTROL.F + lCONTROL.B)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lCONTROL.L + lCONTROL.R, (lCONTROL.F + lCONTROL.B) * 0.2, 0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+			else
+				BV.velocity = Vector3.new(0, 0.1, 0)
+			end
+			BG.cframe = game.Workspace.CurrentCamera.CoordinateFrame
+		until not _G.FLYING
+		CONTROL = {F = 0, B = 0, L = 0, R = 0}
+		lCONTROL = {F = 0, B = 0, L = 0, R = 0}
+		SPEED = 0
+		BG:destroy()
+		BV:destroy()
+		game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
+	end)
+end
+
+MOUSE.KeyDown:connect(function(KEY)
+	if KEY:lower() == 'w' then
+		CONTROL.F = 1
+	elseif KEY:lower() == 's' then
+		CONTROL.B = -1
+	elseif KEY:lower() == 'a' then
+		CONTROL.L = -1 
+	elseif KEY:lower() == 'd' then 
+		CONTROL.R = 1
+	end
+end)
+
+MOUSE.KeyUp:connect(function(KEY)
+	if KEY:lower() == 'w' then
+		CONTROL.F = 0
+	elseif KEY:lower() == 's' then
+		CONTROL.B = 0
+	elseif KEY:lower() == 'a' then
+		CONTROL.L = 0
+	elseif KEY:lower() == 'd' then
+		CONTROL.R = 0
+	end
+end)
+
+
+-- init
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/gui-creator/main/gui%20creator"))()
+local venyx = library.new("Oxi cheats", 5013109572)
+
+
+-- themes
+local themes = {
+	Background = Color3.fromRGB(24, 24, 24),
+	Glow = Color3.fromRGB(0, 0, 0),
+	Accent = Color3.fromRGB(10, 10, 10),
+	LightContrast = Color3.fromRGB(20, 20, 20),
+	DarkContrast = Color3.fromRGB(14, 14, 14),  
+	TextColor = Color3.fromRGB(255, 255, 255)
+}
+
+local function deleteGui()
+	game.CoreGui:FindFirstChild("Oxi cheats"):Destroy()
+	alive = false
+end
+
+-- CHARACTER
+local page = venyx:addPage("Character", 5012544693)
+local BasicHack = page:addSection("Basic hack")
+local HumanoidStat = page:addSection("Humanoid stat")
+local TeleportPage = page:addSection("Teleport and spectate")
+local BotPage = page:addSection("Bot")
+local CameraPage = page:addSection("Camera")
+local FunPage = page:addSection("Fun")
+
+BasicHack:addToggle("infinity jump", nil, function(value)
+	infiniJump = value
+end)
+
+BasicHack:addToggle("noclip", nil, function(value)
+	noclip = value
+end)
+
+BasicHack:addToggle("E to teleport", nil, function(value)
+	eToTeleport = value
+end)
+
+BasicHack:addToggle("Anchored", nil, function(value)
+	if value then
+		game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+	else
+		game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+	end
+end)
+
+BasicHack:addToggle("fly", nil, function(value)
+	_G.FLYING = value
+	FLY()
+end)
+
+BasicHack:addSlider("fly speed", 50, 1, 1000, function(value)
+	flySpeed = value
+end)
+
+
+
+HumanoidStat:addToggle("Coordinate", nil, function(value)
+	if value then
+		local CoUi = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
+		CoUi.Name = "PositionGui"
+		CoUi.ResetOnSpawn = false
+		
+		local CoLabel = Instance.new("TextLabel", CoUi)
+		CoLabel.Name = "Pos"
+		CoLabel.BackgroundTransparency = 1
+		CoLabel.TextScaled = true
+		CoLabel.Size = UDim2.new(0.3, 0, 0.1, 0)
+		CoLabel.Position = UDim2.new(0.7, 0,0.2, 0)
+		CoLabel.TextColor3 = Color3.new(255, 255, 255)
+		CoLabel.TextStrokeTransparency = 0
+		
+		ShowPosition = true
+	else
+		ShowPosition = false
+		game.Players.LocalPlayer.PlayerGui.PositionGui:Destroy()
+	end
+end)
+
+HumanoidStat:addSlider("Speed", 16, 0, 300, function(value)
+	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+end)
+
+HumanoidStat:addSlider("Jump power", 50, 0, 500, function(value)
+	game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
+end)
+
+HumanoidStat:addSlider("Levitation", 1, 0, 500, function(value)
+	game.Players.LocalPlayer.Character.Humanoid.HipHeight = value / 10
+end)
+
+HumanoidStat:addButton("Reset", function()
+	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = baseSpeed
+	game.Players.LocalPlayer.Character.Humanoid.JumpPower = baseJump
+	game.Players.LocalPlayer.Character.Humanoid.HipHeight = baseLevit
+end)
+
+
+
+TeleportPage:addTextbox("Player", "player name", function(value, focusLost)
+	if focusLost then
+		tpPlayerFocus = value
+	end
+end)
+
+TeleportPage:addButton("Teleport", function()
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players:FindFirstChild(tpPlayerFocus).Character.HumanoidRootPart.Position)
+end)
+
+TeleportPage:addButton("Spectate", function()
+	game.Workspace.CurrentCamera.CameraSubject = game.Players:FindFirstChild(tpPlayerFocus).Character.Humanoid
+end)
+
+TeleportPage:addButton("Unspectate", function()
+	game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
+end)
+
+
+
+BotPage:addTextbox("Bot", "player name", function(value, focusLost)
+	if focusLost then
+		BotFocus = value
+	end
+end)
+
+BotPage:addButton("Folow player", function()
+	if FollowBot == false then
+		FollowBot = true
+	end
+end)
+
+BotPage:addButton("Stop bot", function()
+	FollowBot = false
+end)
+
+
+CameraPage:addToggle("Camera noclip", nil, function(value)
+	if value then
+		game.Players.LocalPlayer.DevCameraOcclusionMode = 1
+	else
+		game.Players.LocalPlayer.DevCameraOcclusionMode = 0
+	end
+end)
+
+CameraPage:addToggle("Unlock Camera max zoom distance", nil, function(value)
+	if value then
+		game.Players.LocalPlayer.CameraMaxZoomDistance = 100000
+	else
+		game.Players.LocalPlayer.CameraMaxZoomDistance = oldMaxZoom
+	end
+end)
+
+CameraPage:addSlider("FOV", 70, 0, 120, function(value)
+	game.Workspace.Camera.FieldOfView = value
+end)
+
+CameraPage:addButton("Reset fov", function()
+	game.Workspace.Camera.FieldOfView = 70
+end)
+
+CameraPage:addToggle("Freecam", nil, function(value)
+	if value then
+		game.Workspace.Camera.CameraType = "Scriptable"
+	else
+		game.Workspace.Camera.CameraType = "Custom"
+	end
+end)
+
+
+
+FunPage:addButton("Sit", function()
+	game.Players.LocalPlayer.Character.Humanoid.Sit = true
+end)
+
+FunPage:addButton("Delete animation", function()
+	game.Players.LocalPlayer.Character.Humanoid.Animator:Destroy()
+end)
+
+FunPage:addButton("Special reset character", function()
+	game.Players.LocalPlayer.Character.Humanoid:Destroy()
+end)
+
+
+
+
+
+
+-- ANIMAL SIMULATOR
+
+if game.GameId == 2023680558 then
+	local page = venyx:addPage("Animal simulator", 5012544693)
+
+	local ChestPage = page:addSection("Chest")
+	local farmPage = page:addSection("farm")
+	local packPage = page:addSection("Pack and Name")
+	local BossPage = page:addSection("Boss (beta)")
+	local trollPage = page:addSection("Troll")
+	local OtherPage = page:addSection("Other")
+
+	ChestPage:addToggle("farm bot", nil, function(value)
+		bot = value
+		if bot then
+			loadstring(game:HttpGet("https://pastebin.com/raw/Q37wgSjN", true))()
+		else
+			game.Players.LocalPlayer.Character.Humanoid.Name = "a"
+			wait(0.2)
+			game.Players.LocalPlayer.Character.a.Name = "Humanoid"
+		end
+	end)
+
+	ChestPage:addToggle("bring chest", nil, function(value)
+		bringChest = value
+	end)
+
+	ChestPage:addToggle("tp to chest", nil, function(value)
+		toChest = value
+	end)
+
+	ChestPage:addToggle("autocollect", nil, function(value)
+		autocollect = value
+	end)
+
+	ChestPage:addToggle("Hide chest reward", nil, function(value)
+		HideReward = value
+	end)
+
+
+
+	farmPage:addToggle("Autofarm", nil, function(value)
+		local dummy = game.Workspace.Map.snow:FindFirstChild("training area").dummy:GetChildren()
+		for i = 1, #dummy do
+			if i == 3 then
+				dummy[i].Name = "Dummy3"
+			end
+		end
+
+		local training = game.Workspace.pleaseno:GetChildren()
+		for i = 1, #training do
+			if i == 3 then
+				training[i].Name = "cheatSpot"
+			end
+		end
+		if value then
+			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 0
+			game.Players.LocalPlayer.Character.Humanoid.JumpPower = 0
+			local terrain = game.Workspace.Map.forest.terrain.forest_terrain3:GetChildren()
+
+			for i = 1, #terrain do
+				terrain[i].CanCollide = false
+			end
+			if game.Players.LocalPlayer.leaderstats.Level.Value >= 5000 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.Map.snow:FindFirstChild("training area").dummy.Dummy3.HumanoidRootPart.Position.X, game.Workspace.Map.snow:FindFirstChild("training area").dummy.Dummy3.HumanoidRootPart.Position.Y - 5, game.Workspace.Map.snow:FindFirstChild("training area").dummy.Dummy3.HumanoidRootPart.Position.Z)
+			else
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.pleaseno.cheatSpot.HumanoidRootPart.Position)
+			end
+		else
+			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+			game.Players.LocalPlayer.Character.Humanoid.JumpPower = 60
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(272.455, -12.6042, 3052.27)	
+			local terrain = game.Workspace.Map.forest.terrain.forest_terrain3:GetChildren()
+
+			for i = 1, #terrain do
+				terrain[i].CanCollide = true
+			end
+		end
+		autofarm = value
+	end)
+
+
+
+
+	packPage:addButton("Create invisible pack", function()
+		game:GetService("Players").LocalPlayer.PlayerGui.TeamGUI.noTeamFrame.teamInfo.createBtn.createTeamEvent:FireServer(nil)
+		game:GetService("Players").LocalPlayer.PlayerGui.TeamGUI.Enabled = true
+	end)
+
+	packPage:addButton("Remove name caracter limit", function()
+		game.Players.LocalPlayer.PlayerGui.RolePlayName.Frame.NameTB.limit:Destroy()
+	end)
+
+
+
+
+	BossPage:addToggle("Killaura lava gorilla", nil, function(value)
+		_G.BossGorillaFarm = value
+	end)
+
+	BossPage:addButton("tp to Gorilla", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.NPC.LavaGorilla.HumanoidRootPart.Position)
+	end)
+
+	BossPage:addToggle("Killaura cerbus", nil, function(value)
+		_G.BossCerberFarm = value
+	end)
+
+	BossPage:addButton("tp to cerber", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.NPC.Trex.HumanoidRootPart.Position)
+	end)
+
+
+
+	trollPage:addButton("Drop head (animal)", function()
+		game.Players.LocalPlayer.Character.Neck.Motor6D:Destroy()
+	end)
+
+
+	OtherPage:addToggle("Show player Username", nil, function(value)
+		if value then
+			game.Players.LocalPlayer.NameDisplayDistance = 100000
+		else
+			game.Players.LocalPlayer.NameDisplayDistance = 0
+		end
+	end)
+
+
+
+
+
+	
+	
+	
+	
+	-- TP
+	local page = venyx:addPage("TP", 5012544693)
+
+	local TpPage = page:addSection("Teleport")
+
+
+	TpPage:addButton("Safe zone", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(259.826, -12.396, 3053.77)
+	end)
+
+	TpPage:addButton("Desert", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(70.0588, -13.2554, 3761.08)
+	end)
+
+	TpPage:addButton("desert base", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(71.9108, 19.9992, 4018.56)
+	end)
+
+	TpPage:addButton("Training area (snow)", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(667.733, -9.71476, 3246.26)
+	end)
+
+	TpPage:addButton("DJ", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-580.919, -11.1394, 3298.05)
+	end)
+
+	TpPage:addButton("forest base", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(366.218, 5.45735, 2561.6)
+	end)
+
+	TpPage:addButton("beach", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(595.014, -62.9979, 2073.06)
+	end)
+
+	TpPage:addButton("Gorrila spawn", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(847.032, -4.3599, 3964.57)
+	end)
+
+	TpPage:addButton("Cerber spawn", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(174.325, -63.0008, 2399.76)
+	end)
+	
+	TpPage:addButton("Secret base", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(89, -63, 2360)
+	end)
+	
+	
+	
+	
+	
+	
+	-- PVP
+	local page = venyx:addPage("PVP", 5012544693)
+
+	local keyboardPage = page:addSection("Autokeyboard")
+	local KillAuraPage = page:addSection("Kill aura")
+	local KillAuraPage1 = page:addSection("Kill aura1")
+	local KillAuraPage2 = page:addSection("Kill aura2")
+	local KillAuraPage3 = page:addSection("Kill aura3")
+	local KillAuraPage4 = page:addSection("Kill aura4")
+	
+	keyboardPage:addToggle("auto hit", nil, function(value)
+		autoHit = value
+	end)
+
+	keyboardPage:addToggle("auto eat (unstable)", nil, function(value)
+		autoEat = value
+		if autoEat then
+			game.Players.LocalPlayer.Backpack.Food.Parent = game.Players.LocalPlayer.Character
+		end
+	end)
+	
+	
+	
+	
+	
+	KillAuraPage:addToggle("Kill aura", nil, function(value)
+		KillAura = value
+	end)
+	
+	
+	
+	
+	
+	
+	KillAuraPage1:addTextbox("kill aura target", "player name", function(value, focusLost)
+		if focusLost then
+			killAuraTarget1 = value
+		end
+	end)
+
+	KillAuraPage1:addButton("Hit this player", function()
+		game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget1).Character.Humanoid)
+	end)
+
+	KillAuraPage1:addToggle("spam hit", nil, function(value)
+		spamHit1 = value
+	end)
+	
+	
+	
+	
+	
+	
+	KillAuraPage2:addTextbox("kill aura target", "player name", function(value, focusLost)
+		if focusLost then
+			killAuraTarget2 = value
+		end
+	end)
+
+	KillAuraPage2:addButton("Hit this player", function()
+		game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget2).Character.Humanoid)
+	end)
+
+	KillAuraPage2:addToggle("spam hit", nil, function(value)
+		spamHit2 = value
+	end)
+	
+	
+	
+	
+	
+	
+	KillAuraPage3:addTextbox("kill aura target", "player name", function(value, focusLost)
+		if focusLost then
+			killAuraTarget3 = value
+		end
+	end)
+
+	KillAuraPage3:addButton("Hit this player", function()
+		game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget3).Character.Humanoid)
+	end)
+
+	KillAuraPage3:addToggle("spam hit", nil, function(value)
+		spamHit3 = value
+	end)
+	
+	
+	
+	
+	
+	
+	KillAuraPage4:addTextbox("kill aura target", "player name", function(value, focusLost)
+		if focusLost then
+			killAuraTarget4 = value
+		end
+	end)
+
+	KillAuraPage4:addButton("Hit this player", function()
+		game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget4).Character.Humanoid)
+	end)
+
+	KillAuraPage4:addToggle("spam hit", nil, function(value)
+		spamHit4 = value
+	end)
+end
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------BUILD A BOAT------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+if game.GameId == 210851291 then
+	local page = venyx:addPage("Build a boat", 5012544693)
+
+	local AutofarmPage = page:addSection("Autofarm")
+	local MiscPage = page:addSection("Misc")
+	local Transform = page:addSection("Transform")
+
+
+	AutofarmPage:addToggle("fast autofarm", nil, function(value)
+		if value then
+			loadstring(game:HttpGet("https://pastebin.com/raw/rUQqsWnw", true))()
+		else
+			game.Players.LocalPlayer.character.HumanoidRootPart.Name = "a"
+			wait(1.5)
+			game.Players.LocalPlayer.character.a.Name = "HumanoidRootPart"
+		end
+	end)
+
+	MiscPage:addButton("Water Godmode", function()
+		LocalPlayerName = game:GetService("Players").LocalPlayer.Name
+		LocalPlayerWorkspace = game:GetService("Workspace")[LocalPlayerName]
+		LocalPlayerWorkspace.WaterDetector:Destroy()
+	end)
+
+	Transform:addButton("Fox Character", function()
+		game.Workspace.ChangeCharacter:FireServer("FoxCharacter")
+	end)
+	Transform:addButton("Chicken Character", function()
+		game.Workspace.ChangeCharacter:FireServer("ChickenCharacter")
+	end)
+	Transform:addButton("Penguin Character", function()
+		game.Workspace.ChangeCharacter:FireServer("PenguinCharacter")
+	end)
+end
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------TEST ZONE---------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+local page = venyx:addPage("Test zone", 5012544693)
+
+local testPage = page:addSection("Test")
+
+testPage:addTextbox("Notification", "Default", function(value, focusLost)
+	if focusLost then
+		venyx:Notify("Title", value)
+	end
+end)
+
+testPage:addKeybind("Toggle Keybind", Enum.KeyCode.One, function()
+	print("Activated Keybind")
+	venyx:toggle()
+end, function()
+	print("Changed Keybind")
+end)
+
+testPage:addDropdown("Dropdown", game.Players:GetPlayers(), function(text)
+	print("Selected", text)
+end)
+
+
+
+
+
+
+
+
+-- THEME
+local theme = venyx:addPage("Theme", 5012544693)
+local colors = theme:addSection("Colors")
+
+for theme, color in pairs(themes) do -- all in one theme changer, i know, im cool
+	colors:addColorPicker(theme, color, function(color3)
+		venyx:setTheme(theme, color3)
+	end)
+end
+
+-- SETTING
+local setting = venyx:addPage("Core", 5012544693)
+local BasicSetting = setting:addSection("Basic setting")
+local OtherGui = setting:addSection("Other Gui")
+
+BasicSetting:addKeybind("Toggle Keybind", Enum.KeyCode.RightShift, function()
+	venyx:toggle()
+end, function()
+end)
+
+BasicSetting:addButton("Refresh Gui", function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/c8vfaeZa", true))()
+end)
+
+BasicSetting:addButton("Delete Gui", function()
+	deleteGui()
+end)
+
+
+OtherGui:addButton("Dex explorer", function()
+	loadstring(game:HttpGet('https://pastebin.com/raw/gw8tpD25', true))()
+end)
+
+-- cheat engine
+
+-- infini Jump
+UserInputService.InputBegan:Connect(function(input)
+	if input.KeyCode == Enum.KeyCode.Space then
+		if infiniJump == true then
+			game.Players.LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+			print(infiniJump)
+		end
+	end
+end)
+
+-- e to tp
+mouse = game.Players.LocalPlayer:GetMouse()
+
+mouse.KeyDown:connect(function(key)
+	if key == "e" then
+		if mouse.Target then
+			if eToTeleport then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(mouse.Hit.x, mouse.Hit.y + 5, mouse.Hit.z)
+			end
+		end
+	end
+end)
+
+-- Boucle
+runservice.Stepped:Connect(function()
+	if alive then
+
+		--Character
+		if noclip then
+			game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+		end
+
+		if FollowBot then
+			local plrtrack = game.Workspace:FindFirstChild(BotFocus)
+			game.Players.LocalPlayer.Character.LowerTorso.Touched:Connect(function()
+				game.Players.LocalPlayer.Character.Humanoid.Jump = true
+			end)
+
+			local path = game:GetService("PathfindingService"):ComputeRawPathAsync(game.Players.LocalPlayer.Character.HumanoidRootPart.Position,plrtrack.HumanoidRootPart.Position,512)
+			if path.Status == Enum.PathStatus.Success then
+				local points = path:GetPointCoordinates()
+				if #points < 3 then
+					game.Players.LocalPlayer.Character.Humanoid:MoveTo(plrtrack.HumanoidRootPart.Position)
+				else
+					game.Players.LocalPlayer.Character.Humanoid:MoveTo(points[3])
+				end
+			else
+				game.Players.LocalPlayer.Character.Humanoid:MoveTo(plrtrack.HumanoidRootPart.Position)
+			end
+		end
+		
+		if ShowPosition then
+			game.Players.LocalPlayer.PlayerGui.PositionGui.Pos.Text = "X : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X) .."  Y : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y) .."  Z : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
+		end
+
+
+
+
+
+
+
+
+
+
+		--Animal simulator
+		if game.GameId == 2023680558 then
+			if bringChest then
+				game.Workspace.Treasures.Treasure1.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+			end
+
+			if toChest then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.Treasures.Treasure5.Position)
+			end
+
+			if autocollect then
+				game.ReplicatedStorage.TreasureEvent:FireServer()
+			end
+
+			if HideReward then
+				game.Players.LocalPlayer.PlayerGui.newRewardGui.Enabled = false
+			else
+				game.Players.LocalPlayer.PlayerGui.newRewardGui.Enabled = true
+			end
+
+			if spamHit1 then
+				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget1).Character.Humanoid)
+			end
+			
+			if spamHit2 then
+				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget2).Character.Humanoid)
+			end
+			
+			if spamHit3 then
+				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget3).Character.Humanoid)
+			end
+			
+			if spamHit4 then
+				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget4).Character.Humanoid)
+			end
+
+			if KillAura then
+				local plrs = game.Players:GetChildren()
+				for i = 1, #plrs do
+					if plrs[i].Name == game.Players.LocalPlayer.Name then
+
+					else
+						game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(plrs[i].Name).Character.Humanoid)
+					end
+				end
+			end
+
+			if autoHit then
+				vu:SetKeyDown("q")
+				vu:SetKeyUp("q")
+			end
+
+			if autoEat then
+				if cooldownEat >= 10 then
+					cooldownEat = 0
+					vu:ClickButton1(Vector2.new(0.0))
+					game.Players.LocalPlayer.Backpack.Food.Parent = game.Players.LocalPlayer.Character
+				else
+					cooldownEat = cooldownEat + 1
+				end
+			end
+
+			if autofarm then
+				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Workspace.Map.snow:FindFirstChild("training area").dummy.Dummy3.Humanoid,0)
+				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Workspace.pleaseno.cheatSpot.Humanoid,0)
+				game.ReplicatedStorage.TreasureEvent:FireServer()
+			end
+
+			if _G.BossGorillaFarm then
+				if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
+				end
+			end
+
+			if _G.BossCerberFarm then
+				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
+				end
+			end
+		end
+		--------- END ANIMAL
+
+
+
+
+
+
+
+		-- Build a boat
+		if game.GameId == 210851291 then
+
+		end
+	end
+end)
+
+
+
+-- delete old menu
+game.CoreGui.ChildAdded:Connect(function(child)
+	if child.Name == "Oxi cheats" then
+		deleteGui()
+	end
+end)
+
+
+
+-- load
+venyx:SelectPage(venyx.pages[1], true)
