@@ -613,7 +613,7 @@ end, function()
 end)
 
 BasicSetting:addButton("Refresh Gui", function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/oxi-cheats/c1ceb65cc21cf70a8bc8d42b34b8a00dab833928/oxi%20cheats", true))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/oxi-cheats/main/oxi%20cheats", true))()
 end)
 
 BasicSetting:addButton("Delete Gui", function()
