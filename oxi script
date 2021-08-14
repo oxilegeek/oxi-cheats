@@ -48,6 +48,7 @@ local createPackName = nil
 local RoleplayName = nil
 local ShowPosition = false
 local BossKillFarm = false
+local BossKillFarmFix = false
 
 -- function
 local vu = game:GetService("VirtualUser")
@@ -951,6 +952,18 @@ runservice.Stepped:Connect(function()
 					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
 				end
 				
+				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
+				end
+			end
+			
+			if BossKillFarmFix then
+				game.ReplicatedStorage.TreasureEvent:FireServer()
+
+				if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
+				end
+
 				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
 					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
 				end
