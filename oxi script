@@ -1,10 +1,6 @@
 local canUse = false
 
-if game.Players.LocalPlayer.Name == "oxigeek_youtube" then
-	canUse = true
-end
-
-if game.Players.LocalPlayer.Name == "oxigeek_youtube4" then
+if game.Players.LocalPlayer.UserId == 1521284139 then
 	canUse = true
 end
 
