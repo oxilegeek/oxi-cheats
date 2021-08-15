@@ -1012,7 +1012,7 @@ runservice.Stepped:Connect(function()
 						if game:GetService("Workspace").NPC:FindFirstChild("Trex").Humanoid.Health >= game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla").Humanoid.Health then
 							if BossKillFarmFixFocus == "LavaGorilla" then
 								BossKillFarmFixFocus = "Trex"
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(89, -63, 2360)
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(129, -70, 2443)
 							end
 						else
 							if BossKillFarmFixFocus == "Trex" then
