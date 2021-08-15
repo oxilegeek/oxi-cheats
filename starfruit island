@@ -1,0 +1,33 @@
+local vu = game:GetService("VirtualUser")
+_G.LOL2 = true
+
+while true do
+wait(0.3)
+for i, v in pairs(game.Workspace.WildernessBlocks:GetChildren()) do
+if _G.LOL2 == true then
+if v.Name == "starfruit" then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.CollisionBoxes.Part.Position)
+end
+if v.Name == "horseradish" then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.CollisionBoxes.Part.Position)
+end
+if v.Name == "flowerDaffodil" then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.CollisionBoxes.Part.Position)
+end
+if v.Name == "flowerCrocus" then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.CollisionBoxes.Part.Position)
+end
+if v.Name == "mushroomRed" then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.CollisionBoxes.Part.Position)
+end
+if v.Name == "tomato" then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.CollisionBoxes.Part.Position)
+end
+if v.Name == "acorn" then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.CollisionBoxes.Part.Position)
+end
+else
+break
+end
+end
+end
