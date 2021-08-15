@@ -222,7 +222,7 @@ HumanoidStat:addToggle("Coordinate", nil, function(value)
 		local CoUi = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
 		CoUi.Name = "PositionGui"
 		CoUi.ResetOnSpawn = false
-		
+
 		local CoLabel = Instance.new("TextLabel", CoUi)
 		CoLabel.Name = "Pos"
 		CoLabel.BackgroundTransparency = 1
@@ -231,7 +231,7 @@ HumanoidStat:addToggle("Coordinate", nil, function(value)
 		CoLabel.Position = UDim2.new(0.7, 0,0.2, 0)
 		CoLabel.TextColor3 = Color3.new(255, 255, 255)
 		CoLabel.TextStrokeTransparency = 0
-		
+
 		ShowPosition = true
 	else
 		ShowPosition = false
@@ -436,10 +436,10 @@ if game.GameId == 2023680558 then
 
 
 
-	
-	
-	
-	
+
+
+
+
 	-- TP
 	local page = venyx:addPage("TP", 5012544693)
 
@@ -481,16 +481,16 @@ if game.GameId == 2023680558 then
 	TpPage:addButton("Cerber spawn", function()
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(174.325, -63.0008, 2399.76)
 	end)
-	
+
 	TpPage:addButton("Secret base", function()
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(89, -63, 2360)
 	end)
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	-- PVP
 	local page = venyx:addPage("PVP", 5012544693)
 
@@ -500,7 +500,7 @@ if game.GameId == 2023680558 then
 	local KillAuraPage2 = page:addSection("Kill aura2")
 	local KillAuraPage3 = page:addSection("Kill aura3")
 	local KillAuraPage4 = page:addSection("Kill aura4")
-	
+
 	keyboardPage:addToggle("auto hit", nil, function(value)
 		autoHit = value
 	end)
@@ -511,20 +511,20 @@ if game.GameId == 2023680558 then
 			game.Players.LocalPlayer.Backpack.Food.Parent = game.Players.LocalPlayer.Character
 		end
 	end)
-	
-	
-	
-	
-	
+
+
+
+
+
 	KillAuraPage:addToggle("Kill aura", nil, function(value)
 		KillAura = value
 	end)
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	KillAuraPage1:addTextbox("kill aura target", "player name", function(value, focusLost)
 		if focusLost then
 			killAuraTarget1 = value
@@ -538,12 +538,12 @@ if game.GameId == 2023680558 then
 	KillAuraPage1:addToggle("spam hit", nil, function(value)
 		spamHit1 = value
 	end)
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	KillAuraPage2:addTextbox("kill aura target", "player name", function(value, focusLost)
 		if focusLost then
 			killAuraTarget2 = value
@@ -557,12 +557,12 @@ if game.GameId == 2023680558 then
 	KillAuraPage2:addToggle("spam hit", nil, function(value)
 		spamHit2 = value
 	end)
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	KillAuraPage3:addTextbox("kill aura target", "player name", function(value, focusLost)
 		if focusLost then
 			killAuraTarget3 = value
@@ -576,12 +576,12 @@ if game.GameId == 2023680558 then
 	KillAuraPage3:addToggle("spam hit", nil, function(value)
 		spamHit3 = value
 	end)
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	KillAuraPage4:addTextbox("kill aura target", "player name", function(value, focusLost)
 		if focusLost then
 			killAuraTarget4 = value
@@ -595,31 +595,31 @@ if game.GameId == 2023680558 then
 	KillAuraPage4:addToggle("spam hit", nil, function(value)
 		spamHit4 = value
 	end)
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
 	-- Autofarm
 	local page = venyx:addPage("Autofarm", 5012544693)
 
 	local onlineAutofarmPage = page:addSection("Online autofarm")
 	local afkAutofarmPage = page:addSection("afk autofarm")
-	
-	
+
+
 	onlineAutofarmPage:addToggle("boss kill farm", nil, function(value)
 		BossKillFarm = value
 	end)
-	
-	
-	
+
+
+
 	afkAutofarmPage:addToggle("training area farm", nil, function(value)
 		local dummy = game.Workspace.Map.snow:FindFirstChild("training area").dummy:GetChildren()
 		for i = 1, #dummy do
@@ -659,8 +659,8 @@ if game.GameId == 2023680558 then
 		end
 		autofarm = value
 	end)
-	
-	
+
+
 	afkAutofarmPage:addToggle("boss kill farm fix", nil, function(value)
 		if value then
 			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(89, -63, 2360)
@@ -727,6 +727,36 @@ end
 
 
 
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------ISLAND------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+if game.GameId == 1659645941 then
+	local page = venyx:addPage("Caranboule", 5012544693)
+
+	local StarfruitPage = page:addSection("Starfruit")
+
+
+	StarfruitPage:addToggle("fast autofarm", nil, function(value)
+		if value then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/oxi-cheats/main/starfruit%20island", true))()
+		else
+			_G.LOL2 = false
+		end
+	end)
+end
+
+
+
+
+
+
+
+
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------TEST ZONE---------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
@@ -747,17 +777,20 @@ end, function()
 	print("Changed Keybind")
 end)
 
-testPage:addDropdown("Dropdown", game.Players:GetPlayers(), function(text)
+
+local plrs = {}
+for i, v in pairs(game.Players:GetPlayers()) do
+	table.insert(plrs, 1, v.Name)
+end
+testPage:addDropdown("Dropdown", plrs, function(text)
 	print("Selected", text)
 end)
 
+
+
 testPage:addSlider("test", testSpeedValue, 1, 1000, function(value)
-	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed.Changed:Connect(function()
-		testSpeedValue = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed.Value
-	end)
+
 end)
-
-
 
 
 
@@ -831,7 +864,6 @@ end)
 ----------------------------------------------------------------------------------------------------------------------------
 runservice.Stepped:Connect(function()
 	if alive then
-
 		--Character
 		if noclip then
 			game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
@@ -855,7 +887,7 @@ runservice.Stepped:Connect(function()
 				game.Players.LocalPlayer.Character.Humanoid:MoveTo(plrtrack.HumanoidRootPart.Position)
 			end
 		end
-		
+
 		if ShowPosition then
 			game.Players.LocalPlayer.PlayerGui.PositionGui.Pos.Text = "X : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X) .."  Y : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y) .."  Z : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
 		end
@@ -892,15 +924,15 @@ runservice.Stepped:Connect(function()
 			if spamHit1 then
 				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget1).Character.Humanoid)
 			end
-			
+
 			if spamHit2 then
 				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget2).Character.Humanoid)
 			end
-			
+
 			if spamHit3 then
 				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget3).Character.Humanoid)
 			end
-			
+
 			if spamHit4 then
 				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget4).Character.Humanoid)
 			end
@@ -948,29 +980,29 @@ runservice.Stepped:Connect(function()
 					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
 				end
 			end
-			
-			
-			
+
+
+
 			-- AUTOFARM
 			if BossKillFarm then
 				game.ReplicatedStorage.TreasureEvent:FireServer()
-				
+
 				if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
 					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
 				end
-				
+
 				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
 					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
 				end
 			end
-			
+
 			if BossKillFarmFix then
 				game.ReplicatedStorage.TreasureEvent:FireServer()
 
 				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
 					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
 				end
-				
+
 				if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
 					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
 				end
