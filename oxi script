@@ -49,6 +49,7 @@ local RoleplayName = nil
 local ShowPosition = false
 local BossKillFarm = false
 local BossKillFarmFix = false
+local testSpeedValue = 16
 
 -- function
 local vu = game:GetService("VirtualUser")
@@ -748,6 +749,12 @@ end)
 
 testPage:addDropdown("Dropdown", game.Players:GetPlayers(), function(text)
 	print("Selected", text)
+end)
+
+testPage:addSlider("test", testSpeedValue, 1, 1000, function(value)
+	game.Players.LocalPlayer.Character.Humanoid.Walkspeed.Changed:Connect(function()
+		testSpeedValue = game.Players.LocalPlayer.Character.Humanoid.Walkspeed.Value
+	end)
 end)
 
 
