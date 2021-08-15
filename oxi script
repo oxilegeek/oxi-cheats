@@ -752,8 +752,8 @@ testPage:addDropdown("Dropdown", game.Players:GetPlayers(), function(text)
 end)
 
 testPage:addSlider("test", testSpeedValue, 1, 1000, function(value)
-	game.Players.LocalPlayer.Character.Humanoid.Walkspeed.Changed:Connect(function()
-		testSpeedValue = game.Players.LocalPlayer.Character.Humanoid.Walkspeed.Value
+	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed.Changed:Connect(function()
+		testSpeedValue = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed.Value
 	end)
 end)
 
