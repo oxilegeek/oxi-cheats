@@ -1005,6 +1005,7 @@ runservice.Stepped:Connect(function()
 			
 			if BossKillFarmFix then
 				game.ReplicatedStorage.TreasureEvent:FireServer()
+				game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
 				
 				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
 					if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
@@ -1016,14 +1017,14 @@ runservice.Stepped:Connect(function()
 						else
 							if BossKillFarmFixFocus == "Trex" then
 								BossKillFarmFixFocus = "LavaGorilla"
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(884, -2, 4055)
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(882, -13, 4002)
 							end
 						end
 					end
 				else
 					if BossKillFarmFixFocus == "Trex" then
 						BossKillFarmFixFocus = "LavaGorilla"
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(884, -2, 4055)
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(882, -13, 4002)
 					end
 				end
 
