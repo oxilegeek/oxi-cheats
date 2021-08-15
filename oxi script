@@ -1020,6 +1020,11 @@ runservice.Stepped:Connect(function()
 							end
 						end
 					end
+				else
+					if BossKillFarmFixFocus == "Trex" then
+						BossKillFarmFixFocus = "LavaGorilla"
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(884, -2, 4055)
+					end
 				end
 
 				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
