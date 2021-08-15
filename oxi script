@@ -668,7 +668,7 @@ if game.GameId == 2023680558 then
 
 	afkAutofarmPage:addToggle("boss kill farm fix", nil, function(value)
 		if value then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(89, -63, 2360)
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(129, -70, 2443)
 			vu:SetKeyDown("t")
 			vu:SetKeyUp("t")
 		else
