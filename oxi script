@@ -65,6 +65,7 @@ local antiPortalAbuse = false
 --build a boat
 local BABFastAutofarm = false
 local TheEnd = false
+local SlotNumber = nil
 
 -- function
 local vu = game:GetService("VirtualUser")
@@ -401,6 +402,14 @@ FunPage:addButton("Special reset character", function()
 	game.Players.LocalPlayer.Character.Humanoid:Destroy()
 end)
 
+FunPage:addButton("AMOGUS", function()
+	local args = {
+		[1] = "AMOGUS",
+		[2] = "All"
+	}
+
+	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+end)
 
 
 
@@ -788,6 +797,35 @@ if game.GameId == 210851291 then
 
 	Utility:addToggle("Anti Portal Abuse", nil, function(value)
 		antiPortalAbuse = value
+	end)
+	
+	Utility:addTextbox("slot", "slot number", function(value, focusLost)
+		if focusLost then
+			SlotNumber = value
+		end
+	end)
+	
+	Utility:addButton("Load slot", function()
+		local args = {
+			[1] = SlotNumber,
+			[2] = 0
+		}
+
+		workspace.LoadBoatData:FireServer(unpack(args))
+
+	end)
+	
+	Utility:addButton("Clear all", function()
+		workspace.ClearAllPlayersBoatParts:FireServer()
+	end)
+	
+	Utility:addButton("Buy 50 wood", function()
+		local args = {
+			[1] = "WoodBlock",
+			[2] = 1
+		}
+
+		workspace.ItemBoughtFromShop:InvokeServer(unpack(args))
 	end)
 end
 
