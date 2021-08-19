@@ -99,6 +99,7 @@ local function autoFarmBAB()
 end
 
 game.Players.LocalPlayer.PlayerGui.RiverResultsGui.Frame.Changed:Connect(function()
+	print("respawned")
 	if BABFastAutofarm then
 		autoFarmBAB()
 	end
