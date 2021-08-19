@@ -72,24 +72,22 @@ end)
 
 
 local function autoFarmBAB()
-	if BABFastAutofarm then
-		repeat wait(0.1) until game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-		local stages = game.Workspace.BoatStages.NormalStages:GetChildren()
-		for i = 1, #stages do
-			if alive then
-				if i < 11 then
-					if BABFastAutofarm then
-						print(stages[i].Name)
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(stages[i].DarknessPart.Position)
-						wait(1)
-					end
-				else
-					if i == 12 then
-						break
-					end
-					if BABFastAutofarm then
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.BoatStages.NormalStages.TheEnd.GoldenChest.Base.LockPosition.Position)
-					end
+	repeat wait(0.1) until game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+	local stages = game.Workspace.BoatStages.NormalStages:GetChildren()
+	for i = 1, #stages do
+		if alive then
+			if i < 11 then
+				if BABFastAutofarm then
+					print(stages[i].Name)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(stages[i].DarknessPart.Position)
+					wait(1)
+				end
+			else
+				if i == 12 then
+					break
+				end
+				if BABFastAutofarm then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.BoatStages.NormalStages.TheEnd.GoldenChest.Base.LockPosition.Position)
 				end
 			end
 		end
@@ -97,7 +95,9 @@ local function autoFarmBAB()
 end
 
 game.Players.LocalPlayer.PlayerGui.RiverResultsGui.Frame.Changed:Connect(function()
-	autoFarmBAB()
+	if BABFastAutofarm then
+		autoFarmBAB()
+	end
 end)
 
 
@@ -738,6 +738,7 @@ if game.GameId == 210851291 then
 		BABFastAutofarm = value
 		if value then
 			game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+			autoFarmBAB()
 		else
 			game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 		end
