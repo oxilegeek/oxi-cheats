@@ -75,6 +75,7 @@ end)
 local function autoFarmBAB()
 	repeat wait(0.1) until game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
 	TheEnd = false
+	wait(1)
 	local stages = game.Workspace.BoatStages.NormalStages:GetChildren()
 	for i = 1, #stages do
 		if alive then
