@@ -273,9 +273,12 @@ BasicHack:addToggle("fly", nil, function(value)
 	FLY()
 end)
 
-BasicHack:addSlider("fly speed", 50, 1, 1000, function(value)
-	flySpeed = value
+BasicHack:addTextbox("Fly speed", "50", function(value, focusLost)
+	if focusLost then
+		flySpeed = value
+	end
 end)
+
 
 
 
