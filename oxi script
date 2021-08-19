@@ -56,6 +56,9 @@ local BossKillFarmFix = false
 local testSpeedValue = 16
 local BossKillFarmFixFocus = "Trex"
 
+--build a boat
+local BABFastAutofarm = false
+
 -- function
 local vu = game:GetService("VirtualUser")
 game:GetService("Players").LocalPlayer.Idled:connect(function()
@@ -63,6 +66,30 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
 	wait(1)
 	vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
 
+end)
+
+game.Players.LocalPlayer.PlayerGui.RiverResultsGui.Frame.Changed:Connect(function()
+	if BABFastAutofarm then
+		local stages = game.Workspace.BoatStages.NormalStages:GetChildren()
+		for i = 1, #stages do
+			if alive then
+				if i < 11 then
+					if BABFastAutofarm then
+						print(stages[i].Name)
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(stages[i].DarknessPart.Position)
+						wait(1)
+					end
+				else
+					if i == 12 then
+						break
+					end
+					if BABFastAutofarm then
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.BoatStages.NormalStages.TheEnd.GoldenChest.Base.LockPosition.Position)
+					end
+				end
+			end
+		end
+	end
 end)
 
 function bot()
@@ -699,12 +726,11 @@ if game.GameId == 210851291 then
 
 
 	AutofarmPage:addToggle("fast autofarm", nil, function(value)
+		BABFastAutofarm = value
 		if value then
-			loadstring(game:HttpGet("https://pastebin.com/raw/rUQqsWnw", true))()
+			game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 		else
-			game.Players.LocalPlayer.character.HumanoidRootPart.Name = "a"
-			wait(1.5)
-			game.Players.LocalPlayer.character.a.Name = "HumanoidRootPart"
+			game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 		end
 	end)
 
@@ -1000,13 +1026,13 @@ runservice.Stepped:Connect(function()
 					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
 				end
 			end
-			
-			
-			
+
+
+
 			if BossKillFarmFix then
 				game.ReplicatedStorage.TreasureEvent:FireServer()
 				game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
-				
+
 				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
 					if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
 						if game:GetService("Workspace").NPC:FindFirstChild("Trex").Humanoid.Health >= game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla").Humanoid.Health then
@@ -1047,7 +1073,9 @@ runservice.Stepped:Connect(function()
 
 		-- Build a boat
 		if game.GameId == 210851291 then
-
+			if BABFastAutofarm then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+			end
 		end
 	end
 end)
