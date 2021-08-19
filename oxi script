@@ -256,7 +256,7 @@ BasicHack:addToggle("fly", nil, function(value)
 	FLY()
 end)
 
-BasicHack:addSlider("fly speed", 50, 1, 2000, function(value)
+BasicHack:addSlider("fly speed", 50, 1, 20000, function(value)
 	flySpeed = value
 end)
 
