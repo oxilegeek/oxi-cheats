@@ -748,6 +748,7 @@ if game.GameId == 210851291 then
 	end)
 	
 	AutofarmPage:addSlider("Autofarm speed", 5, 1, 5, function(value)
+		print(value)
 		BABAutofarmSpeed = 6 - value
 	end)
 
@@ -819,14 +820,6 @@ testPage:addTextbox("Notification", "Default", function(value, focusLost)
 		venyx:Notify("Title", value)
 	end
 end)
-
-testPage:addKeybind("Toggle Keybind", Enum.KeyCode.One, function()
-	print("Activated Keybind")
-	venyx:toggle()
-end, function()
-	print("Changed Keybind")
-end)
-
 
 local plrs = {}
 for i, v in pairs(game.Players:GetPlayers()) do
