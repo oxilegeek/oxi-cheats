@@ -829,6 +829,17 @@ if game.GameId == 210851291 then
 
 		workspace.ItemBoughtFromShop:InvokeServer(unpack(args))
 	end)
+
+	Utility:addButton("Hide menu", function()
+		game.Players.LocalPlayer.PlayerGui.ShopGui.SideFrame.MenuButton.Visible = false
+		game.Players.LocalPlayer.PlayerGui.GoldGui.Frame.Visible = false
+		game.Players.LocalPlayer.PlayerGui.LaunchBoatGui.LaunchFrame.Visible = false
+		game.Players.LocalPlayer.PlayerGui.PlayerListGui.Frame.Visible = false
+
+		for i, Item in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+			Item:Destroy()
+		end
+	end)
 end
 
 
