@@ -55,6 +55,7 @@ local BossKillFarm = false
 local BossKillFarmFix = false
 local testSpeedValue = 16
 local BossKillFarmFixFocus = "Trex"
+local BABAutofarmSpeed = 1
 
 --build a boat
 local BABFastAutofarm = false
@@ -81,7 +82,7 @@ local function autoFarmBAB()
 				if BABFastAutofarm then
 					print(stages[i].Name)
 					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(stages[i].DarknessPart.Position)
-					wait(1)
+					wait(BABAutofarmSpeed)
 				end
 			else
 				if i == 12 then
@@ -745,12 +746,18 @@ if game.GameId == 210851291 then
 			
 		end
 	end)
+	
+	AutofarmPage:addSlider("Autofarm speed", 1, 5, 5, function(value)
+		BABAutofarmSpeed = 6 - value
+	end)
 
 	MiscPage:addButton("Water Godmode", function()
 		LocalPlayerName = game:GetService("Players").LocalPlayer.Name
 		LocalPlayerWorkspace = game:GetService("Workspace")[LocalPlayerName]
 		LocalPlayerWorkspace.WaterDetector:Destroy()
 	end)
+	
+	
 
 	Transform:addButton("Fox Character", function()
 		game.Workspace.ChangeCharacter:FireServer("FoxCharacter")
