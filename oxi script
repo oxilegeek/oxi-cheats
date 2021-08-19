@@ -68,8 +68,12 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
 
 end)
 
-game.Players.LocalPlayer.PlayerGui.RiverResultsGui.Frame.Changed:Connect(function()
+
+
+
+local function autoFarmBAB()
 	if BABFastAutofarm then
+		repeat wait(0.1) until game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
 		local stages = game.Workspace.BoatStages.NormalStages:GetChildren()
 		for i = 1, #stages do
 			if alive then
@@ -90,7 +94,12 @@ game.Players.LocalPlayer.PlayerGui.RiverResultsGui.Frame.Changed:Connect(functio
 			end
 		end
 	end
+end
+
+game.Players.LocalPlayer.PlayerGui.RiverResultsGui.Frame.Changed:Connect(function()
+	autoFarmBAB()
 end)
+
 
 function bot()
 	while wait() do
