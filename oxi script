@@ -244,8 +244,17 @@ BasicHack:addToggle("noclip", nil, function(value)
 	noclip = value
 end)
 
-BasicHack:addToggle("E to teleport", nil, function(value)
+BasicHack:addToggle("key to teleport", nil, function(value)
 	eToTeleport = value
+end)
+
+BasicHack:addKeybind("TeleportKey : ", Enum.KeyCode.E, function()
+	local mouse = game.Players.LocalPlayer:GetMouse()
+	if mouse.Target then
+		if eToTeleport then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(mouse.Hit.x, mouse.Hit.y + 5, mouse.Hit.z)
+		end
+	end
 end)
 
 BasicHack:addToggle("Anchored", nil, function(value)
@@ -896,18 +905,7 @@ UserInputService.InputBegan:Connect(function(input)
 	end
 end)
 
--- e to tp
-mouse = game.Players.LocalPlayer:GetMouse()
 
-mouse.KeyDown:connect(function(key)
-	if key == "e" then
-		if mouse.Target then
-			if eToTeleport then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(mouse.Hit.x, mouse.Hit.y + 5, mouse.Hit.z)
-			end
-		end
-	end
-end)
 
 
 
