@@ -749,10 +749,10 @@ if game.GameId == 210851291 then
 		if value then
 			autoFarmBAB()
 		else
-			
+
 		end
 	end)
-	
+
 	AutofarmPage:addSlider("Autofarm speed", 4, 1, 5, function(value)
 		print(value)
 		BABAutofarmSpeed = 6 - value
@@ -763,8 +763,8 @@ if game.GameId == 210851291 then
 		LocalPlayerWorkspace = game:GetService("Workspace")[LocalPlayerName]
 		LocalPlayerWorkspace.WaterDetector:Destroy()
 	end)
-	
-	
+
+
 
 	Transform:addButton("Fox Character", function()
 		game.Workspace.ChangeCharacter:FireServer("FoxCharacter")
@@ -775,8 +775,8 @@ if game.GameId == 210851291 then
 	Transform:addButton("Penguin Character", function()
 		game.Workspace.ChangeCharacter:FireServer("PenguinCharacter")
 	end)
-	
-	
+
+
 	Utility:addToggle("Anti Portal Abuse", nil, function(value)
 		antiPortalAbuse = value
 	end)
@@ -1098,22 +1098,24 @@ runservice.Stepped:Connect(function()
 		if game.GameId == 210851291 then
 			if BABFastAutofarm then
 				if TheEnd then
-					
+
 				else
 					game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
 				end
 			end
-			
+
 			if game.Players.LocalPlayer.PlayerGui.RiverResultsGui.Frame.Visible == true then
 				if TheEnd then
 					TheEnd = false
 					autoFarmBAB()
 				end
 			end
-			
+
 			if antiPortalAbuse then
-				if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < -370 then
-					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X, 5, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
+				if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < -25 then
+					if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z < 900 then
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X, 5, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
+					end
 				end
 			end
 		end
