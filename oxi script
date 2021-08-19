@@ -1108,7 +1108,7 @@ runservice.Stepped:Connect(function()
 			end
 			
 			if antiPortalAbuse then
-				if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < -35 then
+				if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < -370 then
 					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X, 5, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
 				end
 			end
