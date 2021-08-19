@@ -63,11 +63,10 @@ local BABAutofarmSpeed = 1
 local antiPortalAbuse = false
 
 --build a boat
-if game.GameId == 210851291 then
-	local BABFastAutofarm = false
-	local TheEnd = false
-	local SlotNumber = nil
-end
+local BABFastAutofarm = false
+local TheEnd = false
+local SlotNumber = nil
+
 
 -- function
 local vu = game:GetService("VirtualUser")
@@ -105,13 +104,14 @@ local function autoFarmBAB()
 	end
 end
 
-game.Players.LocalPlayer.PlayerGui.RiverResultsGui.Frame.Changed:Connect(function()
-	print("respawned")
-	if BABFastAutofarm then
-		autoFarmBAB()
-	end
-end)
-
+if game.GameId == 210851291 then
+	game.Players.LocalPlayer.PlayerGui.RiverResultsGui.Frame.Changed:Connect(function()
+		print("respawned")
+		if BABFastAutofarm then
+			autoFarmBAB()
+		end
+	end)
+end
 
 function bot()
 	while wait() do
