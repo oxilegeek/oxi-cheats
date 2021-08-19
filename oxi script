@@ -13,7 +13,7 @@ if game.Players.LocalPlayer.UserId == 2811616278 then
 end
 
 repeat wait(0.2) until canUse
-a
+
 -- var
 local alive = true
 local UserInputService = game:GetService("UserInputService")
