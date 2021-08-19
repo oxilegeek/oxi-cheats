@@ -737,10 +737,9 @@ if game.GameId == 210851291 then
 	AutofarmPage:addToggle("fast autofarm", nil, function(value)
 		BABFastAutofarm = value
 		if value then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 			autoFarmBAB()
 		else
-			game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+			
 		end
 	end)
 
@@ -1084,7 +1083,7 @@ runservice.Stepped:Connect(function()
 		-- Build a boat
 		if game.GameId == 210851291 then
 			if BABFastAutofarm then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+				game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
 			end
 		end
 	end
