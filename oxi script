@@ -56,6 +56,7 @@ local BossKillFarmFix = false
 local testSpeedValue = 16
 local BossKillFarmFixFocus = "Trex"
 local BABAutofarmSpeed = 1
+local antiPortalAbuse = false
 
 --build a boat
 local BABFastAutofarm = false
@@ -736,6 +737,7 @@ if game.GameId == 210851291 then
 	local AutofarmPage = page:addSection("Autofarm")
 	local MiscPage = page:addSection("Misc")
 	local Transform = page:addSection("Transform")
+	local Utility = page:addSection("Utility")
 
 
 	AutofarmPage:addToggle("fast autofarm", nil, function(value)
@@ -768,6 +770,11 @@ if game.GameId == 210851291 then
 	end)
 	Transform:addButton("Penguin Character", function()
 		game.Workspace.ChangeCharacter:FireServer("PenguinCharacter")
+	end)
+	
+	
+	Utility:addToggle("Anti Portal Abuse", nil, function(value)
+		antiPortalAbuse = value
 	end)
 end
 
@@ -1097,6 +1104,12 @@ runservice.Stepped:Connect(function()
 				if TheEnd then
 					TheEnd = false
 					autoFarmBAB()
+				end
+			end
+			
+			if antiPortalAbuse then
+				if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < -35 then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X, 5, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
 				end
 			end
 		end
