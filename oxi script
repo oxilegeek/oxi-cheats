@@ -13,7 +13,7 @@ if game.Players.LocalPlayer.UserId == 2811616278 then
 end
 
 repeat wait(0.2) until canUse
-
+a
 -- var
 local alive = true
 local UserInputService = game:GetService("UserInputService")
@@ -256,7 +256,7 @@ BasicHack:addToggle("fly", nil, function(value)
 	FLY()
 end)
 
-BasicHack:addSlider("fly speed", 50, 1, 1000, function(value)
+BasicHack:addSlider("fly speed", 50, 1, 2000, function(value)
 	flySpeed = value
 end)
 
