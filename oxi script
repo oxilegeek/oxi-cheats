@@ -275,7 +275,9 @@ end)
 
 BasicHack:addTextbox("Fly speed", "50", function(value, focusLost)
 	if focusLost then
-		flySpeed = value
+		if value > 0 then
+			flySpeed = value
+		end
 	end
 end)
 
