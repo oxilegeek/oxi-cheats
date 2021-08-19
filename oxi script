@@ -747,7 +747,7 @@ if game.GameId == 210851291 then
 		end
 	end)
 	
-	AutofarmPage:addSlider("Autofarm speed", 1, 5, 5, function(value)
+	AutofarmPage:addSlider("Autofarm speed", 5, 1, 5, function(value)
 		BABAutofarmSpeed = 6 - value
 	end)
 
