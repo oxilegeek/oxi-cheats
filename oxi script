@@ -14,8 +14,8 @@ end
 
 if game.Players.LocalPlayer.UserId == 1499794607 then
 	canUse = true
-	end
-	
+end
+
 if game.Players.LocalPlayer.UserId == 720726589 then
 	canUse = true
 end
@@ -1068,8 +1068,10 @@ runservice.Stepped:Connect(function()
 			if autoEat then
 				if cooldownEat >= 10 then
 					cooldownEat = 0
-					vu:ClickButton1(Vector2.new(0.0))
-					game.Players.LocalPlayer.Backpack.Food.Parent = game.Players.LocalPlayer.Character
+					if game.Players.LocalPlayer.Character.Humanoid.Health < game.Players.LocalPlayer.Character.Humanoid.MaxHealth then
+						vu:ClickButton1(Vector2.new(0.0))
+						game.Players.LocalPlayer.Backpack.Food.Parent = game.Players.LocalPlayer.Character
+					end
 				else
 					cooldownEat = cooldownEat + 1
 				end
