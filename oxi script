@@ -586,9 +586,6 @@ if game.GameId == 2023680558 then
 
 	keyboardPage:addToggle("auto eat (unstable)", nil, function(value)
 		autoEat = value
-		if autoEat then
-			game.Players.LocalPlayer.Backpack.Food.Parent = game.Players.LocalPlayer.Character
-		end
 	end)
 
 
