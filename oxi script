@@ -606,9 +606,11 @@ if game.GameId == 2023680558 then
 			killAuraTarget1 = value
 		end
 	end)
-
-	KillAuraPage1:addButton("Hit this player", function()
-		game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget1).Character.Humanoid)
+	
+	KillAuraPage1:addKeybind("Hit this player : ", Enum.KeyCode.E, function()
+		if game.Players:FindFirstChild(killAuraTarget1) then
+			game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget1).Character.Humanoid)
+		end
 	end)
 
 	KillAuraPage1:addToggle("spam hit", nil, function(value)
@@ -626,8 +628,10 @@ if game.GameId == 2023680558 then
 		end
 	end)
 
-	KillAuraPage2:addButton("Hit this player", function()
-		game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget2).Character.Humanoid)
+	KillAuraPage2:addKeybind("Hit this player : ", Enum.KeyCode.E, function()
+		if game.Players:FindFirstChild(killAuraTarget1) then
+			game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget1).Character.Humanoid)
+		end
 	end)
 
 	KillAuraPage2:addToggle("spam hit", nil, function(value)
@@ -645,8 +649,10 @@ if game.GameId == 2023680558 then
 		end
 	end)
 
-	KillAuraPage3:addButton("Hit this player", function()
-		game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget3).Character.Humanoid)
+	KillAuraPage3:addKeybind("Hit this player : ", Enum.KeyCode.E, function()
+		if game.Players:FindFirstChild(killAuraTarget1) then
+			game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget1).Character.Humanoid)
+		end
 	end)
 
 	KillAuraPage3:addToggle("spam hit", nil, function(value)
@@ -664,8 +670,10 @@ if game.GameId == 2023680558 then
 		end
 	end)
 
-	KillAuraPage4:addButton("Hit this player", function()
-		game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget4).Character.Humanoid)
+	KillAuraPage4:addKeybind("Hit this player : ", Enum.KeyCode.E, function()
+		if game.Players:FindFirstChild(killAuraTarget1) then
+			game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget1).Character.Humanoid)
+		end
 	end)
 
 	KillAuraPage4:addToggle("spam hit", nil, function(value)
