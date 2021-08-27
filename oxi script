@@ -20,6 +20,10 @@ if game.Players.LocalPlayer.UserId == 720726589 then
 	canUse = true
 end
 
+if game.Players.LocalPlayer.UserId == 1368825993 then
+	canUse = true
+end
+
 repeat wait(0.2) until canUse
 
 -- var
