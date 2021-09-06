@@ -610,7 +610,7 @@ if game.GameId == 2023680558 then
 			killAuraTarget1 = value
 		end
 	end)
-	
+
 	KillAuraPage1:addKeybind("Hit this player : ", Enum.KeyCode.E, function()
 		if game.Players:FindFirstChild(killAuraTarget1) then
 			game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget1).Character.Humanoid)
@@ -709,7 +709,7 @@ if game.GameId == 2023680558 then
 
 
 	afkAutofarmPage:addToggle("training area farm", nil, function(value)
-		local dummy = game.Workspace.Map.snow:FindFirstChild("training area").dummy:GetChildren()
+		local dummy = game.Workspace.Map.snow.dummy:GetChildren()
 		for i = 1, #dummy do
 			if i == 3 then
 				dummy[i].Name = "Dummy3"
@@ -1087,7 +1087,7 @@ runservice.Stepped:Connect(function()
 			end
 
 			if autofarm then
-				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Workspace.Map.snow:FindFirstChild("training area").dummy.Dummy3.Humanoid,0)
+				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Workspace.Map.snow.dummy.Dummy2.Humanoid,0)
 				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Workspace.pleaseno.cheatSpot.Humanoid,0)
 			end
 
