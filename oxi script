@@ -434,7 +434,6 @@ end)
 -- BasicTp
 local page = venyx:addPage("Custom tp", 5012544693)
 local locationcreator = page:addSection("create a location")
-local tppage = page:addSection("TP")
 
 locationcreator:addTextbox("CustomTp", "location name", function(value, focusLost)
 	if focusLost then
@@ -444,10 +443,28 @@ end)
 
 locationcreator:addButton("Create location", function()
 	if customTpName ~= nil then
-		local buttonPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-		tppage:addButton(customTpName, function()
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(buttonPosition)
-		end)
+		if game.CoreGui:FindFirstChild("Oxi cheats").Main:FindFirstChild("Custom tp"):FindFirstChild(customTpName) then
+			venyx:Notify("Error", "Incorect name")
+		else
+			local tppage = page:addSection(customTpName)
+			local buttonPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+			tppage:addButton("Tp boutton", function()
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(buttonPosition)
+			end)
+
+			tppage:addKeybind("TP keybind : ", nil, function()
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(buttonPosition)
+			end)
+
+			tppage:addButton("Delete location (comming soon)", function()
+				
+			end)
+
+			venyx:SelectPage(venyx.pages[1], true)
+			venyx:SelectPage(venyx.pages[2], true)
+		end
+	else
+		venyx:Notify("Error", "Incorect name")
 	end
 end)
 
