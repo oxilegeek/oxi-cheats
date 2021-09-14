@@ -29,6 +29,7 @@ repeat wait(0.2) until canUse
 -- var
 local alive = true
 local UserInputService = game:GetService("UserInputService")
+local database = game:GetService("DataStoreService")
 local infiniJump = false
 local runservice = game:GetService("RunService")
 local noclip = false
@@ -69,6 +70,7 @@ local testSpeedValue = 16
 local BossKillFarmFixFocus = "Trex"
 local BABAutofarmSpeed = 1
 local antiPortalAbuse = false
+local customTpName = nil
 
 --build a boat
 local BABFastAutofarm = false
@@ -424,6 +426,29 @@ FunPage:addButton("AMOGUS", function()
 	}
 
 	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+end)
+
+
+
+
+-- BasicTp
+local page = venyx:addPage("Custom tp", 5012544693)
+local locationcreator = page:addSection("create a location")
+local tppage = page:addSection("TP")
+
+locationcreator:addTextbox("CustomTp", "location name", function(value, focusLost)
+	if focusLost then
+		customTpName = value
+	end
+end)
+
+locationcreator:addButton("Create location", function()
+	if customTpName ~= nil then
+		local buttonPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+		tppage:addButton(customTpName, function()
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(buttonPosition)
+		end)
+	end
 end)
 
 
