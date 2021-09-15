@@ -4,6 +4,10 @@ if game.Players.LocalPlayer.UserId == 1521284139 then
 	canUse = true
 end
 
+if game.Players.LocalPlayer.UserId == 794604054 then
+	canUse = true
+end
+
 if game.Players.LocalPlayer.UserId == 1529632703 then
 	canUse = true
 end
