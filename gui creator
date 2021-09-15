@@ -1895,6 +1895,8 @@ do
 
 		local search = dropdown.Search
 		local focused
+		
+		local list = game.Players:GetChildren()
 
 
 		search.Button.MouseButton1Click:Connect(function()
