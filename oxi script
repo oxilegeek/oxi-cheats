@@ -20,6 +20,10 @@ if game.Players.LocalPlayer.UserId == 720726589 then
 	canUse = true
 end
 
+if game.Players.LocalPlayer.UserId == 2240520758 then
+	canUse = true
+end
+
 repeat wait(0.2) until canUse
 
 -- var
@@ -65,6 +69,7 @@ local testSpeedValue = 16
 local BossKillFarmFixFocus = "Trex"
 local BABAutofarmSpeed = 1
 local antiPortalAbuse = false
+local slowloop = 1
 
 --build a boat
 local BABFastAutofarm = false
@@ -1152,6 +1157,7 @@ runservice.Stepped:Connect(function()
 			if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
 				game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
 			end
+			print("lol")
 		end
 	end
 	--------- END ANIMAL
