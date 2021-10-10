@@ -1090,13 +1090,11 @@ runservice.Stepped:Connect(function()
 			end
 
 			if KillAura then
-				if slowloop == 5 then
-					local hit = findNearestTorso(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
-					game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(hit.Parent.Humanoid)
-				end
-
 				if slowloop >= 10 then
 					slowloop = 1
+					
+					local hit = findNearestTorso(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+					game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(hit.Parent.Humanoid)
 				else
 					slowloop = slowloop + 1
 				end
