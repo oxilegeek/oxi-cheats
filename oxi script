@@ -1,10 +1,6 @@
-local canUse = true
+local canUse = false
 
 if game.Players.LocalPlayer.UserId == 1521284139 then
-	canUse = true
-end
-
-if game.Players.LocalPlayer.UserId == 794604054 then
 	canUse = true
 end
 
@@ -24,16 +20,11 @@ if game.Players.LocalPlayer.UserId == 720726589 then
 	canUse = true
 end
 
-if game.Players.LocalPlayer.UserId == 1368825993 then
-	canUse = true
-end
-
 repeat wait(0.2) until canUse
 
 -- var
 local alive = true
 local UserInputService = game:GetService("UserInputService")
-local database = game:GetService("DataStoreService")
 local infiniJump = false
 local runservice = game:GetService("RunService")
 local noclip = false
@@ -74,7 +65,6 @@ local testSpeedValue = 16
 local BossKillFarmFixFocus = "Trex"
 local BABAutofarmSpeed = 1
 local antiPortalAbuse = false
-local customTpName = nil
 
 --build a boat
 local BABFastAutofarm = false
@@ -435,46 +425,6 @@ end)
 
 
 
--- BasicTp
-local page = venyx:addPage("Custom tp", 5012544693)
-local locationcreator = page:addSection("create a location")
-
-locationcreator:addTextbox("CustomTp", "location name", function(value, focusLost)
-	if focusLost then
-		customTpName = value
-	end
-end)
-
-locationcreator:addButton("Create location", function()
-	if customTpName ~= nil then
-		if game.CoreGui:FindFirstChild("Oxi cheats").Main:FindFirstChild("Custom tp"):FindFirstChild(customTpName) then
-			venyx:Notify("Error", "Incorect name")
-		else
-			local tppage = page:addSection(customTpName)
-			local buttonPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-			tppage:addButton("Tp boutton", function()
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(buttonPosition)
-			end)
-
-			tppage:addKeybind("TP keybind : ", nil, function()
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(buttonPosition)
-			end)
-
-			tppage:addButton("Delete location (comming soon)", function()
-				
-			end)
-
-			venyx:SelectPage(venyx.pages[1], true)
-			venyx:SelectPage(venyx.pages[2], true)
-		end
-	else
-		venyx:Notify("Error", "Incorect name")
-	end
-end)
-
-
-
-
 
 -- ANIMAL SIMULATOR
 
@@ -755,7 +705,7 @@ if game.GameId == 2023680558 then
 
 
 	afkAutofarmPage:addToggle("training area farm", nil, function(value)
-		local dummy = game.Workspace.Map.snow.dummy:GetChildren()
+		local dummy = game.Workspace.Map.snow:FindFirstChild("training area").dummy:GetChildren()
 		for i = 1, #dummy do
 			if i == 3 then
 				dummy[i].Name = "Dummy3"
@@ -1133,7 +1083,7 @@ runservice.Stepped:Connect(function()
 			end
 
 			if autofarm then
-				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Workspace.Map.snow.dummy.Dummy2.Humanoid,0)
+				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Workspace.Map.snow:FindFirstChild("training area").dummy.Dummy3.Humanoid,0)
 				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Workspace.pleaseno.cheatSpot.Humanoid,0)
 			end
 
@@ -1173,32 +1123,38 @@ runservice.Stepped:Connect(function()
 						if game:GetService("Workspace").NPC:FindFirstChild("Trex").Humanoid.Health >= game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla").Humanoid.Health then
 							if BossKillFarmFixFocus == "LavaGorilla" then
 								BossKillFarmFixFocus = "Trex"
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(129, -70, 2443)
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-254, -438, 3357)
 							end
 						else
 							if BossKillFarmFixFocus == "Trex" then
 								BossKillFarmFixFocus = "LavaGorilla"
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(882, -13, 4002)
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(588, -347, 2098)
 							end
+						end
+					else
+						if BossKillFarmFixFocus == "LavaGorilla" then
+							BossKillFarmFixFocus = "Trex"
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-254, -438, 3357)
 						end
 					end
 				else
 					if BossKillFarmFixFocus == "Trex" then
 						BossKillFarmFixFocus = "LavaGorilla"
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(882, -13, 4002)
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(588, -347, 2098)
 					end
 				end
+			end
 
-				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
-					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
-				end
+			if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
+				game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
+			end
 
-				if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
-					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
-				end
+			if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
+				game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
 			end
 		end
-		--------- END ANIMAL
+	end
+	--------- END ANIMAL
 
 
 
@@ -1206,28 +1162,27 @@ runservice.Stepped:Connect(function()
 
 
 
-		-- Build a boat
-		if game.GameId == 210851291 then
-			if BABFastAutofarm then
-				if TheEnd then
+	-- Build a boat
+	if game.GameId == 210851291 then
+		if BABFastAutofarm then
+			if TheEnd then
 
-				else
-					game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
-				end
+			else
+				game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
 			end
+		end
 
-			if game.Players.LocalPlayer.PlayerGui.RiverResultsGui.Frame.Visible == true then
-				if TheEnd then
-					TheEnd = false
-					autoFarmBAB()
-				end
+		if game.Players.LocalPlayer.PlayerGui.RiverResultsGui.Frame.Visible == true then
+			if TheEnd then
+				TheEnd = false
+				autoFarmBAB()
 			end
+		end
 
-			if antiPortalAbuse then
-				if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < -25 then
-					if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z < 900 then
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X, 5, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
-					end
+		if antiPortalAbuse then
+			if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < -25 then
+				if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z < 900 then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X, 5, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
 				end
 			end
 		end
