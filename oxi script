@@ -24,6 +24,10 @@ if game.Players.LocalPlayer.UserId == 2240520758 then
 	canUse = true
 end
 
+if game.Players.LocalPlayer.UserId == 794604054 then
+	canUse = true
+end
+
 repeat wait(0.2) until canUse
 
 -- var
@@ -96,12 +100,16 @@ function findNearestTorso(pos)
 	local temp2 = nil
 	for x = 1, #list do
 		temp2 = list[x]
-		temp = temp2.Character:findFirstChild("HumanoidRootPart")
-		human = temp2.Character:findFirstChild("Humanoid")
-		if (temp ~= nil) and (human ~= nil) and (human.Health > 0) then
-			if (temp.Position - pos).magnitude < dist then
-				torso = temp
-				dist = (temp.Position - pos).magnitude
+		if temp2.Name == game.Players.LocalPlayer.Name then
+
+		else
+			temp = temp2.Character:findFirstChild("HumanoidRootPart")
+			human = temp2.Character:findFirstChild("Humanoid")
+			if (temp ~= nil) and (human ~= nil) and (human.Health > 0) then
+				if (temp.Position - pos).magnitude < dist then
+					torso = temp
+					dist = (temp.Position - pos).magnitude
+				end
 			end
 		end
 	end
@@ -1083,11 +1091,11 @@ runservice.Stepped:Connect(function()
 
 			if KillAura then
 				if slowloop == 5 then
-					local hit = findNearestTorso(game.Players.LocalPlayer.Character.HumanoidRootPart)
+					local hit = findNearestTorso(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
 					game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(hit.Parent.Humanoid)
 				end
-				
-				if slowloop > 10 then
+
+				if slowloop >= 10 then
 					slowloop = 1
 				else
 					slowloop = slowloop + 1
@@ -1181,7 +1189,6 @@ runservice.Stepped:Connect(function()
 			if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
 				game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
 			end
-			print("lol")
 		end
 	end
 	--------- END ANIMAL
