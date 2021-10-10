@@ -561,43 +561,23 @@ if game.GameId == 2023680558 then
 
 
 	TpPage:addButton("Safe zone", function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(259.826, -12.396, 3053.77)
-	end)
-
-	TpPage:addButton("Desert", function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(70.0588, -13.2554, 3761.08)
-	end)
-
-	TpPage:addButton("desert base", function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(71.9108, 19.9992, 4018.56)
-	end)
-
-	TpPage:addButton("Training area (snow)", function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(667.733, -9.71476, 3246.26)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-559, -408, 2489)
 	end)
 
 	TpPage:addButton("DJ", function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-580.919, -11.1394, 3298.05)
-	end)
-
-	TpPage:addButton("forest base", function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(366.218, 5.45735, 2561.6)
-	end)
-
-	TpPage:addButton("beach", function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(595.014, -62.9979, 2073.06)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-819, -403, 2486)
 	end)
 
 	TpPage:addButton("Gorrila spawn", function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(847.032, -4.3599, 3964.57)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(516, -337, 2092)
 	end)
 
 	TpPage:addButton("Cerber spawn", function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(174.325, -63.0008, 2399.76)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-254, -424, 3321)
 	end)
 
 	TpPage:addButton("Secret base", function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(89, -63, 2360)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-636, -410, 3012)
 	end)
 
 
@@ -1158,7 +1138,7 @@ runservice.Stepped:Connect(function()
 						if game:GetService("Workspace").NPC:FindFirstChild("Trex").Humanoid.Health >= game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla").Humanoid.Health then
 							if BossKillFarmFixFocus == "LavaGorilla" then
 								BossKillFarmFixFocus = "Trex"
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-254, -438, 3357)
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-254, -438, 3390)
 							end
 						else
 							if BossKillFarmFixFocus == "Trex" then
@@ -1169,7 +1149,7 @@ runservice.Stepped:Connect(function()
 					else
 						if BossKillFarmFixFocus == "LavaGorilla" then
 							BossKillFarmFixFocus = "Trex"
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-254, -438, 3357)
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-254, -438, 3390)
 						end
 					end
 				else
