@@ -372,11 +372,19 @@ TeleportPage:addTextbox("Player", "player name", function(value, focusLost)
 end)
 
 TeleportPage:addButton("Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players:FindFirstChild(tpPlayerFocus).Character.HumanoidRootPart.Position)
+	if game.Players:FindFirstChild(tpPlayerFocus) and game.Players:FindFirstChild(tpPlayerFocus).Character then
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players:FindFirstChild(tpPlayerFocus).Character.HumanoidRootPart.Position)
+	else
+		venyx:Notify("ERROR", "Invalid player")
+	end
 end)
 
 TeleportPage:addButton("Spectate", function()
-	game.Workspace.CurrentCamera.CameraSubject = game.Players:FindFirstChild(tpPlayerFocus).Character.Humanoid
+	if game.Players:FindFirstChild(tpPlayerFocus) and game.Players:FindFirstChild(tpPlayerFocus).Character then
+		game.Workspace.CurrentCamera.CameraSubject = game.Players:FindFirstChild(tpPlayerFocus).Character.Humanoid
+	else
+		venyx:Notify("ERROR", "Invalid player")
+	end
 end)
 
 TeleportPage:addButton("Unspectate", function()
@@ -520,7 +528,11 @@ if game.GameId == 2023680558 then
 	end)
 
 	BossPage:addButton("tp to Gorilla", function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.NPC.LavaGorilla.HumanoidRootPart.Position)
+		if game.Workspace.NPC:findFirstChild("LavaGorilla") and game.Workspace.NPC.LavaGorilla:findFirstChild("HumanoidRootPart") then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.NPC.LavaGorilla.HumanoidRootPart.Position)
+		else
+			venyx:Notify("ERROR", "gorilla is death !")
+		end
 	end)
 
 	BossPage:addToggle("Killaura cerbus", nil, function(value)
@@ -528,7 +540,11 @@ if game.GameId == 2023680558 then
 	end)
 
 	BossPage:addButton("tp to cerber", function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.NPC.Trex.HumanoidRootPart.Position)
+		if game.Workspace.NPC:findFirstChild("Trex") and game.Workspace.NPC.Trex:findFirstChild("HumanoidRootPart") then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.NPC.Trex.HumanoidRootPart.Position)
+		else
+			venyx:Notify("ERROR", "gorilla is death !")
+		end
 	end)
 
 
@@ -917,7 +933,7 @@ local testPage = page:addSection("Test")
 
 testPage:addTextbox("Notification", "Default", function(value, focusLost)
 	if focusLost then
-		venyx:Notify("Title", value)
+		venyx:Notify("Title", "text")
 	end
 end)
 
@@ -1075,9 +1091,8 @@ runservice.Stepped:Connect(function()
 					
 					local hit = findNearestTorso(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
 					game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(hit.Parent.Humanoid)
-				else
-					slowloop = slowloop + 1
 				end
+				slowloop = slowloop + 1
 			end
 
 			if autoHit then
