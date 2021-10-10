@@ -87,6 +87,28 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
 end)
 
 
+function findNearestTorso(pos)
+	local list = game.Players:GetPlayers()
+	local torso = nil
+	local dist = 1000
+	local temp = nil
+	local human = nil
+	local temp2 = nil
+	for x = 1, #list do
+		temp2 = list[x]
+		temp = temp2.Character:findFirstChild("HumanoidRootPart")
+		human = temp2.Character:findFirstChild("Humanoid")
+		if (temp ~= nil) and (human ~= nil) and (human.Health > 0) then
+			if (temp.Position - pos).magnitude < dist then
+				torso = temp
+				dist = (temp.Position - pos).magnitude
+			end
+		end
+	end
+	return torso
+end
+
+
 
 
 local function autoFarmBAB()
@@ -1060,13 +1082,15 @@ runservice.Stepped:Connect(function()
 			end
 
 			if KillAura then
-				local plrs = game.Players:GetChildren()
-				for i = 1, #plrs do
-					if plrs[i].Name == game.Players.LocalPlayer.Name then
-
-					else
-						game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(plrs[i].Name).Character.Humanoid)
-					end
+				if slowloop == 5 then
+					local hit = findNearestTorso(game.Players.LocalPlayer.Character.HumanoidRootPart)
+					game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(hit.Parent.Humanoid)
+				end
+				
+				if slowloop > 10 then
+					slowloop = 1
+				else
+					slowloop = slowloop + 1
 				end
 			end
 
