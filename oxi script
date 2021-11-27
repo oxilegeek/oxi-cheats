@@ -1062,7 +1062,7 @@ runservice.Stepped:Connect(function()
 							v.CanCollide = false
 						end end end end
 		else
-			
+
 		end
 
 		if FollowBot then
@@ -1221,14 +1221,15 @@ runservice.Stepped:Connect(function()
 						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(588, -347, 2098)
 					end
 				end
-			end
 
-			if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
-				game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
-			end
 
-			if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
-				game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
+				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
+				end
+
+				if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
+				end
 			end
 		end
 	end
