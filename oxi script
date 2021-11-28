@@ -75,6 +75,7 @@ local BossKillFarmFixFocus = "Trex"
 local BABAutofarmSpeed = 1
 local antiPortalAbuse = false
 local slowloop = 1
+local ZombieKillAura = false
 
 --build a boat
 local BABFastAutofarm = false
@@ -248,6 +249,32 @@ MOUSE.KeyUp:connect(function(KEY)
 		CONTROL.R = 0
 	end
 end)
+
+
+if game.GameId == 2023680558 then
+	function findNearestZombieTorso(pos)
+		local list = game:GetService("Workspace").NPC:GetChildren()
+		local torso = nil
+		local dist = 1000
+		local temp = nil
+		local human = nil
+		local temp2 = nil
+		for x = 1, #list do
+			temp2 = list[x]
+			if temp2.Name == "Zombie" then
+				temp = temp2:findFirstChild("HumanoidRootPart")
+				human = temp2:findFirstChild("Humanoid")
+				if (temp ~= nil) and (human ~= nil) and (human.Health > 0) then
+					if (temp.Position - pos).magnitude < dist then
+						torso = temp
+						dist = (temp.Position - pos).magnitude
+					end
+				end
+			end
+		end
+		return torso
+	end
+end
 
 
 -- init
@@ -677,6 +704,7 @@ if game.GameId == 2023680558 then
 	local page = venyx:addPage("PVP", 5012544693)
 
 	local keyboardPage = page:addSection("Autokeyboard")
+	local zombiePage = page:addSection("Zombie Kill aura")
 	local KillAuraPage = page:addSection("Kill aura")
 	local KillAuraPage1 = page:addSection("Kill aura1")
 	local KillAuraPage2 = page:addSection("Kill aura2")
@@ -689,6 +717,12 @@ if game.GameId == 2023680558 then
 
 	keyboardPage:addToggle("auto eat (unstable)", nil, function(value)
 		autoEat = value
+	end)
+	
+	
+	
+	zombiePage:addToggle("Zombie kill aura", nil, function(value)
+		ZombieKillAura = value
 	end)
 
 
@@ -1105,6 +1139,13 @@ runservice.Stepped:Connect(function()
 
 		--Animal simulator
 		if game.GameId == 2023680558 then
+			
+			if slowloop >= 10 then
+				slowloop = 1
+			end
+			slowloop = slowloop + 1
+			
+			
 			if bringChest then
 				game.Workspace.Treasures.Treasure1.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
 			end
@@ -1138,15 +1179,19 @@ runservice.Stepped:Connect(function()
 			if spamHit4 then
 				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget4).Character.Humanoid)
 			end
+			
+			if ZombieKillAura then
+				if slowloop >= 10 then
+					local hit = findNearestZombieTorso(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+					game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(hit.Parent.Humanoid)
+				end
+			end
 
 			if KillAura then
 				if slowloop >= 10 then
-					slowloop = 1
-
 					local hit = findNearestTorso(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
 					game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(hit.Parent.Humanoid)
 				end
-				slowloop = slowloop + 1
 			end
 
 			if autoHit then
