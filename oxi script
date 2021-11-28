@@ -43,6 +43,7 @@ local autocollect = false
 local HideReward = false
 local baseSpeed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
 local baseJump = game.Players.LocalPlayer.Character.Humanoid.JumpPower
+local baseGravity = game.Workspace.Gravity
 local baseLevit = game.Players.LocalPlayer.Character.Humanoid.HipHeight
 local killAuraTarget1 = nil
 local killAuraTarget2 = nil
@@ -275,7 +276,6 @@ local BasicHack = page:addSection("Basic hack")
 local HumanoidStat = page:addSection("Humanoid stat")
 local TeleportPage = page:addSection("Teleport and spectate")
 local BotPage = page:addSection("Bot")
-local CameraPage = page:addSection("Camera")
 local FunPage = page:addSection("Fun")
 
 BasicHack:addToggle("infinity jump", nil, function(value)
@@ -353,12 +353,17 @@ HumanoidStat:addSlider("Jump power", 50, 0, 500, function(value)
 	game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
 end)
 
+HumanoidStat:addSlider("Gravity", 196.2, 0, 500, function(value)
+	game.Workspace.Gravity = value
+end)
+
 HumanoidStat:addSlider("Levitation", 1, 0, 500, function(value)
 	game.Players.LocalPlayer.Character.Humanoid.HipHeight = value / 10
 end)
 
 HumanoidStat:addButton("Reset", function()
 	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = baseSpeed
+	game.Workspace.Gravity = baseGravity
 	game.Players.LocalPlayer.Character.Humanoid.JumpPower = baseJump
 	game.Players.LocalPlayer.Character.Humanoid.HipHeight = baseLevit
 end)
@@ -410,6 +415,38 @@ BotPage:addButton("Stop bot", function()
 end)
 
 
+
+
+FunPage:addButton("Sit", function()
+	game.Players.LocalPlayer.Character.Humanoid.Sit = true
+end)
+
+FunPage:addButton("Delete animation", function()
+	game.Players.LocalPlayer.Character.Humanoid.Animator:Destroy()
+end)
+
+FunPage:addButton("Special reset character", function()
+	game.Players.LocalPlayer.Character.Humanoid:Destroy()
+end)
+
+FunPage:addButton("AMOGUS", function()
+	local args = {
+		[1] = "AMOGUS",
+		[2] = "All"
+	}
+
+	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+end)
+
+
+
+-- Visual
+local page = venyx:addPage("Visual", 5012544693)
+local CameraPage = page:addSection("Camera")
+local LightingPage = page:addSection("Lighting")
+local GuiPage = page:addSection("Gui")
+
+
 CameraPage:addToggle("Camera noclip", nil, function(value)
 	if value then
 		game.Players.LocalPlayer.DevCameraOcclusionMode = 1
@@ -444,25 +481,20 @@ end)
 
 
 
-FunPage:addButton("Sit", function()
-	game.Players.LocalPlayer.Character.Humanoid.Sit = true
+LightingPage:addSlider("Brightness", 2, 0, 120, function(value)
+	game.Lighting.Brightness = value
 end)
 
-FunPage:addButton("Delete animation", function()
-	game.Players.LocalPlayer.Character.Humanoid.Animator:Destroy()
+LightingPage:addToggle("HideGlobalShadows", nil, function(value)
+	game.Lighting.GlobalShadows = not value
 end)
 
-FunPage:addButton("Special reset character", function()
-	game.Players.LocalPlayer.Character.Humanoid:Destroy()
-end)
-
-FunPage:addButton("AMOGUS", function()
-	local args = {
-		[1] = "AMOGUS",
-		[2] = "All"
-	}
-
-	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+GuiPage:addToggle("HideMenu", nil, function(value)
+	for i, v in pairs(game.Players.LocalPlayer.PlayerGui:GetChildren()) do
+		if v:IsA("ScreenGui") then
+			v.Enabled = not value
+		end
+	end
 end)
 
 
@@ -776,43 +808,17 @@ if game.GameId == 2023680558 then
 
 
 	afkAutofarmPage:addToggle("training area farm", nil, function(value)
-		local dummy = game.Workspace.Map.snow:FindFirstChild("training area").dummy:GetChildren()
-		for i = 1, #dummy do
-			if i == 3 then
-				dummy[i].Name = "Dummy3"
-			end
-		end
-
-		local training = game.Workspace.pleaseno:GetChildren()
-		for i = 1, #training do
-			if i == 3 then
-				training[i].Name = "cheatSpot"
-			end
-		end
+		autofarm = value
 		if value then
-			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 0
-			game.Players.LocalPlayer.Character.Humanoid.JumpPower = 0
-			local terrain = game.Workspace.Map.forest.terrain.forest_terrain3:GetChildren()
-
-			for i = 1, #terrain do
-				terrain[i].CanCollide = false
-			end
-			if game.Players.LocalPlayer.leaderstats.Level.Value >= 5000 then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.Map.snow:FindFirstChild("training area").dummy.Dummy3.HumanoidRootPart.Position.X, game.Workspace.Map.snow:FindFirstChild("training area").dummy.Dummy3.HumanoidRootPart.Position.Y - 5, game.Workspace.Map.snow:FindFirstChild("training area").dummy.Dummy3.HumanoidRootPart.Position.Z)
-			else
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.pleaseno.cheatSpot.HumanoidRootPart.Position)
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-562 , -409, 2531)
+			for i, v in pairs(game.Workspace.pleaseno:GetChildren()) do
+				if i == 7 then
+					v.Name = "farm"
+				end
 			end
 		else
-			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
-			game.Players.LocalPlayer.Character.Humanoid.JumpPower = 60
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(272.455, -12.6042, 3052.27)	
-			local terrain = game.Workspace.Map.forest.terrain.forest_terrain3:GetChildren()
-
-			for i = 1, #terrain do
-				terrain[i].CanCollide = true
-			end
+			
 		end
-		autofarm = value
 	end)
 
 
@@ -1161,8 +1167,7 @@ runservice.Stepped:Connect(function()
 			end
 
 			if autofarm then
-				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Workspace.Map.snow:FindFirstChild("training area").dummy.Dummy3.Humanoid,0)
-				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Workspace.pleaseno.cheatSpot.Humanoid,0)
+				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Workspace.pleaseno.farm.Humanoid,1)
 			end
 
 			if _G.BossGorillaFarm then
