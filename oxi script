@@ -76,6 +76,7 @@ local BABAutofarmSpeed = 1
 local antiPortalAbuse = false
 local slowloop = 1
 local ZombieKillAura = false
+local ZombieAutofarm = false
 
 --build a boat
 local BABFastAutofarm = false
@@ -261,7 +262,7 @@ if game.GameId == 2023680558 then
 		local temp2 = nil
 		for x = 1, #list do
 			temp2 = list[x]
-			if temp2.Name == "Zombie" then
+			if temp2.Name == "Zombie" or temp2.Name == "BigSpider" then
 				temp = temp2:findFirstChild("HumanoidRootPart")
 				human = temp2:findFirstChild("Humanoid")
 				if (temp ~= nil) and (human ~= nil) and (human.Health > 0) then
@@ -516,6 +517,10 @@ LightingPage:addToggle("HideGlobalShadows", nil, function(value)
 	game.Lighting.GlobalShadows = not value
 end)
 
+CameraPage:addButton("Shaders", function()
+
+end)
+
 GuiPage:addToggle("HideMenu", nil, function(value)
 	for i, v in pairs(game.Players.LocalPlayer.PlayerGui:GetChildren()) do
 		if v:IsA("ScreenGui") then
@@ -718,9 +723,9 @@ if game.GameId == 2023680558 then
 	keyboardPage:addToggle("auto eat (unstable)", nil, function(value)
 		autoEat = value
 	end)
-	
-	
-	
+
+
+
 	zombiePage:addToggle("Zombie kill aura", nil, function(value)
 		ZombieKillAura = value
 	end)
@@ -851,7 +856,7 @@ if game.GameId == 2023680558 then
 				end
 			end
 		else
-			
+
 		end
 	end)
 
@@ -865,6 +870,17 @@ if game.GameId == 2023680558 then
 			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(259.826, -12.396, 3053.77)
 		end
 		BossKillFarmFix = value
+	end)
+
+
+	afkAutofarmPage:addToggle("Zombie Autofarm", nil, function(value)
+		ZombieAutofarm = value
+		if value then
+
+		else
+			game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(259.826, -12.396, 3053.77)
+		end
 	end)
 end
 
@@ -1139,13 +1155,13 @@ runservice.Stepped:Connect(function()
 
 		--Animal simulator
 		if game.GameId == 2023680558 then
-			
+
 			if slowloop >= 10 then
 				slowloop = 1
 			end
 			slowloop = slowloop + 1
-			
-			
+
+
 			if bringChest then
 				game.Workspace.Treasures.Treasure1.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
 			end
@@ -1179,13 +1195,25 @@ runservice.Stepped:Connect(function()
 			if spamHit4 then
 				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget4).Character.Humanoid)
 			end
-			
+
 			if ZombieKillAura then
 				if slowloop >= 10 then
 					local hit = findNearestZombieTorso(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
 					game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(hit.Parent.Humanoid)
 				end
 			end
+			local function tpZombie()
+				if ZombieAutofarm then
+					if slowloop >= 10 then
+						local hit = findNearestZombieTorso(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+						game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+						game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(hit.Parent.Humanoid)
+						wait(0.5)
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(hit.Position.X, hit.Position.Y + 20, hit.Position.Z)
+					end
+				end
+			end
+			spawn(tpZombie)
 
 			if KillAura then
 				if slowloop >= 10 then
