@@ -342,8 +342,8 @@ end)
 
 BasicHack:addTextbox("Fly speed", "50", function(value, focusLost)
 	if focusLost then
-		if value > 0 then
-			flySpeed = value
+		if tonumber(value) > 0 then
+			flySpeed = tonumber(value)
 		end
 	end
 end)
@@ -1082,7 +1082,7 @@ end)
 
 
 OtherGui:addButton("Dex explorer", function()
-	loadstring(game:HttpGet('https://pastebin.com/raw/gw8tpD25', true))()
+	loadstring(game:HttpGet("https://cdn.wearedevs.net/scripts/Dex Explorer V2.txt"))()
 end)
 
 -- cheat engine
