@@ -1,4 +1,4 @@
-local canUse = false
+local canUse = true
 
 if game.Players.LocalPlayer.UserId == 1521284139 then
 	canUse = true
