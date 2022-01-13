@@ -2,32 +2,27 @@ local vu = game:GetService("VirtualUser")
 _G.LOL2 = true
 
 while true do
-wait(0.3)
-for i, v in pairs(game.Workspace.WildernessBlocks:GetChildren()) do
-if _G.LOL2 == true then
-if v.Name == "starfruit" then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.CollisionBoxes.Part.Position)
-end
-if v.Name == "horseradish" then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.CollisionBoxes.Part.Position)
-end
-if v.Name == "flowerDaffodil" then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.CollisionBoxes.Part.Position)
-end
-if v.Name == "flowerCrocus" then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.CollisionBoxes.Part.Position)
-end
-if v.Name == "mushroomRed" then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.CollisionBoxes.Part.Position)
-end
-if v.Name == "tomato" then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.CollisionBoxes.Part.Position)
-end
-if v.Name == "acorn" then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.CollisionBoxes.Part.Position)
-end
-else
-break
-end
-end
+	wait(0.3)
+	for i, v in pairs(game.Workspace.WildernessBlocks:GetChildren()) do
+		if _G.LOL2 == true then
+			if v.Name == "starfruit" or v.Name == "horseradish" or v.Name == "flowerDaffodil" or v.Name == "flowerCrocus" or v.Name == "mushroomRed" or v.Name == "tomato" or v.Name == "acorn" or v.Name == "Recolt" then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.CollisionBoxes.Part.Position)
+				v.Name = "Recolt"
+				function getNil(name,class) for _,v in pairs(getnilinstances())do if v.ClassName==class and v.Name==name then return v;end end end
+
+				local args = {
+					[1] = {
+						["player"] = game:GetService("Players").LocalPlayer,
+						["player_tracking_category"] = "join_from_web",
+						["model"] = getNil("Recolt", "Part")
+					}
+				}
+
+				game:GetService("ReplicatedStorage").rbxts_include.node_modules.net.out._NetManaged.CLIENT_HARVEST_CROP_REQUEST:InvokeServer(unpack(args))
+			end
+			
+		else
+			break
+		end
+	end
 end
