@@ -1,35 +1,3 @@
-local canUse = true
-
-if game.Players.LocalPlayer.UserId == 1521284139 then
-	canUse = true
-end
-
-if game.Players.LocalPlayer.UserId == 1529632703 then
-	canUse = true
-end
-
-if game.Players.LocalPlayer.UserId == 2811616278 then
-	canUse = true
-end
-
-if game.Players.LocalPlayer.UserId == 1499794607 then
-	canUse = true
-end
-
-if game.Players.LocalPlayer.UserId == 720726589 then
-	canUse = true
-end
-
-if game.Players.LocalPlayer.UserId == 2240520758 then
-	canUse = true
-end
-
-if game.Players.LocalPlayer.UserId == 794604054 then
-	canUse = true
-end
-
-repeat wait(0.2) until canUse
-
 -- var
 local alive = true
 local noclip = false
@@ -1082,7 +1050,7 @@ end)
 
 
 OtherGui:addButton("Dex explorer", function()
-	loadstring(game:HttpGet("https://cdn.wearedevs.net/scripts/Dex Explorer V2.txt"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/oxi-cheats/main/Dex", true))()
 end)
 
 -- cheat engine
