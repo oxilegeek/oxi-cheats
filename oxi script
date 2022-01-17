@@ -45,6 +45,7 @@ local antiPortalAbuse = false
 local slowloop = 1
 local ZombieKillAura = false
 local ZombieAutofarm = false
+local flyKeybindToggle = true
 
 --build a boat
 local BABFastAutofarm = false
@@ -185,7 +186,7 @@ local function FLY()
 				BV.velocity = Vector3.new(0, 0.1, 0)
 			end
 			BG.cframe = game.Workspace.CurrentCamera.CoordinateFrame
-		until not _G.FLYING
+		until not _G.FLYING or _G.FLYING and not flyKeybindToggle
 		CONTROL = {F = 0, B = 0, L = 0, R = 0}
 		lCONTROL = {F = 0, B = 0, L = 0, R = 0}
 		SPEED = 0
@@ -306,6 +307,13 @@ end)
 BasicHack:addToggle("fly", nil, function(value)
 	_G.FLYING = value
 	FLY()
+end)
+
+BasicHack:addKeybind("fly keybind : ", Enum.KeyCode.F, function()
+	if _G.FLYING then
+		FLY()
+		flyKeybindToggle = not flyKeybindToggle
+	end
 end)
 
 BasicHack:addTextbox("Fly speed", "50", function(value, focusLost)
@@ -530,7 +538,7 @@ locationcreator:addButton("Create location", function()
 			end)
 
 			venyx:SelectPage(venyx.pages[1], true)
-			venyx:SelectPage(venyx.pages[2], true)
+			venyx:SelectPage(venyx.pages[3], true)
 		end
 	else
 		venyx:Notify("Error", "Incorect name")
