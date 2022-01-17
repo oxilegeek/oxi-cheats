@@ -1808,7 +1808,7 @@ do
 	end
 	
 	
-	function section:addPlayerList(title, list, callback)
+	function section:addPlayerList(title, callback)
 		local dropdown = utility:Create("Frame", {
 			Name = "Dropdown",
 			Parent = self.container,
@@ -1895,13 +1895,12 @@ do
 
 		local search = dropdown.Search
 		local focused
-		
-		local list = game.Players:GetChildren()
 
+		local list = game.Players:GetPlayers() or {}
 
 		search.Button.MouseButton1Click:Connect(function()
 			if search.Button.Rotation == 0 then
-				self:updateDropdown(dropdown, nil, game.Players:GetChildren(), callback)
+				self:updateDropdown(dropdown, nil, list, callback)
 			else
 				self:updateDropdown(dropdown, nil, nil, callback)
 			end
@@ -1909,7 +1908,7 @@ do
 
 		search.TextBox.Focused:Connect(function()
 			if search.Button.Rotation == 0 then
-				self:updateDropdown(dropdown, nil, game.Players:GetChildren(), callback)
+				self:updateDropdown(dropdown, nil, list, callback)
 			end
 
 			focused = true
@@ -1921,10 +1920,10 @@ do
 
 		search.TextBox:GetPropertyChangedSignal("Text"):Connect(function()
 			if focused then
-				local list = utility:Sort(search.TextBox.Text, game.Players:GetChildren())
-				list = #game.Players:GetChildren() ~= 0 and list 
+				local list = utility:Sort(search.TextBox.Text, list)
+				list = #list ~= 0 and list 
 
-				self:updateDropdown(dropdown, nil, game.Players:GetChildren(), callback)
+				self:updateDropdown(dropdown, nil, list, callback)
 			end
 		end)
 
@@ -2296,5 +2295,5 @@ do
 	end
 end
 
-print("oxi cheats loaded")
+print("dino was here :\)")
 return library
