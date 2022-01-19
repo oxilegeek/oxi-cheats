@@ -652,7 +652,19 @@ if game.GameId == 2023680558 then
 		if game.Workspace.NPC:findFirstChild("Trex") and game.Workspace.NPC.Trex:findFirstChild("HumanoidRootPart") then
 			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.NPC.Trex.HumanoidRootPart.Position)
 		else
-			venyx:Notify("ERROR", "gorilla is death !")
+			venyx:Notify("ERROR", "cerber is death !")
+		end
+	end)
+	
+	BossPage:addToggle("Killaura drake", nil, function(value)
+		_G.BossDrakeFarm = value
+	end)
+
+	BossPage:addButton("tp to drake", function()
+		if game.Workspace.NPC:findFirstChild("Drake") and game.Workspace.NPC.Drake:findFirstChild("HumanoidRootPart") then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.NPC.Drake.HumanoidRootPart.Position)
+		else
+			venyx:Notify("ERROR", "drake is death !")
 		end
 	end)
 
@@ -1263,6 +1275,12 @@ runservice.Stepped:Connect(function()
 			if _G.BossCerberFarm then
 				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
 					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
+				end
+			end
+			
+			if _G.BossDrakeFarm then
+				if game:GetService("Workspace").NPC:FindFirstChild("Drake") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Drake.Humanoid)
 				end
 			end
 
