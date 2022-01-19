@@ -79,7 +79,7 @@ local SlotNumber = nil
 
 
 --Database
-local printData = game:GetService("DataStoreService"):GetDataStore("PrintData")
+--local printData = game:GetService("DataStoreService"):GetDataStore("PrintData")
 
 
 -- function
