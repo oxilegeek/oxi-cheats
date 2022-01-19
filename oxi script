@@ -1,4 +1,4 @@
-local AcessTable = {785920831 --[[juju]]}
+local AcessTable = {785920831 --[[juju]], 426302615 --[[Goldo]]}
 local Acess = false
 
 for i, v in pairs(AcessTable) do
