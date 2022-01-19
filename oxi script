@@ -1,4 +1,10 @@
-local AcessTable = {785920831 --[[juju]], 426302615 --[[Goldo]]}
+local AcessTable = {
+	785920831, --[[juju]]
+	426302615, --[[Goldo]]
+	1521284139, --[[oxifox]]
+	794604054, --[[licorne]]
+}
+
 local Acess = false
 
 for i, v in pairs(AcessTable) do
@@ -7,7 +13,12 @@ for i, v in pairs(AcessTable) do
 	end
 end
 
-repeat wait() until Acess == true
+if not Acess then
+	print("refused")
+	return
+else
+	print("Valid ^^")
+end
 
 -- var
 local alive = true
@@ -58,10 +69,17 @@ local ZombieKillAura = false
 local ZombieAutofarm = false
 local flyKeybindToggle = true
 
+--database var
+local basicPrint = "hi ^^"
+
 --build a boat
 local BABFastAutofarm = false
 local TheEnd = false
 local SlotNumber = nil
+
+
+--Database
+local printData = game:GetService("DataStoreService"):GetDataStore("PrintData")
 
 
 -- function
@@ -1020,14 +1038,19 @@ testPage:addTextbox("Notification", "Default", function(value, focusLost)
 	end
 end)
 
-local plrs = {}
-for i, v in pairs(game.Players:GetPlayers()) do
-	table.insert(plrs, 1, v.Name)
-end
-testPage:addDropdown("Dropdown", plrs, function(text)
-	print("Selected", text)
-end)
+--local plrs = {}
+--for i, v in pairs(game.Players:GetPlayers()) do
+--	table.insert(plrs, 1, v.Name)
+--end
+--testPage:addDropdown("Dropdown", plrs, function(text)
+--	print("Selected", text)
+--end)
 
+testPage:addTextbox("BasePrint", "Default", function(value, focusLost)
+	if focusLost then
+		printData:SetAsync(game.Players.LocalPlayer.UserId, value)
+	end
+end)
 
 
 
@@ -1347,3 +1370,4 @@ end)
 
 -- load
 venyx:SelectPage(venyx.pages[1], true)
+print(printData:GetAsync(game.Players.LocalPlayer.UserId))
