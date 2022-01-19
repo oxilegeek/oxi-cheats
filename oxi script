@@ -1,5 +1,5 @@
 local AcessTable = {785920831 --[[juju]], 426302615 --[[Goldo]]}
-local Acess = true
+local Acess = false
 
 for i, v in pairs(AcessTable) do
 	if game.Players.LocalPlayer.UserId == v then
@@ -1028,9 +1028,6 @@ testPage:addDropdown("Dropdown", plrs, function(text)
 	print("Selected", text)
 end)
 
-testPage:addPlayerList("Players", function(text)
-	print("Selected", text)
-end)
 
 
 
