@@ -1,3 +1,14 @@
+local AcessTable = {785920831 --[[juju]]}
+local Acess = false
+
+for i, v in pairs(AcessTable) do
+	if game.Players.LocalPlayer.UserId == v then
+		Acess = true
+	end
+end
+
+repeat wait() until Acess == true
+
 -- var
 local alive = true
 local noclip = false
@@ -1014,6 +1025,10 @@ for i, v in pairs(game.Players:GetPlayers()) do
 	table.insert(plrs, 1, v.Name)
 end
 testPage:addDropdown("Dropdown", plrs, function(text)
+	print("Selected", text)
+end)
+
+testPage:addPlayerList("Players", function(text)
 	print("Selected", text)
 end)
 
