@@ -4,6 +4,7 @@ local AcessTable = {
 	780331817, --[[Goldo2]]
 	1521284139, --[[oxifox]]
 	794604054, --[[licorne]]
+	2541104873, --[[licorne2]]
 }
 
 local Acess = false
