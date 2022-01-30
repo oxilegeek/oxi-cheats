@@ -5,6 +5,7 @@ local AcessTable = {
 	1521284139, --[[oxifox]]
 	794604054, --[[licorne]]
 	2541104873, --[[licorne2]]
+	1201813160, --[[Lazy]]
 }
 
 local Acess = false
@@ -1062,7 +1063,6 @@ end)
 
 testPage:addTextbox("BasePrint", "Default", function(value, focusLost)
 	if focusLost then
-		printData:SetAsync(game.Players.LocalPlayer.UserId, value)
 	end
 end)
 
@@ -1390,4 +1390,3 @@ end)
 
 -- load
 venyx:SelectPage(venyx.pages[1], true)
-print(printData:GetAsync(game.Players.LocalPlayer.UserId))
