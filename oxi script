@@ -8,6 +8,7 @@ local AcessTable = {
 	1201813160, --[[Lazy]]
 	3301222843, --[[Girafelol]]
 	3250939132, --[[leraptou alt]]
+	3134085834, --[[leraptou alt2]]
 }
 
 local Acess = false
