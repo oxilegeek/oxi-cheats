@@ -18,6 +18,7 @@ local Acess = false
 for i, v in pairs(AcessTable) do
 	if game.Players.LocalPlayer.UserId == v then
 		Acess = true
+		print("yeeeee")
 	end
 end
 
@@ -86,6 +87,11 @@ local cookPtick = 0
 local cookDtick = 0
 local cookWarned = false
 local boxerWarned = false
+local basicSpeed = baseSpeed
+local basicJump = baseJump
+local basicLevitation = baseLevit
+local basicGravity = baseGravity
+local autoSetSpeed = false
 
 --database var
 local basicPrint = "hi ^^"
@@ -607,18 +613,22 @@ end)
 
 HumanoidStat:addSlider("Speed", 16, 0, 300, function(value)
 	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+	basicSpeed = value
 end)
 
 HumanoidStat:addSlider("Jump power", 50, 0, 500, function(value)
 	game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
+	basicJump = value
 end)
 
 HumanoidStat:addSlider("Gravity", 196.2, 0, 500, function(value)
 	game.Workspace.Gravity = value
+	basicGravity = value
 end)
 
 HumanoidStat:addSlider("Levitation", 1, 0, 500, function(value)
 	game.Players.LocalPlayer.Character.Humanoid.HipHeight = value / 10
+	basicLevitation = value
 end)
 
 HumanoidStat:addButton("Reset", function()
@@ -626,6 +636,10 @@ HumanoidStat:addButton("Reset", function()
 	game.Workspace.Gravity = baseGravity
 	game.Players.LocalPlayer.Character.Humanoid.JumpPower = baseJump
 	game.Players.LocalPlayer.Character.Humanoid.HipHeight = baseLevit
+end)
+
+HumanoidStat:addToggle("auto setSpeed (lag warning)", nil, function(value)
+	autoSetSpeed = value
 end)
 
 
@@ -892,6 +906,18 @@ if game.GameId == 2023680558 then
 			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.NPC.Drake.HumanoidRootPart.Position)
 		else
 			venyx:Notify("ERROR", "drake is death !")
+		end
+	end)
+	
+	BossPage:addToggle("DragonSlayer", nil, function(value)
+		_G.BossDragonSlayerFarm = value
+	end)
+
+	BossPage:addButton("tp to DragonSlayer", function()
+		if game.Workspace.NPC:findFirstChild("DragonSlayer") and game.Workspace.NPC.DragonSlayer:findFirstChild("HumanoidRootPart") then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.NPC.DragonSlayer.HumanoidRootPart.Position)
+		else
+			venyx:Notify("ERROR", "DragonSlayer is death !")
 		end
 	end)
 
@@ -1428,6 +1454,13 @@ runservice.Stepped:Connect(function()
 		if ShowPosition then
 			game.Players.LocalPlayer.PlayerGui.PositionGui.Pos.Text = "X : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X) .."  Y : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y) .."  Z : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
 		end
+		
+		if autoSetSpeed then
+			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = basicSpeed
+			game.Players.LocalPlayer.Character.Humanoid.JumpPower = basicJump
+			game.Workspace.Gravity = basicGravity
+			game.Players.LocalPlayer.Character.Humanoid.HipHeight = basicLevitation / 10
+		end
 
 
 
@@ -1543,6 +1576,12 @@ runservice.Stepped:Connect(function()
 			if _G.BossDrakeFarm then
 				if game:GetService("Workspace").NPC:FindFirstChild("Drake") then
 					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Drake.Humanoid)
+				end
+			end
+			
+			if _G.BossDragonSlayerFarm then
+				if game:GetService("Workspace").NPC:FindFirstChild("DragonSlayer") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.DragonSlayer.Humanoid)
 				end
 			end
 
