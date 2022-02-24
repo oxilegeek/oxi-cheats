@@ -3,12 +3,14 @@ local AcessTable = {
 	426302615, --[[Goldo]]
 	780331817, --[[Goldo2]]
 	1521284139, --[[oxifox]]
+	1748832444, --[[oxifox2]]
 	794604054, --[[licorne]]
 	2541104873, --[[licorne2]]
 	1201813160, --[[Lazy]]
 	3301222843, --[[Girafelol]]
 	3250939132, --[[leraptou alt]]
 	3134085834, --[[leraptou alt2]]
+	720726589, --[[Skylleur]]
 }
 
 local Acess = false
@@ -74,6 +76,16 @@ local slowloop = 1
 local ZombieKillAura = false
 local ZombieAutofarm = false
 local flyKeybindToggle = true
+local doCashier = false
+local doCook = false
+local doBoxer = false
+local ffc = game.FindFirstChild
+local orderDict={["3540529228"]="Cheese",["3540530535"]="Sausage",["3540529917"]="Pepperoni",["2512571151"]="Dew",["2512441325"]="Dew"}
+local cookingDict = {Cheese=0,Sausage=0,Pepperoni=0,Dew=0}
+local cookPtick = 0
+local cookDtick = 0
+local cookWarned = false
+local boxerWarned = false
 
 --database var
 local basicPrint = "hi ^^"
@@ -256,6 +268,7 @@ MOUSE.KeyUp:connect(function(KEY)
 end)
 
 
+--Animal function
 if game.GameId == 2023680558 then
 	function findNearestZombieTorso(pos)
 		local list = game:GetService("Workspace").NPC:GetChildren()
@@ -281,6 +294,214 @@ if game.GameId == 2023680558 then
 	end
 end
 
+local supplyCounts = {TomatoSauce=99,Cheese=99,Sausage=99,Pepperoni=99,Dough=99,Box=99,Dew=99}
+local player = game:GetService("Players").LocalPlayer
+local ffc = game.FindFirstChild
+local RNG = Random.new()
+local network
+local character,root
+local boxPtick=0
+local boxDtick=0
+--local delTool
+--Work at a pizza place func
+if game.GameId == 47545 then
+
+	do
+		local reg = (getreg or debug.getregistry)()
+		for i=1,#reg do
+			local f = reg[i]
+			if type(f)=="function" and tostring(getfenv(f).script)=="Paycheck" then
+				for k,v in next,getupvalues(f) do
+					if tostring(v) == "CashOut" then
+						setupvalue(f,k,{MouseButton1Click={wait=function()end,Wait=function()end}})
+						break
+					end
+				end
+			elseif type(f)=="table" and rawget(f,"FireServer") and rawget(f,"BindEvents") then
+				network = f
+			end
+		end
+		local mt=getrawmetatable(game)
+		if setreadonly then
+			setreadonly(mt,false)
+		elseif make_writeable then
+			make_writeable(mt)
+		end
+		local old__newindex=mt.__newindex
+		if newcclosure then
+			mt.__newindex=newcclosure(function(t,k,v)
+				if t~=workspace.CurrentCamera or tostring(getfenv(2).script)~="LocalMain" then
+					return old__newindex(t,k,v)
+				end
+			end)
+		else
+			mt.__newindex=function(t,k,v)
+				if t~=workspace.CurrentCamera or tostring(getfenv(2).script)~="LocalMain" then
+					return old__newindex(t,k,v)
+				end
+			end
+		end
+		workspace.Main.RealignCamera.RealignCamera:Destroy()
+		Instance.new("BindableEvent",workspace.Main.RealignCamera).Name="RealignCamera"
+	end
+	assert(network,"failed to find network")
+
+	function onCharacterAdded(char)
+		if not char then return end
+		character=char
+		root = character:WaitForChild("HumanoidRootPart")
+		character:WaitForChild("Humanoid"):GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+			--if delTool then
+			--	character.Humanoid.WalkSpeed=16
+			--end
+		end)
+	end
+	onCharacterAdded(player.Character or player.CharacterAdded:Wait())
+	player.CharacterAdded:Connect(onCharacterAdded)
+
+
+	for name in pairs(supplyCounts) do
+		local lbl = workspace.SupplyCounters[name=="Dew" and "CounterMountainDew" or "Counter"..name].a.SG.Counter
+		supplyCounts[name]=tonumber(lbl.Text)
+		lbl.Changed:Connect(function()
+			supplyCounts[name]=tonumber(lbl.Text)
+		end)
+	end
+
+	function FindFirstCustomer()
+		local children = workspace.Customers:GetChildren()
+		for i=1,#children do
+			local c = children[i]
+			if ffc(c,"Head") and ffc(c,"Humanoid") and c.Head.CFrame.Z<102 and ffc(c.Head,"Dialog") and ffc(c.Head.Dialog,"Correct") and ((c.Humanoid.SeatPart and c.Humanoid.SeatPart.Anchored) or (c.Humanoid.SeatPart==nil and (c.Head.Velocity.Z^2)^.5<.0001)) then
+				return c
+
+			end
+		end
+	end
+
+
+
+	function getOrders()
+		local orders={}
+		local tempCookingDict = {}
+		for i,v in pairs(cookingDict) do tempCookingDict[i]=v end
+		local children = workspace.Orders:GetChildren()
+		for i=1,#children do
+			local o = orderDict[children[i].SG.ImageLabel.Image:match("%d+$")]
+			if o then
+				if tempCookingDict[o]>0 then
+					--ignores oven pizzas, so new orders are priority
+					tempCookingDict[o]=tempCookingDict[o]-1
+				elseif (o=="Dew" and #workspace.AllMountainDew:GetChildren()>0) or (supplyCounts[o]>0 and supplyCounts.TomatoSauce>0 and supplyCounts.Cheese>0) then
+					--need supplies
+					orders[#orders+1]=o
+				end
+			end
+		end
+		return orders
+	end
+
+	function FindFirstDew()
+		local children = workspace.AllMountainDew:GetChildren()
+		for i=1,#children do
+			if not children[i].Anchored then
+				return children[i]
+			end
+		end
+	end
+
+	function FindDoughAndWithout(str)
+		local goodraw,p,raw,trash
+		local children = workspace.AllDough:GetChildren()
+		for i = #children, 2, -1 do --shuffle
+			local j = RNG:NextInteger(1, i)
+			children[j], children[i] = children[i], children[j]
+		end
+		for i=1,#children do
+			local d = children[i]
+			if d.Anchored==false and #d:GetChildren()>9 then
+				if d.IsBurned.Value or d.HasBugs.Value or d.Cold.Value or (d.BrickColor.Name=="Bright orange" and ffc(d,"XBillboard")) then
+					if trash==nil and d.Position.Y > 0 then
+						trash=d
+					end
+				elseif p==nil and d.BrickColor.Name=="Bright orange" then
+					p=d
+				elseif goodraw==nil and d.Position.X<55 and d.BrickColor.Name=="Brick yellow" and ((str and not ffc(d.SG.Frame,str)) or (str==nil and ffc(d.SG.Frame,"Sausage")==nil and ffc(d.SG.Frame,"Pepperoni")==nil)) then
+					--prefers flat
+					if d.Mesh.Scale.Y<1.1 then
+						goodraw=d
+					else
+						raw=d
+					end
+				end
+				if goodraw and p and trash then
+					return goodraw,p,trash
+				end
+			end
+		end
+		return goodraw or raw,p,trash
+	end
+
+	function getOvenNear(pos)
+		local children = workspace.Ovens:GetChildren()
+		for i=1,#children do
+			if (children[i].Bottom.Position-pos).magnitude < 1.5 then
+				return children[i]
+			end
+		end
+	end
+	function getDoughNear(pos)
+		local children = workspace.AllDough:GetChildren()
+		for i=1,#children do
+			if (children[i].Position-pos).magnitude < 1.5 then
+				return children[i]
+			end
+		end
+	end
+	function isFullyOpen(oven)
+		return oven.IsOpen.Value==true and (oven.Door.Meter.RotVelocity.Z^2)^.5<.0001
+	end
+
+	function FindBoxes()
+		local c,o,f
+		local children = workspace.AllBox:GetChildren()
+		for i=1,#children do
+			local b = children[i]
+			if ffc(b,"HasPizzaInside") or ffc(b,"Pizza") then
+				if c==nil and b.Name=="BoxClosed" and b.Anchored==false and not b.HasPizzaInside.Value then
+					c=b
+				elseif o==nil and b.Name=="BoxOpen" and b.Anchored==false and not b.Pizza.Value then
+					o=b
+				elseif f==nil and (b.Name=="BoxOpen" and b.Pizza.Value) or (b.Name=="BoxClosed" and b.HasPizzaInside.Value) then
+					f=b
+				end
+				if c and o and f then
+					return c,o,f
+				end
+			end
+		end
+		return c,o,f
+	end
+
+	function FindBoxingFoods()
+		local p,d
+		local children = workspace.BoxingRoom:GetChildren()
+		for i=1,#children do
+			local f = children[i]
+			if not f.Anchored then
+				if p==nil and f.Name=="Pizza" then
+					p=f
+				elseif d==nil and f.Name=="Dew" then
+					d=f
+				end
+				if p and d then
+					return p,d
+				end
+			end
+		end
+		return p,d
+	end
+end
 
 -- init
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/gui-creator/main/gui%20creator"))()
@@ -661,7 +882,7 @@ if game.GameId == 2023680558 then
 			venyx:Notify("ERROR", "cerber is death !")
 		end
 	end)
-	
+
 	BossPage:addToggle("Killaura drake", nil, function(value)
 		_G.BossDrakeFarm = value
 	end)
@@ -732,6 +953,7 @@ if game.GameId == 2023680558 then
 	local page = venyx:addPage("PVP", 5012544693)
 
 	local keyboardPage = page:addSection("Autokeyboard")
+	--local ItemPage = page:addSection("GiveItem")
 	local zombiePage = page:addSection("Zombie Kill aura")
 	local KillAuraPage = page:addSection("Kill aura")
 	local KillAuraPage1 = page:addSection("Kill aura1")
@@ -746,7 +968,21 @@ if game.GameId == 2023680558 then
 	keyboardPage:addToggle("auto eat (unstable)", nil, function(value)
 		autoEat = value
 	end)
-
+	
+	
+	
+	--ItemPage:addButton("Give fireball", function()
+	--	local FireFounded = false
+	--	for i, v in pairs(game.Players:GetDescendants()) do
+	--		if v.Name == "Fireball" and v:FindFirstChild("FireballEvent") then
+	--			v.Parent = game.Players.LocalPlayer.Backpack
+	--			FireFounded = true
+	--		end
+	--	end
+	--	if not FireFounded then
+	--		venyx:Notify("Error", "No fire found :c")
+	--	end
+	--end)
 
 
 	zombiePage:addToggle("Zombie kill aura", nil, function(value)
@@ -909,9 +1145,30 @@ end
 
 
 
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------Pizza place-------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+print(game.GameId)
+if game.GameId == 47545 then
+	print("pizza")
+	local page = venyx:addPage("Pizza place", 5012544693)
+
+	local AutoworkPage = page:addSection("Autowork")
 
 
+	AutoworkPage:addToggle("Cashier", nil, function(value)
+		doCashier = value
+	end)
 
+	AutoworkPage:addToggle("Cook", nil, function(value)
+		doCook = value
+	end)
+
+	AutoworkPage:addToggle("Boxer", nil, function(value)
+		doBoxer = value
+	end)
+
+end
 
 
 
@@ -1282,7 +1539,7 @@ runservice.Stepped:Connect(function()
 					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
 				end
 			end
-			
+
 			if _G.BossDrakeFarm then
 				if game:GetService("Workspace").NPC:FindFirstChild("Drake") then
 					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Drake.Humanoid)
@@ -1379,6 +1636,189 @@ runservice.Stepped:Connect(function()
 		end
 	end
 end)
+
+
+--pizza place custom loop
+local function customloopPizza()
+	if game.GameId == 47545 then
+		while alive do
+			wait(0.3)
+			if doCashier then
+				local c = FindFirstCustomer()
+				if c then
+					local dialog = c.Head.Dialog.Correct.ResponseDialog or ''
+					local rootMoved = false
+					if (root.Position-Vector3.new(46.34, 3.80, 82.02)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(46.34, 3.80, 82.02) wait(.1) end
+					local order = "MountainDew"
+					if dialog:sub(-8)=="instead." then
+						dialog = dialog:sub(-30)
+					end
+					if dialog:find("pepperoni",1,true) then
+						order = "PepperoniPizza"
+					elseif dialog:find("sausage",1,true) then
+						order = "SausagePizza"
+					elseif dialog:find("cheese",1,true) then
+						order = "CheesePizza"
+					end
+
+					network:FireServer("OrderComplete", c, order, workspace.Register3)
+					if rootMoved then wait(.1) end
+				end
+			end
+
+
+
+			if doCook then
+				local order = getOrders()[1]
+				local topping
+				if order=="Pepperoni" or order=="Sausage" then topping=order end
+				local cookD = FindFirstDew()
+				local raw,cookP,trash
+				if topping then
+					--pepperoni order avoids sausage dough and vice verca
+					raw,cookP,trash = FindDoughAndWithout(topping=="Pepperoni" and "Sausage" or "Pepperoni")
+				else
+					raw,cookP,trash = FindDoughAndWithout()
+				end
+				local rootMoved = false
+				local ovens = workspace.Ovens:GetChildren()
+				for i = #ovens, 2, -1 do --shuffle
+					local j = RNG:NextInteger(1, i)
+					ovens[j], ovens[i] = ovens[i], ovens[j]
+				end
+				--move final pizza
+				if cookP and tick()-cookPtick>0.8 then
+					local oven = getOvenNear(cookP.Position)
+					if oven==nil or oven.IsOpen.Value then
+						cookPtick=tick()
+						if (root.Position-Vector3.new(44.63, 6.60, 45.20)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(44.63, 6.60, 45.20) wait(.1) end
+						network:FireServer("UpdateProperty", cookP, "CFrame", CFrame.new(56,4.1,38))
+					end
+				end
+				if order then
+					if order=="Dew" and cookD and tick()-cookDtick>0.8 then
+						--move dew if ordered
+						if cookD:FindFirstChild("IsBurned") and not cookD.IsBurned.Value then
+							cookDtick=tick()
+							if (root.Position-Vector3.new(44.63, 6.60, 45.20)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(44.63, 6.60, 45.20) wait(.1) end
+							network:FireServer("UpdateProperty", cookD, "CFrame", CFrame.new(53,4.68,36.5))
+						end
+					elseif order~="Dew" and raw and raw.Parent and supplyCounts[order]>0 and supplyCounts.TomatoSauce>0 and supplyCounts.Cheese>0 then
+						--make pizza
+						if raw.Mesh.Scale.Y>1.5 then
+							if (root.Position-Vector3.new(44.63, 6.60, 45.20)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(44.63, 6.60, 45.20) wait(.1) end
+							network:FireServer("UpdateProperty", raw, "CFrame", CFrame.new(RNG:NextNumber(29.6,44.6),3.7,RNG:NextNumber(42.5,48.5)))
+							wait()
+							network:FireServer("SquishDough", raw)
+						else
+							--make sure it will have an oven
+							local oven
+							for _,o in ipairs(ovens) do
+								if isFullyOpen(o) then
+									local other = getDoughNear(o.Bottom.Position)
+									if other==nil or not (other.BrickColor.Name=="Bright orange" and ffc(other.SG.Frame,"TomatoSauce") and ffc(other.SG.Frame,"MeltedCheese")) then
+										if other then
+											--replace mistaken dough
+											if (root.Position-Vector3.new(44.63, 6.60, 45.20)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(44.63, 6.60, 45.20) wait(.1) end
+											network:FireServer("UpdateProperty", other, "CFrame", CFrame.new(RNG:NextNumber(29.6,44.6),3.7,RNG:NextNumber(42.5,48.5)))
+											wait()
+										end
+										oven=o
+										break
+									end
+								end
+							end
+							if oven and raw.Parent==workspace.AllDough then
+								--make
+								if (root.Position-Vector3.new(44.63, 6.60, 45.20)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(44.63, 6.60, 45.20) wait(.1) end
+								network:FireServer("AddIngredientToPizza", raw,"TomatoSauce")
+								network:FireServer("AddIngredientToPizza", raw,"Cheese")
+								network:FireServer("AddIngredientToPizza", raw,topping)
+								network:FireServer("UpdateProperty", raw, "CFrame", oven.Bottom.CFrame+Vector3.new(0,0.7,0))
+								oven.Door.ClickDetector.Detector:FireServer()
+								--mark as cooking
+								cookingDict[order]=cookingDict[order]+1
+								local revoked=false
+								spawn(function()
+									raw.AncestryChanged:Wait()
+									if not revoked then
+										cookingDict[order]=cookingDict[order]-1
+										revoked=true
+									end
+								end)
+								delay(40, function()
+									if not revoked then
+										cookingDict[order]=cookingDict[order]-1
+										revoked=true
+									end
+								end)
+							end
+						end
+					end
+				end
+				--open unnecessarily closed ovens
+				for _,o in ipairs(ovens) do
+					local bar = o.Door.Meter.SurfaceGui.ProgressBar.Bar
+					if o.IsOpen.Value==false and (o.IsCooking.Value==false or (Vector3.new(bar.ImageColor3.r,bar.ImageColor3.g,bar.ImageColor3.b)-Vector3.new(.871,.518,.224)).magnitude>.1) then
+						if (root.Position-Vector3.new(44.63, 6.60, 45.20)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(44.63, 6.60, 45.20) wait(.1) end
+						o.Door.ClickDetector.Detector:FireServer()
+						break
+					end
+				end
+				--trash
+				if trash and (trash.IsBurned.Value==false or getOvenNear(trash.Position)==nil or getOvenNear(trash.Position).IsOpen.Value) then
+					--closed oven breaks if you take burnt out of it
+					if (root.Position-Vector3.new(44.63, 6.60, 45.20)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(44.63, 6.60, 45.20) wait(.1) end
+					network:FireServer("UpdateProperty", trash, "CFrame", CFrame.new(47.9,RNG:NextNumber(-10,-30),72.5))
+				end
+				if rootMoved then wait(.1) end
+			end
+
+
+			if doBoxer then
+				local boxP,boxD = FindBoxingFoods()
+				local closedBox,openBox,fullBox = FindBoxes()
+				local rootMoved = false
+				if boxD and tick()-boxDtick>0.8 then
+					boxDtick=tick()
+					if (root.Position-Vector3.new(54.09, 3.80, 23.150)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(54.09, 3.80, 23.15) wait(.1) end
+					network:FireServer("UpdateProperty", boxD, "CFrame", CFrame.new(63,4.9,-1,-1,0,0,0,1,0,0,0,-1))
+				end
+				if fullBox then
+					if fullBox.Name=="BoxOpen" then
+						if (root.Position-Vector3.new(54.09, 3.80, 23.150)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(54.09, 3.80, 23.15) wait(.1) end
+						network:FireServer("CloseBox", fullBox)
+						--will be moved next loop
+					elseif tick()-boxPtick>0.8 then
+						if (root.Position-Vector3.new(54.09, 3.80, 23.150)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(54.09, 3.80, 23.15) wait(.1) end
+						network:FireServer("UpdateProperty", fullBox, "CFrame", CFrame.new(68.2,4.4,-1,-1,0,0,0,1,0,0,0,-1))
+						boxPtick=tick()
+					end
+				end
+				if closedBox and not openBox then
+					if (root.Position-Vector3.new(54.09, 3.80, 23.150)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(54.09, 3.80, 23.15) wait(.1) end
+					network:FireServer("UpdateProperty", closedBox, "CFrame", CFrame.new(RNG:NextNumber(62.5,70.5),3.5,RNG:NextNumber(11,25)))
+					wait()
+					network:FireServer("OpenBox", closedBox)
+				end
+				if openBox and boxP then
+					if (root.Position-Vector3.new(54.09, 3.80, 23.150)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(54.09, 3.80, 23.15) wait(.1) end
+					network:FireServer("UpdateProperty", boxP, "Anchored", true)
+					network:FireServer("UpdateProperty", openBox, "Anchored", true)
+					wait()
+					network:FireServer("UpdateProperty", boxP, "CFrame", openBox.CFrame+Vector3.new(0,-2,0))
+					wait()
+					network:FireServer("AssignPizzaToBox", openBox, boxP)
+				end
+				if rootMoved then wait(.1) end
+			end
+
+		end
+		--------- END ANIMAL
+	end
+end
+
+spawn(customloopPizza)
 
 
 
