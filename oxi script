@@ -92,6 +92,8 @@ local basicJump = baseJump
 local basicLevitation = baseLevit
 local basicGravity = baseGravity
 local autoSetSpeed = false
+local doDelivery = false
+local doSupplier = false
 
 --database var
 local basicPrint = "hi ^^"
@@ -308,7 +310,13 @@ local network
 local character,root
 local boxPtick=0
 local boxDtick=0
---local delTool
+local delTool
+local delTouched=false
+local bcolorToSupply = {["Dark orange"]="Sausage",["Bright blue"]="Pepperoni",["Bright yellow"]="Cheese",["Bright red"]="TomatoSauce",["Dark green"]="Dew",["Brick yellow"]="Dough",["Light stone grey"]="Box",["Really black"]="Dew"}
+local supplyButtons = {}
+for _,button in ipairs(workspace.SupplyButtons:GetChildren()) do
+	supplyButtons[bcolorToSupply[button.Unpressed.BrickColor.Name]] = button.Unpressed
+end
 --Work at a pizza place func
 if game.GameId == 47545 then
 
@@ -357,9 +365,9 @@ if game.GameId == 47545 then
 		character=char
 		root = character:WaitForChild("HumanoidRootPart")
 		character:WaitForChild("Humanoid"):GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-			--if delTool then
-			--	character.Humanoid.WalkSpeed=16
-			--end
+			if delTool then
+				character.Humanoid.WalkSpeed=16
+			end
 		end)
 	end
 	onCharacterAdded(player.Character or player.CharacterAdded:Wait())
@@ -506,6 +514,60 @@ if game.GameId == 47545 then
 			end
 		end
 		return p,d
+	end
+
+
+	function FindFirstDeliveryTool()
+		local t
+		local children = workspace:GetChildren()
+		for i=1,#children do
+			local v = children[i]
+			if v.ClassName=="Tool" and v.Name:match("^%u%d$") and ffc(v,"House") and ffc(v,"Handle") and ffc(v,"Order") and v.Order.Value:match("%a") then
+				if ffc(v.Handle,"X10") then
+					return v
+				end
+				t = v
+			end
+		end
+		return t
+	end
+	function getHousePart(address)
+		local houses = workspace.Houses:GetChildren()
+		for i=1,#houses do
+			local h = houses[i]
+			if ffc(h,"Address") and h.Address.Value==address and ffc(h,"CurrentUpgrade") and h.CurrentUpgrade.Value and ffc(h.CurrentUpgrade.Value,"GivePizza") then
+				return h.CurrentUpgrade.Value.GivePizza
+			end
+		end
+	end
+	local delTouched=false
+	function forgetDeliveryTool()
+		if delTool then
+			if delTool.Parent==player.Backpack then
+				delTool.Parent = character
+			end
+			if delTool.Parent==character then
+				wait(0.1)
+				delTool.Parent = workspace
+				wait(0.1)
+			end
+		end
+		delTool=nil
+		delTouched=false
+		if ffc(character,"RightHand") and ffc(character.RightHand,"RightGrip") then
+			character.RightHand.RightGrip:Destroy()
+		end
+	end
+
+	function simTouch(part)
+		local oldcc = part.CanCollide
+		local oldcf = part.CFrame
+		part.CanCollide = false
+		root.CFrame = part.CFrame
+		delay(0.01,function()
+			part.CFrame = oldcf
+			part.CanCollide = oldcc
+		end)
 	end
 end
 
@@ -908,7 +970,7 @@ if game.GameId == 2023680558 then
 			venyx:Notify("ERROR", "drake is death !")
 		end
 	end)
-	
+
 	BossPage:addToggle("DragonSlayer", nil, function(value)
 		_G.BossDragonSlayerFarm = value
 	end)
@@ -994,9 +1056,9 @@ if game.GameId == 2023680558 then
 	keyboardPage:addToggle("auto eat (unstable)", nil, function(value)
 		autoEat = value
 	end)
-	
-	
-	
+
+
+
 	--ItemPage:addButton("Give fireball", function()
 	--	local FireFounded = false
 	--	for i, v in pairs(game.Players:GetDescendants()) do
@@ -1192,6 +1254,14 @@ if game.GameId == 47545 then
 
 	AutoworkPage:addToggle("Boxer", nil, function(value)
 		doBoxer = value
+	end)
+
+	AutoworkPage:addToggle("Delivrery", nil, function(value)
+		doDelivery = value
+	end)
+
+	AutoworkPage:addToggle("Supplier", nil, function(value)
+		doSupplier = value
 	end)
 
 end
@@ -1454,7 +1524,7 @@ runservice.Stepped:Connect(function()
 		if ShowPosition then
 			game.Players.LocalPlayer.PlayerGui.PositionGui.Pos.Text = "X : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X) .."  Y : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y) .."  Z : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
 		end
-		
+
 		if autoSetSpeed then
 			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = basicSpeed
 			game.Players.LocalPlayer.Character.Humanoid.JumpPower = basicJump
@@ -1578,7 +1648,7 @@ runservice.Stepped:Connect(function()
 					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Drake.Humanoid)
 				end
 			end
-			
+
 			if _G.BossDragonSlayerFarm then
 				if game:GetService("Workspace").NPC:FindFirstChild("DragonSlayer") then
 					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.DragonSlayer.Humanoid)
@@ -1683,26 +1753,31 @@ local function customloopPizza()
 		while alive do
 			wait(0.3)
 			if doCashier then
-				local c = FindFirstCustomer()
-				if c then
-					local dialog = c.Head.Dialog.Correct.ResponseDialog or ''
-					local rootMoved = false
-					if (root.Position-Vector3.new(46.34, 3.80, 82.02)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(46.34, 3.80, 82.02) wait(.1) end
-					local order = "MountainDew"
-					if dialog:sub(-8)=="instead." then
-						dialog = dialog:sub(-30)
-					end
-					if dialog:find("pepperoni",1,true) then
-						order = "PepperoniPizza"
-					elseif dialog:find("sausage",1,true) then
-						order = "SausagePizza"
-					elseif dialog:find("cheese",1,true) then
-						order = "CheesePizza"
-					end
+				local num = 0
+				repeat
+					wait()
+					num += 1
+					local c = FindFirstCustomer()
+					if c then
+						local dialog = c.Head.Dialog.Correct.ResponseDialog or ''
+						local rootMoved = false
+						if (root.Position-Vector3.new(46.34, 3.80, 82.02)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(46.34, 3.80, 82.02) wait(.1) end
+						local order = "MountainDew"
+						if dialog:sub(-8)=="instead." then
+							dialog = dialog:sub(-30)
+						end
+						if dialog:find("pepperoni",1,true) then
+							order = "PepperoniPizza"
+						elseif dialog:find("sausage",1,true) then
+							order = "SausagePizza"
+						elseif dialog:find("cheese",1,true) then
+							order = "CheesePizza"
+						end
 
-					network:FireServer("OrderComplete", c, order, workspace.Register3)
-					if rootMoved then wait(.1) end
-				end
+						network:FireServer("OrderComplete", c, order, workspace.Register3)
+						if rootMoved then wait(.1) end
+					end
+				until num == 8
 			end
 
 
@@ -1852,7 +1927,144 @@ local function customloopPizza()
 				if rootMoved then wait(.1) end
 			end
 
+			if doDelivery then
+				local del = FindFirstDeliveryTool()
+				print(delTool)
+				if delTool==nil then
+					--get tool
+					local invTool = false
+
+					for i, v in pairs(player.Backpack:GetChildren()) do
+						print("v")
+						if v.ClassName=="Tool" and v.Name:match("^%u%d$") and ffc(v,"House") and ffc(v,"Handle") and ffc(v,"Order") and v.Order.Value:match("%a") then
+							print("accepted")
+							invTool = true
+							v.Parent = character
+							wait(0.2)
+							v.Parent = workspace
+						end
+					end
+
+					if not invTool and del then
+						delTool=del
+
+
+						if (root.Position-delTool.Handle.Position).magnitude>19 then
+							root.CFrame = CFrame.new(delTool.Handle.Position+Vector3.new(0,1,-15)) 
+						end
+						delTool.Handle.CanCollide=false
+						delTool.Handle.CFrame = root.CFrame
+						wait(0.9)
+						delay(6,forgetDeliveryTool)
+					end
+				elseif delTool and delTool.Parent==character and delTouched==false then
+					--deliver to house
+					local housePart = getHousePart(delTool.Name)
+					print(housePart)
+					if housePart then
+						delTouched=true
+						root.CFrame = housePart.CFrame+Vector3.new(0,6,0)
+						wait(5)
+						delTool = nil
+						delTouched=false
+					end
+				end
+			end
+
+
+
+
+
+			if doSupplier then
+				local refill=false
+				for s,c in pairs(supplyCounts) do
+					if c <= 70 then
+						refill=true
+						print("refill")
+						break
+					end
+				end
+				if refill then
+					local oldcf = root.CFrame
+					local alt=0
+					local waiting = false
+					local waitingTick = 0
+					local lastBox
+					while doSupplier do
+						--check if refill is done otherwise hit buttons
+						local fulfilled=true
+						local boxes = workspace.AllSupplyBoxes:GetChildren()
+						for s,c in pairs(supplyCounts) do
+							if c < 95 then
+								fulfilled=false
+								local count = 0
+								if #boxes > 30 then
+									for i=1,#boxes do
+										local box = boxes[i]
+										if bcolorToSupply[box.BrickColor.Name]==s and box.Anchored==false and box.Position.Z < -940 then
+											count=count+1
+										end
+									end
+								end
+								if count < 10 then
+									print("tp to button")
+									simTouch(supplyButtons[s])
+									wait(0.3)
+								end
+							end
+						end
+						if fulfilled then
+							break
+						end
+						wait(1.5)
+						--check if can finish waiting for boxes to move
+						if waiting and (lastBox.Position.X>42 or tick()-waitingTick>5) then
+							waiting=false
+							if lastBox.Position.X<42 then
+								--clear boxes if stuck
+								root.CFrame=CFrame.new(20.5,8,-35)
+								wait()
+								local boxes = workspace.AllSupplyBoxes:GetChildren()
+								for i=1,#boxes do
+									local box = boxes[i]
+									if box.Anchored==false and box.Position.Z>-55 then
+										network:FireServer("UpdateProperty", box, "CFrame", CFrame.new(RNG:NextNumber(0,40),RNG:NextNumber(-10,-30),-70))
+										wait()
+									end
+								end
+								wait()
+							end
+						end
+						if not waiting then
+							--move boxes
+							root.CFrame=CFrame.new(8,12.4,-1020)
+							wait()
+							alt=1-alt
+							lastBox=nil
+							local j=0
+							local boxes = workspace.AllSupplyBoxes:GetChildren()
+							for i=1,#boxes do
+								local box = boxes[i]
+								if box.Anchored==false and box.Position.Z < -940 and bcolorToSupply[box.BrickColor.Name] and supplyCounts[bcolorToSupply[box.BrickColor.Name]]<95 then
+									box.CFrame = CFrame.new(38-4*j,5,-7-5*alt)
+									network:FireServer("UpdateProperty", box, "CFrame", box.CFrame)
+									lastBox=box
+									j=j+1
+									if j>8 then break end
+								end
+							end
+							if alt==0 and lastBox then
+								waiting=true
+								waitingTick=tick()
+							end
+						end
+					end
+					root.CFrame=oldcf
+				end
+			end
+
 		end
+
 		--------- END ANIMAL
 	end
 end
