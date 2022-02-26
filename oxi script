@@ -314,11 +314,13 @@ local delTool
 local delTouched=false
 local bcolorToSupply = {["Dark orange"]="Sausage",["Bright blue"]="Pepperoni",["Bright yellow"]="Cheese",["Bright red"]="TomatoSauce",["Dark green"]="Dew",["Brick yellow"]="Dough",["Light stone grey"]="Box",["Really black"]="Dew"}
 local supplyButtons = {}
-for _,button in ipairs(workspace.SupplyButtons:GetChildren()) do
-	supplyButtons[bcolorToSupply[button.Unpressed.BrickColor.Name]] = button.Unpressed
-end
+
 --Work at a pizza place func
 if game.GameId == 47545 then
+	
+	for _,button in ipairs(workspace.SupplyButtons:GetChildren()) do
+		supplyButtons[bcolorToSupply[button.Unpressed.BrickColor.Name]] = button.Unpressed
+	end
 
 	do
 		local reg = (getreg or debug.getregistry)()
