@@ -1,3 +1,9 @@
+local name = "Foxi cheats V2 (anti afk always enabled)"
+
+-- init
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/gui-creator/main/gui%20creator"))()
+local venyx = library.new(name, 5013109572)
+
 local AcessTable = {
 	785920831, --[[juju]]
 	426302615, --[[Goldo]]
@@ -26,6 +32,13 @@ end
 
 if not Acess then
 	print("refused")
+	game.CoreGui:FindFirstChild(name).Main.Visible = false
+	venyx:Notify("You're not whitelisted", "Do you want to buy the cheat ?", function(value)
+		if value then
+			print(game.PlaceId)
+			game:GetService("TeleportService"):Teleport(31285342 , game.Players.LocalPlayer)
+		end
+	end)
 	return
 else
 	print("Valid ^^")
@@ -95,7 +108,25 @@ local basicLevitation = baseLevit
 local basicGravity = baseGravity
 local autoSetSpeed = false
 local doDelivery = false
+local DefaultSky
+local DefaultSkyStat
+local alwaysDay = false
 local doSupplier = false
+local ESPToggle = false
+
+--local DefaultSky = game.Lighting.Sky print("{" ..DefaultSky.MoonAngularSize ..", " ..'"' ..DefaultSky.MoonTextureId ..'"' ..", " ..'"' ..DefaultSky.SkyboxBk ..'"' ..", " ..'"' ..DefaultSky.SkyboxDn ..'"' ..", " ..'"' ..DefaultSky.SkyboxFt ..'"' ..", " ..'"' ..DefaultSky.SkyboxLf ..'"' ..", " ..'"' ..DefaultSky.SkyboxRt ..'"' ..", " ..'"' ..DefaultSky.SkyboxUp ..'"' ..", " ..DefaultSky.StarCount ..", " ..DefaultSky.SunAngularSize ..", " ..'"' ..DefaultSky.SunTextureId ..'"' .."}")
+
+local presetsSky = {
+	["Realistic sky"] = {true, 11, "rbxasset://sky/moon.jpg", "http://www.roblox.com/asset/?id=144933338", "http://www.roblox.com/asset/?id=144931530", "http://www.roblox.com/asset/?id=144933262", "http://www.roblox.com/asset/?id=144933244", "http://www.roblox.com/asset/?id=144933299", "http://www.roblox.com/asset/?id=144931564", 1500, 5, "rbxasset://sky/sun.jpg"},
+	["Cartoon sky"] = {true, 11, "rbxasset://sky/moon.jpg", "http://www.roblox.com/asset/?id=5333954202", "http://www.roblox.com/asset/?id=5333944933", "http://www.roblox.com/asset/?id=5333954202", "http://www.roblox.com/asset/?id=5333954202", "http://www.roblox.com/asset/?id=5333954202", "http://www.roblox.com/asset/?id=5333943668", 3000, 21, "rbxasset://sky/sun.jpg"},
+	["Pink sky"] = {false, 11, "rbxasset://sky/moon.jpg", "http://www.roblox.com/asset/?id=271042516", "http://www.roblox.com/asset/?id=271077243", "http://www.roblox.com/asset/?id=271042556", "http://www.roblox.com/asset/?id=271042310", "http://www.roblox.com/asset/?id=271042467", "http://www.roblox.com/asset/?id=271077958", 1334, 21, "rbxasset://sky/sun.jpg"},
+	["Island theme sky"] = {false, 11, "rbxasset://sky/moon.jpg", "rbxassetid://600830446", "rbxassetid://600831635", "rbxassetid://600832720", "rbxassetid://600886090", "rbxassetid://600833862", "rbxassetid://600835177", 3000, 21, "rbxasset://sky/sun.jpg"},
+	["Galaxy sky"] = {false, 11, "rbxasset://sky/moon.jpg", "http://www.roblox.com/asset/?id=159454299", "http://www.roblox.com/asset/?id=159454296", "http://www.roblox.com/asset/?id=159454293", "http://www.roblox.com/asset/?id=159454286", "http://www.roblox.com/asset/?id=159454300", "http://www.roblox.com/asset/?id=159454288", 0, 21, "rbxasset://sky/sun.jpg"},
+	["Night time sky"] = {false, 1.5, "rbxassetid://1075087760", "rbxassetid://2670643994", "rbxassetid://2670643365", "rbxassetid://2670643214", "rbxassetid://2670643070", "rbxassetid://2670644173", "rbxassetid://2670644331", 500, 12, "rbxassetid://1084351190"},
+	["Night City sky"] = {true, 11, "rbxasset://sky/moon.jpg", "http://www.roblox.com/asset/?id=386170521", "http://www.roblox.com/asset/?id=386170789", "http://www.roblox.com/asset/?id=386170521", "http://www.roblox.com/asset/?id=386170521", "http://www.roblox.com/asset/?id=386170521", "http://www.roblox.com/asset/?ID=2013298", 3000, 21, "rbxassetid://4693618"},
+
+}
+local ActiveSky = "Default"
 
 --database var
 local basicPrint = "hi ^^"
@@ -277,6 +308,130 @@ MOUSE.KeyUp:connect(function(KEY)
 	end
 end)
 
+function GetDefaultSky()
+	local skyFounded = false
+	for i, v in pairs(game.Lighting:GetChildren()) do
+		if not skyFounded and v:IsA("Sky") then
+			skyFounded = true
+			return v
+		end
+	end
+end
+
+ALLYCOLOR = {0,255,255}  	--//Color of the ESP  of people on the same team
+ENEMYCOLOR =  {255,0,0} 	--//Color of the ESP  of people on NOT the same team
+TRANSPARENCY = 0.5			--//Transparency of the ESP
+HEALTHBAR_ACTIVATED = true 	--//Renders the Healthbar
+--
+--
+
+--							!!!Don't Change Anything Below Here Unless You Know What You're Doing!!!
+
+function createFlex()
+	-- -----------------------------------------------------------------------------------
+	--[VARIABLES] //Changing may result in Errors!
+	players = game:GetService("Players") --//Required for PF
+	faces = {"Front","Back","Bottom","Left","Right","Top"} --//Every possible Enum face
+	currentPlayer = nil --//Used for the Team-Check
+	lplayer = players.LocalPlayer --//The LocalPlayer
+	-- -----------------------------------------------------------------------------------
+	players.PlayerAdded:Connect(function(p)
+		currentPlayer = p
+		p.CharacterAdded:Connect(function(character) --//For when a new Player joins the game 
+			createESP(character)			
+		end)		
+	end)
+	-- -----------------------------------------------------------------------------------
+	function checkPart(obj)  if (obj:IsA("Part") or obj:IsA("MeshPart")) and obj.Name~="HumanoidRootPart" then return true end end --//Check if the Part is suitable 
+	-- -----------------------------------------------------------------------------------
+	function actualESP(obj) 
+
+		for i=0,5 do
+			surface = Instance.new("SurfaceGui",obj) --//Creates the SurfaceGui
+			surface.Face = Enum.NormalId[faces[i+1]] --//Adjusts the Face and chooses from the face table
+			surface.AlwaysOnTop = true
+			surface.Enabled = ESPToggle
+			surface.Name = "OxiCheatESP"
+
+			frame = Instance.new("Frame",surface)	--//Creates the viewable Frame
+			frame.Size = UDim2.new(1,0,1,0)
+			frame.BorderSizePixel = 0												
+			frame.BackgroundTransparency = TRANSPARENCY
+			if currentPlayer.Team == players.LocalPlayer.Team then --//Checks the Players Team
+				frame.BackgroundColor3 = Color3.new(ALLYCOLOR[1],ALLYCOLOR[2],ALLYCOLOR[3])	--//If in same Team											
+			else
+				frame.BackgroundColor3 = Color3.new(ENEMYCOLOR[1],ENEMYCOLOR[2],ENEMYCOLOR[3])	--//If in another Team
+			end
+
+		end
+	end
+	-- -----------------------------------------------------------------------------------
+	function createHealthbar(hrp) 
+		board =Instance.new("BillboardGui",hrp) --//Creates the BillboardGui with HumanoidRootPart as the Parent
+		board.Name = "OxiCheatESPHealth"
+		board.Size = UDim2.new(1,0,1,0)
+		board.StudsOffset = Vector3.new(3,1,0)
+		board.AlwaysOnTop = true
+		board.Enabled = ESPToggle
+
+		bar = Instance.new("Frame",board) --//Creates the red background
+		bar.BackgroundColor3 = Color3.new(255,0,0)
+		bar.BorderSizePixel = 0
+		bar.Size = UDim2.new(0.2,0,4,0)
+		bar.Name = "total2"
+
+		health = Instance.new("Frame",bar) --//Creates the changing green Frame
+		health.BackgroundColor3 = Color3.new(0,255,0)
+		health.BorderSizePixel = 0
+		health.Size = UDim2.new(1,0,hrp.Parent.Humanoid.Health/100,0)
+		hrp.Parent.Humanoid.Changed:Connect(function(property) --//Triggers when any Property changed
+			hrp.total.total2.Frame.Size = UDim2.new(1,0,hrp.Parent.Humanoid.Health/100,0) --//Adjusts the size of the green Frame								
+		end)
+	end
+	-- -----------------------------------------------------------------------------------
+	function createESP(c) --//Checks and calls the proper function
+		bugfix = c:WaitForChild("Head") --// *Used so the children of the character arent nil.
+		for i,v in pairs(c:GetChildren()) do
+			if checkPart(v) then
+				actualESP(v)
+			end
+		end
+		if HEALTHBAR_ACTIVATED then --//If the user decided to
+			createHealthbar(c:WaitForChild("HumanoidRootPart")) --//Calls the function of the creation
+		end
+	end
+	-- -----------------------------------------------------------------------------------
+	for i,people in pairs(players:GetChildren())do
+		if people ~= players.LocalPlayer then
+			currentPlayer = people
+			--//Used for Players already in the Game
+			createESP(people.Character)
+			people.CharacterAdded:Connect(function(character)
+				createESP(character)			
+			end)
+		end
+	end
+	-- -----------------------------------------------------------------------------------
+end --//End of the entire function
+
+createFlex() --// Does exactly that :)
+
+function closeESP()
+	for i, v in pairs(workspace:GetDescendants()) do
+		if v.Name == "OxiCheatESP" or v.Name == "OxiCheatESPHealth" then
+			v.Enabled = false
+		end
+	end
+end
+
+function openESP()
+	for i, v in pairs(workspace:GetDescendants()) do
+		if v.Name == "OxiCheatESP" or v.Name == "OxiCheatESPHealth" then
+			v.Enabled = true
+		end
+	end
+end
+
 
 --Animal function
 if game.GameId == 2023680558 then
@@ -304,6 +459,8 @@ if game.GameId == 2023680558 then
 	end
 end
 
+
+
 local supplyCounts = {TomatoSauce=99,Cheese=99,Sausage=99,Pepperoni=99,Dough=99,Box=99,Dew=99}
 local player = game:GetService("Players").LocalPlayer
 local ffc = game.FindFirstChild
@@ -319,7 +476,7 @@ local supplyButtons = {}
 
 --Work at a pizza place func
 if game.GameId == 47545 then
-	
+
 	for _,button in ipairs(workspace.SupplyButtons:GetChildren()) do
 		supplyButtons[bcolorToSupply[button.Unpressed.BrickColor.Name]] = button.Unpressed
 	end
@@ -575,9 +732,11 @@ if game.GameId == 47545 then
 	end
 end
 
--- init
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/gui-creator/main/gui%20creator"))()
-local venyx = library.new("Oxi cheats", 5013109572)
+
+--DefaultSet
+DefaultSky = GetDefaultSky()
+DefaultSkyStat = {DefaultSky.CelestialBodiesShown, DefaultSky.MoonAngularSize, DefaultSky.MoonTextureId, DefaultSky.SkyboxBk, DefaultSky.SkyboxDn, DefaultSky.SkyboxFt, DefaultSky.SkyboxLf, DefaultSky.SkyboxRt, DefaultSky.SkyboxUp, DefaultSky.StarCount, DefaultSky.SunAngularSize, DefaultSky.SunTextureId}
+
 
 
 -- themes
@@ -591,12 +750,24 @@ local themes = {
 }
 
 local function deleteGui()
-	game.CoreGui:FindFirstChild("Oxi cheats"):Destroy()
+	game.CoreGui:FindFirstChild(name):Destroy()
 	alive = false
+	for i, v in pairs(workspace:GetDescendants()) do
+		if v.Name == "OxiCheatESP" or v.Name == "OxiCheatESPHealth" then
+			v:Destroy()
+		end
+	end
 end
 
+-- delete old menu
+game.CoreGui.ChildAdded:Connect(function(child)
+	if child.Name == name and alive == true then
+		deleteGui()
+	end
+end)
+
 -- CHARACTER
-local page = venyx:addPage("Character", 5012544693)
+local page = venyx:addPage("Character", 8988743366)
 local BasicHack = page:addSection("Basic hack")
 local HumanoidStat = page:addSection("Humanoid stat")
 local TeleportPage = page:addSection("Teleport and spectate")
@@ -609,6 +780,10 @@ end)
 
 BasicHack:addToggle("noclip", nil, function(value)
 	noclip = value
+end)
+
+BasicHack:addToggle("Invisible", nil, function(value)
+	venyx:Notify("Error", "Comming soon")
 end)
 
 BasicHack:addToggle("key to teleport", nil, function(value)
@@ -657,7 +832,7 @@ end)
 
 HumanoidStat:addToggle("Coordinate", nil, function(value)
 	if value then
-		local CoUi = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
+		local CoUi = Instance.new("ScreenGui", game.CoreGui)
 		CoUi.Name = "PositionGui"
 		CoUi.ResetOnSpawn = false
 
@@ -673,7 +848,7 @@ HumanoidStat:addToggle("Coordinate", nil, function(value)
 		ShowPosition = true
 	else
 		ShowPosition = false
-		game.Players.LocalPlayer.PlayerGui.PositionGui:Destroy()
+		game.CoreGui.PositionGui:Destroy()
 	end
 end)
 
@@ -717,18 +892,19 @@ TeleportPage:addTextbox("Player", "player name", function(value, focusLost)
 end)
 
 TeleportPage:addButton("Teleport", function()
-	if game.Players:FindFirstChild(tpPlayerFocus) and game.Players:FindFirstChild(tpPlayerFocus).Character then
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players:FindFirstChild(tpPlayerFocus).Character.HumanoidRootPart.Position)
-	else
-		venyx:Notify("ERROR", "Invalid player")
+	local success = pcall(function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players:FindFirstChild(tpPlayerFocus).Character.HumanoidRootPart.Position) end)
+	if not success then
+		venyx:Notify("ERROR", "player not found")
 	end
+	
 end)
 
+
+
 TeleportPage:addButton("Spectate", function()
-	if game.Players:FindFirstChild(tpPlayerFocus) and game.Players:FindFirstChild(tpPlayerFocus).Character then
-		game.Workspace.CurrentCamera.CameraSubject = game.Players:FindFirstChild(tpPlayerFocus).Character.Humanoid
-	else
-		venyx:Notify("ERROR", "Invalid player")
+	local success = pcall(function() game.Workspace.CurrentCamera.CameraSubject = game.Players:FindFirstChild(tpPlayerFocus).Character.Humanoid end)
+	if not success then
+		venyx:Notify("ERROR", "player not found")
 	end
 end)
 
@@ -758,15 +934,16 @@ end)
 
 
 FunPage:addButton("Sit", function()
-	game.Players.LocalPlayer.Character.Humanoid.Sit = true
+	pcall(function() game.Players.LocalPlayer.Character.Humanoid.Sit = true end)
 end)
 
 FunPage:addButton("Delete animation", function()
-	game.Players.LocalPlayer.Character.Humanoid.Animator:Destroy()
+	
+	pcall(function() game.Players.LocalPlayer.Character.Humanoid.Animator:Destroy() end)
 end)
 
 FunPage:addButton("Special reset character", function()
-	game.Players.LocalPlayer.Character.Humanoid:Destroy()
+	pcall(function() game.Players.LocalPlayer.Character.Humanoid:Destroy() end)
 end)
 
 FunPage:addButton("AMOGUS", function()
@@ -781,7 +958,7 @@ end)
 
 
 -- Visual
-local page = venyx:addPage("Visual", 5012544693)
+local page = venyx:addPage("Visual", 8988759357)
 local CameraPage = page:addSection("Camera")
 local LightingPage = page:addSection("Lighting")
 local GuiPage = page:addSection("Gui")
@@ -800,6 +977,15 @@ CameraPage:addToggle("Unlock Camera max zoom distance", nil, function(value)
 		game.Players.LocalPlayer.CameraMaxZoomDistance = 100000
 	else
 		game.Players.LocalPlayer.CameraMaxZoomDistance = oldMaxZoom
+	end
+end)
+
+CameraPage:addToggle("ESP", nil, function(value)
+	ESPToggle = value
+	if value then
+		openESP()
+	else
+		closeESP()
 	end
 end)
 
@@ -845,7 +1031,7 @@ end)
 
 
 -- BasicTp
-local page = venyx:addPage("Custom tp", 5012544693)
+local page = venyx:addPage("Custom tp", 8988776454)
 local locationcreator = page:addSection("create a location")
 
 locationcreator:addTextbox("CustomTp", "location name", function(value, focusLost)
@@ -856,7 +1042,7 @@ end)
 
 locationcreator:addButton("Create location", function()
 	if customTpName ~= nil then
-		if game.CoreGui:FindFirstChild("Oxi cheats").Main:FindFirstChild("Custom tp"):FindFirstChild(customTpName) then
+		if game.CoreGui:FindFirstChild(name).Main:FindFirstChild("Custom tp"):FindFirstChild(customTpName) then
 			venyx:Notify("Error", "Incorect name")
 		else
 			local tppage = page:addSection(customTpName)
@@ -883,12 +1069,161 @@ end)
 
 
 
+--Custom Map
+local page = venyx:addPage("Custom world", 8988796619)
+local SkyPage = page:addSection("Sky")
+local TimePage = page:addSection("Time")
+
+SkyPage:addButton("Default game sky", function()
+	DefaultSky.CelestialBodiesShown = DefaultSkyStat[1]
+	DefaultSky.MoonAngularSize = DefaultSkyStat[2]
+	DefaultSky.MoonTextureId = DefaultSkyStat[3]
+	DefaultSky.SkyboxBk = DefaultSkyStat[4]
+	DefaultSky.SkyboxDn = DefaultSkyStat[5]
+	DefaultSky.SkyboxFt = DefaultSkyStat[6]
+	DefaultSky.SkyboxLf = DefaultSkyStat[7]
+	DefaultSky.SkyboxRt = DefaultSkyStat[8]
+	DefaultSky.SkyboxUp = DefaultSkyStat[9]
+	DefaultSky.StarCount = DefaultSkyStat[10]
+	DefaultSky.SunAngularSize = DefaultSkyStat[11]
+	DefaultSky.SunTextureId = DefaultSkyStat[12]
+end)
+
+SkyPage:addButton("Realistic sky", function()
+	local ThePresetSky = presetsSky["Realistic sky"]
+
+	DefaultSky.CelestialBodiesShown = ThePresetSky[1]
+	DefaultSky.MoonAngularSize = ThePresetSky[2]
+	DefaultSky.MoonTextureId = ThePresetSky[3]
+	DefaultSky.SkyboxBk = ThePresetSky[4]
+	DefaultSky.SkyboxDn = ThePresetSky[5]
+	DefaultSky.SkyboxFt = ThePresetSky[6]
+	DefaultSky.SkyboxLf = ThePresetSky[7]
+	DefaultSky.SkyboxRt = ThePresetSky[8]
+	DefaultSky.SkyboxUp = ThePresetSky[9]
+	DefaultSky.StarCount = ThePresetSky[10]
+	DefaultSky.SunAngularSize = ThePresetSky[11]
+	DefaultSky.SunTextureId = ThePresetSky[12]
+end)
+
+SkyPage:addButton("Cartoon sky", function()
+	local ThePresetSky = presetsSky["Cartoon sky"]
+
+	DefaultSky.CelestialBodiesShown = ThePresetSky[1]
+	DefaultSky.MoonAngularSize = ThePresetSky[2]
+	DefaultSky.MoonTextureId = ThePresetSky[3]
+	DefaultSky.SkyboxBk = ThePresetSky[4]
+	DefaultSky.SkyboxDn = ThePresetSky[5]
+	DefaultSky.SkyboxFt = ThePresetSky[6]
+	DefaultSky.SkyboxLf = ThePresetSky[7]
+	DefaultSky.SkyboxRt = ThePresetSky[8]
+	DefaultSky.SkyboxUp = ThePresetSky[9]
+	DefaultSky.StarCount = ThePresetSky[10]
+	DefaultSky.SunAngularSize = ThePresetSky[11]
+	DefaultSky.SunTextureId = ThePresetSky[12]
+end)
+
+SkyPage:addButton("Pink sky", function()
+	local ThePresetSky = presetsSky["Pink sky"]
+
+	DefaultSky.CelestialBodiesShown = ThePresetSky[1]
+	DefaultSky.MoonAngularSize = ThePresetSky[2]
+	DefaultSky.MoonTextureId = ThePresetSky[3]
+	DefaultSky.SkyboxBk = ThePresetSky[4]
+	DefaultSky.SkyboxDn = ThePresetSky[5]
+	DefaultSky.SkyboxFt = ThePresetSky[6]
+	DefaultSky.SkyboxLf = ThePresetSky[7]
+	DefaultSky.SkyboxRt = ThePresetSky[8]
+	DefaultSky.SkyboxUp = ThePresetSky[9]
+	DefaultSky.StarCount = ThePresetSky[10]
+	DefaultSky.SunAngularSize = ThePresetSky[11]
+	DefaultSky.SunTextureId = ThePresetSky[12]
+end)
+
+SkyPage:addButton("Island theme sky", function()
+	local ThePresetSky = presetsSky["Island theme sky"]
+
+	DefaultSky.CelestialBodiesShown = ThePresetSky[1]
+	DefaultSky.MoonAngularSize = ThePresetSky[2]
+	DefaultSky.MoonTextureId = ThePresetSky[3]
+	DefaultSky.SkyboxBk = ThePresetSky[4]
+	DefaultSky.SkyboxDn = ThePresetSky[5]
+	DefaultSky.SkyboxFt = ThePresetSky[6]
+	DefaultSky.SkyboxLf = ThePresetSky[7]
+	DefaultSky.SkyboxRt = ThePresetSky[8]
+	DefaultSky.SkyboxUp = ThePresetSky[9]
+	DefaultSky.StarCount = ThePresetSky[10]
+	DefaultSky.SunAngularSize = ThePresetSky[11]
+	DefaultSky.SunTextureId = ThePresetSky[12]
+end)
+
+SkyPage:addButton("Galaxy sky", function()
+	local ThePresetSky = presetsSky["Galaxy sky"]
+
+	DefaultSky.CelestialBodiesShown = ThePresetSky[1]
+	DefaultSky.MoonAngularSize = ThePresetSky[2]
+	DefaultSky.MoonTextureId = ThePresetSky[3]
+	DefaultSky.SkyboxBk = ThePresetSky[4]
+	DefaultSky.SkyboxDn = ThePresetSky[5]
+	DefaultSky.SkyboxFt = ThePresetSky[6]
+	DefaultSky.SkyboxLf = ThePresetSky[7]
+	DefaultSky.SkyboxRt = ThePresetSky[8]
+	DefaultSky.SkyboxUp = ThePresetSky[9]
+	DefaultSky.StarCount = ThePresetSky[10]
+	DefaultSky.SunAngularSize = ThePresetSky[11]
+	DefaultSky.SunTextureId = ThePresetSky[12]
+end)
+
+SkyPage:addButton("Night time sky", function()
+	local ThePresetSky = presetsSky["Night time sky"]
+
+	DefaultSky.CelestialBodiesShown = ThePresetSky[1]
+	DefaultSky.MoonAngularSize = ThePresetSky[2]
+	DefaultSky.MoonTextureId = ThePresetSky[3]
+	DefaultSky.SkyboxBk = ThePresetSky[4]
+	DefaultSky.SkyboxDn = ThePresetSky[5]
+	DefaultSky.SkyboxFt = ThePresetSky[6]
+	DefaultSky.SkyboxLf = ThePresetSky[7]
+	DefaultSky.SkyboxRt = ThePresetSky[8]
+	DefaultSky.SkyboxUp = ThePresetSky[9]
+	DefaultSky.StarCount = ThePresetSky[10]
+	DefaultSky.SunAngularSize = ThePresetSky[11]
+	DefaultSky.SunTextureId = ThePresetSky[12]
+end)
+
+SkyPage:addButton("Night City sky", function()
+	local ThePresetSky = presetsSky["Night City sky"]
+
+	DefaultSky.CelestialBodiesShown = ThePresetSky[1]
+	DefaultSky.MoonAngularSize = ThePresetSky[2]
+	DefaultSky.MoonTextureId = ThePresetSky[3]
+	DefaultSky.SkyboxBk = ThePresetSky[4]
+	DefaultSky.SkyboxDn = ThePresetSky[5]
+	DefaultSky.SkyboxFt = ThePresetSky[6]
+	DefaultSky.SkyboxLf = ThePresetSky[7]
+	DefaultSky.SkyboxRt = ThePresetSky[8]
+	DefaultSky.SkyboxUp = ThePresetSky[9]
+	DefaultSky.StarCount = ThePresetSky[10]
+	DefaultSky.SunAngularSize = ThePresetSky[11]
+	DefaultSky.SunTextureId = ThePresetSky[12]
+end)
+
+
+
+TimePage:addToggle("Always day", nil, function(value)
+	alwaysDay = value
+end)
+
+
+
+
+
 
 
 -- ANIMAL SIMULATOR
 
 if game.GameId == 2023680558 then
-	local page = venyx:addPage("Animal simulator", 5012544693)
+	local page = venyx:addPage("Animal simulator", 8988803597)
 
 	local ChestPage = page:addSection("Chest")
 	local packPage = page:addSection("Pack and Name")
@@ -1243,7 +1578,7 @@ end
 print(game.GameId)
 if game.GameId == 47545 then
 	print("pizza")
-	local page = venyx:addPage("Pizza place", 5012544693)
+	local page = venyx:addPage("Pizza place", 8988812453)
 
 	local AutoworkPage = page:addSection("Autowork")
 
@@ -1277,7 +1612,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------------
 
 if game.GameId == 210851291 then
-	local page = venyx:addPage("Build a boat", 5012544693)
+	local page = venyx:addPage("Build a boat", 8988823793)
 
 	local AutofarmPage = page:addSection("Autofarm")
 	local MiscPage = page:addSection("Misc")
@@ -1403,34 +1738,34 @@ end
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------TEST ZONE---------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
-local page = venyx:addPage("Test zone", 5012544693)
+--local page = venyx:addPage("Test zone", 5012544693)
 
-local testPage = page:addSection("Test")
+--local testPage = page:addSection("Test")
 
-testPage:addTextbox("Notification", "Default", function(value, focusLost)
-	if focusLost then
-		venyx:Notify("Title", "text")
-	end
-end)
-
---local plrs = {}
---for i, v in pairs(game.Players:GetPlayers()) do
---	table.insert(plrs, 1, v.Name)
---end
---testPage:addDropdown("Dropdown", plrs, function(text)
---	print("Selected", text)
+--testPage:addTextbox("Notification", "Default", function(value, focusLost)
+--	if focusLost then
+--		venyx:Notify("Title", "text")
+--	end
 --end)
 
-testPage:addTextbox("BasePrint", "Default", function(value, focusLost)
-	if focusLost then
-	end
-end)
+----local plrs = {}
+----for i, v in pairs(game.Players:GetPlayers()) do
+----	table.insert(plrs, 1, v.Name)
+----end
+----testPage:addDropdown("Dropdown", plrs, function(text)
+----	print("Selected", text)
+----end)
+
+--testPage:addTextbox("BasePrint", "Default", function(value, focusLost)
+--	if focusLost then
+--	end
+--end)
 
 
 
-testPage:addSlider("test", testSpeedValue, 1, 1000, function(value)
+--testPage:addSlider("test", testSpeedValue, 1, 1000, function(value)
 
-end)
+--end)
 
 
 
@@ -1438,7 +1773,7 @@ end)
 
 
 -- THEME
-local theme = venyx:addPage("Theme", 5012544693)
+local theme = venyx:addPage("Theme", 8988837477)
 local colors = theme:addSection("Colors")
 
 for theme, color in pairs(themes) do -- all in one theme changer, i know, im cool
@@ -1448,7 +1783,7 @@ for theme, color in pairs(themes) do -- all in one theme changer, i know, im coo
 end
 
 -- SETTING
-local setting = venyx:addPage("Core", 5012544693)
+local setting = venyx:addPage("Core", 8988843992)
 local BasicSetting = setting:addSection("Basic setting")
 local OtherGui = setting:addSection("Other Gui")
 
@@ -1459,6 +1794,10 @@ end)
 
 BasicSetting:addButton("Refresh Gui", function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/oxi-cheats/main/oxi%20script", true))()
+end)
+
+BasicSetting:addButton("Rejoin Game", function()
+	game:GetService("TeleportService"):Teleport(game.PlaceId , game.Players.LocalPlayer)
 end)
 
 BasicSetting:addButton("Delete Gui", function()
@@ -1534,6 +1873,10 @@ runservice.Stepped:Connect(function()
 			game.Players.LocalPlayer.Character.Humanoid.JumpPower = basicJump
 			game.Workspace.Gravity = basicGravity
 			game.Players.LocalPlayer.Character.Humanoid.HipHeight = basicLevitation / 10
+		end
+
+		if alwaysDay then
+			game.Lighting.ClockTime = 12
 		end
 
 
@@ -2077,12 +2420,7 @@ spawn(customloopPizza)
 
 
 
--- delete old menu
-game.CoreGui.ChildAdded:Connect(function(child)
-	if child.Name == "Oxi cheats" then
-		deleteGui()
-	end
-end)
+
 
 
 
