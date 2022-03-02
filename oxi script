@@ -12,6 +12,7 @@ local AcessTable = {
 	3134085834, --[[leraptou alt2]]
 	720726589, --[[Skylleur]]
 	1025947173, --[[furylebg]]
+	1728043758, --[[FURYMOB_5]]
 }
 
 local Acess = false
