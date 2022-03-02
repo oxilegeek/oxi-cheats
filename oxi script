@@ -385,7 +385,7 @@ function createFlex()
 		health.BorderSizePixel = 0
 		health.Size = UDim2.new(1,0,hrp.Parent.Humanoid.Health/100,0)
 		hrp.Parent.Humanoid.Changed:Connect(function(property) --//Triggers when any Property changed
-			hrp.total.total2.Frame.Size = UDim2.new(1,0,hrp.Parent.Humanoid.Health/100,0) --//Adjusts the size of the green Frame								
+			hrp.OxiCheatESPHealth.total2.Frame.Size = UDim2.new(1,0,hrp.Parent.Humanoid.Health/100,0) --//Adjusts the size of the green Frame								
 		end)
 	end
 	-- -----------------------------------------------------------------------------------
