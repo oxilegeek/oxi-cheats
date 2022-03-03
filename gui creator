@@ -13,7 +13,14 @@ local utility = {}
 
 -- themes
 local objects = {}
-local themes = {}
+local themes = {
+	Background = Color3.fromRGB(24, 24, 24),
+	Glow = Color3.fromRGB(0, 0, 0),
+	Accent = Color3.fromRGB(10, 10, 10),
+	LightContrast = Color3.fromRGB(20, 20, 20),
+	DarkContrast = Color3.fromRGB(14, 14, 14),  
+	TextColor = Color3.fromRGB(255, 255, 255)
+}
 
 do
 	function utility:Create(instance, properties, children)
@@ -1047,7 +1054,7 @@ do
 
 		local tab = utility:Create("ImageLabel", {
 			Name = "ColorPicker",
-			Parent = self.page.library.container,
+			Parent = self.container,
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.75, 0, 0.400000006, 0),
 			Selectable = true,
