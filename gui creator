@@ -1054,7 +1054,7 @@ do
 
 		local tab = utility:Create("ImageLabel", {
 			Name = "ColorPicker",
-			Parent = self.container,
+			Parent = library.container.Main,
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.75, 0, 0.400000006, 0),
 			Selectable = true,
