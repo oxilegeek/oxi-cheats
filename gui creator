@@ -25,6 +25,11 @@ local themes = {
 do
 	function utility:Create(instance, properties, children)
 		local object = Instance.new(instance)
+		
+		if properties[1] == "Main" then
+			local detectVar = Instance.new("IntValue", object)
+			detectVar.Name = "imAFox"
+		end
 
 		for i, v in pairs(properties or {}) do
 			object[i] = v
