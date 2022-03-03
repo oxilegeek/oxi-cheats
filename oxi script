@@ -1411,7 +1411,7 @@ if game.PlaceId == 6356806222 then
 	
 	workspace.Parts.ChildAdded:Connect(function(child)
 		if autoDeletePart then
-			wait()
+			game:GetService("RunService").RenderStepped:Wait()
 			child:Destroy()
 		end
 	end)
