@@ -1,8 +1,19 @@
-local name = "Foxi cheats V2 (anti afk always enabled)"
+local name = "Foxi cheats V2 (anti afk always enabled) Update [opti :D]!"
+
+-- themes
+local themes = {
+	Background = Color3.fromRGB(24, 24, 24),
+	Glow = Color3.fromRGB(255, 106, 0),
+	Accent = Color3.fromRGB(10, 10, 10),
+	LightContrast = Color3.fromRGB(20, 20, 20),
+	DarkContrast = Color3.fromRGB(14, 14, 14),  
+	TextColor = Color3.fromRGB(255, 255, 255)
+}
+
 
 -- init
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/gui-creator/main/gui%20creator"))()
-local venyx = library.new(name, 5013109572)
+local venyx = library.new(name, 8988759357)
 
 local AcessTable = {
 	785920831, --[[juju]]
@@ -113,6 +124,9 @@ local DefaultSkyStat
 local alwaysDay = false
 local doSupplier = false
 local ESPToggle = false
+local currentSpeed = 0
+local shiftToSprint = false
+local sprintSpeed = 20
 
 --local DefaultSky = game.Lighting.Sky print("{" ..DefaultSky.MoonAngularSize ..", " ..'"' ..DefaultSky.MoonTextureId ..'"' ..", " ..'"' ..DefaultSky.SkyboxBk ..'"' ..", " ..'"' ..DefaultSky.SkyboxDn ..'"' ..", " ..'"' ..DefaultSky.SkyboxFt ..'"' ..", " ..'"' ..DefaultSky.SkyboxLf ..'"' ..", " ..'"' ..DefaultSky.SkyboxRt ..'"' ..", " ..'"' ..DefaultSky.SkyboxUp ..'"' ..", " ..DefaultSky.StarCount ..", " ..DefaultSky.SunAngularSize ..", " ..'"' ..DefaultSky.SunTextureId ..'"' .."}")
 
@@ -733,21 +747,14 @@ if game.GameId == 47545 then
 end
 
 
+
 --DefaultSet
 DefaultSky = GetDefaultSky()
 DefaultSkyStat = {DefaultSky.CelestialBodiesShown, DefaultSky.MoonAngularSize, DefaultSky.MoonTextureId, DefaultSky.SkyboxBk, DefaultSky.SkyboxDn, DefaultSky.SkyboxFt, DefaultSky.SkyboxLf, DefaultSky.SkyboxRt, DefaultSky.SkyboxUp, DefaultSky.StarCount, DefaultSky.SunAngularSize, DefaultSky.SunTextureId}
 
 
 
--- themes
-local themes = {
-	Background = Color3.fromRGB(24, 24, 24),
-	Glow = Color3.fromRGB(0, 0, 0),
-	Accent = Color3.fromRGB(10, 10, 10),
-	LightContrast = Color3.fromRGB(20, 20, 20),
-	DarkContrast = Color3.fromRGB(14, 14, 14),  
-	TextColor = Color3.fromRGB(255, 255, 255)
-}
+
 
 local function deleteGui()
 	game.CoreGui:FindFirstChild(name):Destroy()
@@ -761,7 +768,8 @@ end
 
 -- delete old menu
 game.CoreGui.ChildAdded:Connect(function(child)
-	if child.Name == name and alive == true then
+	print(child:FindFirstChild("imAFox"))
+	if ( child.Name == name or child:FindFirstChild("imAFox") ) and alive == true then
 		deleteGui()
 	end
 end)
@@ -773,10 +781,12 @@ local HumanoidStat = page:addSection("Humanoid stat")
 local TeleportPage = page:addSection("Teleport and spectate")
 local BotPage = page:addSection("Bot")
 local FunPage = page:addSection("Fun")
+local GameAddonPage = page:addSection("GameAddon")
 
 BasicHack:addToggle("infinity jump", nil, function(value)
 	infiniJump = value
 end)
+
 
 BasicHack:addToggle("noclip", nil, function(value)
 	noclip = value
@@ -812,11 +822,14 @@ BasicHack:addToggle("fly", nil, function(value)
 	FLY()
 end)
 
-BasicHack:addKeybind("fly keybind : ", Enum.KeyCode.F, function()
-	if _G.FLYING then
-		FLY()
-		flyKeybindToggle = not flyKeybindToggle
-	end
+BasicHack:addKeybind("fly keybind : ", nil, function()
+	BasicHack:updateToggle("fly", "fly", not _G.FLYING)
+	_G.FLYING = not _G.FLYING
+	FLY()
+	--if _G.FLYING then
+	--	FLY()
+	--	flyKeybindToggle = not flyKeybindToggle
+	--end
 end)
 
 BasicHack:addTextbox("Fly speed", "50", function(value, focusLost)
@@ -855,11 +868,34 @@ end)
 HumanoidStat:addSlider("Speed", 16, 0, 300, function(value)
 	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
 	basicSpeed = value
+
+	game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
+		if alive then
+			local human = char:WaitForChild('Humanoid')
+			human.Changed:Connect(function()
+				if human.WalkSpeed ~= value and alive then
+					HumanoidStat:updateSlider("Speed", nil, human.WalkSpeed, 0, 300, 0)
+				end
+			end)
+		end
+	end)
+
 end)
 
 HumanoidStat:addSlider("Jump power", 50, 0, 500, function(value)
 	game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
 	basicJump = value
+
+	game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
+		if alive then
+			local human = char:WaitForChild('Humanoid')
+			human.Changed:Connect(function()
+				if human.JumpPower ~= value and alive then
+					HumanoidStat:updateSlider("Jump power", nil, human.JumpPower, 0, 500, 0)
+				end
+			end)
+		end
+	end)
 end)
 
 HumanoidStat:addSlider("Gravity", 196.2, 0, 500, function(value)
@@ -870,6 +906,17 @@ end)
 HumanoidStat:addSlider("Levitation", 1, 0, 500, function(value)
 	game.Players.LocalPlayer.Character.Humanoid.HipHeight = value / 10
 	basicLevitation = value
+
+	game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
+		if alive then
+			local human = char:WaitForChild('Humanoid')
+			human.Changed:Connect(function()
+				if human.HipHeight ~= value / 10 and alive then
+					HumanoidStat:updateSlider("Jump power", nil, human.HipHeight * 10, 0, 500, 0)
+				end
+			end)
+		end
+	end)
 end)
 
 HumanoidStat:addButton("Reset", function()
@@ -891,12 +938,40 @@ TeleportPage:addTextbox("Player", "player name", function(value, focusLost)
 	end
 end)
 
+--local plrNameTable = {}
+--for i, v in pairs(game.Players:GetPlayers()) do
+--	table.insert(plrNameTable, 1, v.Name)
+--end
+
+--TeleportPage:addDropdown("plr to teleport", plrNameTable, function(value)
+--	tpPlayerFocus = value
+--end)
+
+--function updatePlayerDropdown(theDropdown)
+--	if alive then
+--		local plrNameTableTemp = {}
+--		for i, v in pairs(game.Players:GetPlayers()) do
+--			table.insert(plrNameTableTemp, 1, v.Name)
+--		end
+
+--		TeleportPage:updateDropdown(theDropdown, nil, plrNameTableTemp)
+--	end
+--end
+
+--game.Players.PlayerAdded:Connect(function()
+--	updatePlayerDropdown("plr to teleport")
+--end)
+
+--game.Players.PlayerRemoving:Connect(function()
+--	updatePlayerDropdown("plr to teleport")
+--end)
+
 TeleportPage:addButton("Teleport", function()
 	local success = pcall(function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players:FindFirstChild(tpPlayerFocus).Character.HumanoidRootPart.Position) end)
 	if not success then
 		venyx:Notify("ERROR", "player not found")
 	end
-	
+
 end)
 
 
@@ -938,7 +1013,7 @@ FunPage:addButton("Sit", function()
 end)
 
 FunPage:addButton("Delete animation", function()
-	
+
 	pcall(function() game.Players.LocalPlayer.Character.Humanoid.Animator:Destroy() end)
 end)
 
@@ -954,6 +1029,39 @@ FunPage:addButton("AMOGUS", function()
 
 	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
 end)
+
+
+GameAddonPage:addToggle("Shift to sprint", nil, function(value)
+	shiftToSprint = value
+end)
+
+GameAddonPage:addSlider("Sprint speed", 20, 0, 300, function(value)
+	sprintSpeed = value
+end)
+
+UserInputService.InputBegan:Connect(function(input)
+	if input.KeyCode == Enum.KeyCode.LeftShift and shiftToSprint then
+		player.Character.Humanoid.WalkSpeed = sprintSpeed
+		game:GetService("TweenService"):Create(workspace.Camera, TweenInfo.new(0.2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {FieldOfView = 85}):Play()
+	end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+	if input.KeyCode == Enum.KeyCode.LeftShift and shiftToSprint then
+		player.Character.Humanoid.WalkSpeed = baseSpeed
+		game:GetService("TweenService"):Create(workspace.Camera, TweenInfo.new(0.2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {FieldOfView = 70}):Play()
+	end
+end)
+
+venyx:SelectPage(venyx.pages[1], true)
+
+game:GetService("RunService").RenderStepped:Wait()
+
+
+
+
+
+
 
 
 
@@ -997,7 +1105,7 @@ CameraPage:addButton("Reset fov", function()
 	game.Workspace.Camera.FieldOfView = 70
 end)
 
-CameraPage:addToggle("Freecam", nil, function(value)
+CameraPage:addToggle("Freeze cam", nil, function(value)
 	if value then
 		game.Workspace.Camera.CameraType = "Scriptable"
 	else
@@ -1028,7 +1136,7 @@ GuiPage:addToggle("HideMenu", nil, function(value)
 end)
 
 
-
+game:GetService("RunService").RenderStepped:Wait()
 
 -- BasicTp
 local page = venyx:addPage("Custom tp", 8988776454)
@@ -1067,6 +1175,7 @@ locationcreator:addButton("Create location", function()
 	end
 end)
 
+game:GetService("RunService").RenderStepped:Wait()
 
 
 --Custom Map
@@ -1216,7 +1325,7 @@ end)
 
 
 
-
+game:GetService("RunService").RenderStepped:Wait()
 
 
 
@@ -1571,7 +1680,7 @@ if game.GameId == 2023680558 then
 end
 
 
-
+game:GetService("RunService").RenderStepped:Wait()
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------Pizza place-------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
@@ -1606,7 +1715,7 @@ if game.GameId == 47545 then
 end
 
 
-
+game:GetService("RunService").RenderStepped:Wait()
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------BUILD A BOAT------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
@@ -1708,7 +1817,7 @@ end
 
 
 
-
+game:GetService("RunService").RenderStepped:Wait()
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------ISLAND------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
@@ -1770,8 +1879,7 @@ end
 
 
 
-
-
+game:GetService("RunService").RenderStepped:Wait()
 -- THEME
 local theme = venyx:addPage("Theme", 8988837477)
 local colors = theme:addSection("Colors")
@@ -1782,6 +1890,8 @@ for theme, color in pairs(themes) do -- all in one theme changer, i know, im coo
 	end)
 end
 
+
+game:GetService("RunService").RenderStepped:Wait()
 -- SETTING
 local setting = venyx:addPage("Core", 8988843992)
 local BasicSetting = setting:addSection("Basic setting")
@@ -1826,7 +1936,7 @@ end)
 
 
 
-
+game:GetService("RunService").RenderStepped:Wait()
 ----------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------BOUCLE-------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
@@ -1865,7 +1975,7 @@ runservice.Stepped:Connect(function()
 		end
 
 		if ShowPosition then
-			game.Players.LocalPlayer.PlayerGui.PositionGui.Pos.Text = "X : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X) .."  Y : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y) .."  Z : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
+			game.CoreGui.PositionGui.Pos.Text = "X : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X) .."  Y : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y) .."  Z : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
 		end
 
 		if autoSetSpeed then
@@ -2426,3 +2536,6 @@ spawn(customloopPizza)
 
 -- load
 venyx:SelectPage(venyx.pages[1], true)
+for theme, color in pairs(themes) do -- all in one theme changer, i know, im cool
+	venyx:setTheme(theme, color)
+end
