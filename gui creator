@@ -30,6 +30,7 @@ do
 			object[i] = v
 
 			if typeof(v) == "Color3" then -- save for theme changer later
+				print(themes)
 				local theme = utility:Find(themes, v)
 
 				if theme then
