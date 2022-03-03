@@ -15,23 +15,7 @@ local themes = {
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/gui-creator/main/gui%20creator"))()
 local venyx = library.new(name, 8988759357)
 
-local function deleteGui()
-	game.CoreGui:FindFirstChild(name):Destroy()
-	alive = false
-	for i, v in pairs(workspace:GetDescendants()) do
-		if v.Name == "OxiCheatESP" or v.Name == "OxiCheatESPHealth" then
-			v:Destroy()
-		end
-	end
-end
 
--- delete old menu
-game.CoreGui.ChildAdded:Connect(function(child)
-	print(child:FindFirstChild("imAFox"))
-	if ( child.Name == name or child:FindFirstChild("imAFox") ) and alive == true then
-		deleteGui()
-	end
-end)
 
 local AcessTable = {
 	785920831, --[[juju]]
@@ -145,6 +129,25 @@ local ESPToggle = false
 local currentSpeed = 0
 local shiftToSprint = false
 local sprintSpeed = 20
+local autoDeletePart = false
+
+local function deleteGui()
+	game.CoreGui:FindFirstChild(name):Destroy()
+	alive = false
+	for i, v in pairs(workspace:GetDescendants()) do
+		if v.Name == "OxiCheatESP" or v.Name == "OxiCheatESPHealth" then
+			v:Destroy()
+		end
+	end
+end
+
+-- delete old menu
+game.CoreGui.ChildAdded:Connect(function(child)
+	print(child:FindFirstChild("imAFox"))
+	if ( child.Name == name or child:FindFirstChild("imAFox") ) and alive == true then
+		deleteGui()
+	end
+end)
 
 --local DefaultSky = game.Lighting.Sky print("{" ..DefaultSky.MoonAngularSize ..", " ..'"' ..DefaultSky.MoonTextureId ..'"' ..", " ..'"' ..DefaultSky.SkyboxBk ..'"' ..", " ..'"' ..DefaultSky.SkyboxDn ..'"' ..", " ..'"' ..DefaultSky.SkyboxFt ..'"' ..", " ..'"' ..DefaultSky.SkyboxLf ..'"' ..", " ..'"' ..DefaultSky.SkyboxRt ..'"' ..", " ..'"' ..DefaultSky.SkyboxUp ..'"' ..", " ..DefaultSky.StarCount ..", " ..DefaultSky.SunAngularSize ..", " ..'"' ..DefaultSky.SunTextureId ..'"' .."}")
 
@@ -350,104 +353,101 @@ function GetDefaultSky()
 	end
 end
 
-ALLYCOLOR = {0,255,255}  	--//Color of the ESP  of people on the same team
-ENEMYCOLOR =  {255,0,0} 	--//Color of the ESP  of people on NOT the same team
-TRANSPARENCY = 0.5			--//Transparency of the ESP
-HEALTHBAR_ACTIVATED = true 	--//Renders the Healthbar
---
---
+ALLYCOLOR = {0,255,255}  	
+ENEMYCOLOR =  {255,0,0} 	
+TRANSPARENCY = 0.5		
+HEALTHBAR_ACTIVATED = true 	
 
---							!!!Don't Change Anything Below Here Unless You Know What You're Doing!!!
+
+
 
 function createFlex()
-	-- -----------------------------------------------------------------------------------
-	--[VARIABLES] //Changing may result in Errors!
-	players = game:GetService("Players") --//Required for PF
-	faces = {"Front","Back","Bottom","Left","Right","Top"} --//Every possible Enum face
-	currentPlayer = nil --//Used for the Team-Check
-	lplayer = players.LocalPlayer --//The LocalPlayer
-	-- -----------------------------------------------------------------------------------
+
+
+	players = game:GetService("Players")
+	faces = {"Front","Back","Bottom","Left","Right","Top"}
+	currentPlayer = nil 
+	lplayer = players.LocalPlayer 
+
 	players.PlayerAdded:Connect(function(p)
 		currentPlayer = p
-		p.CharacterAdded:Connect(function(character) --//For when a new Player joins the game 
-			wait()
+		p.CharacterAdded:Connect(function(character)
+			wait(0.1)
 			createESP(character)			
 		end)		
 	end)
-	-- -----------------------------------------------------------------------------------
-	function checkPart(obj)  if (obj:IsA("Part") or obj:IsA("MeshPart")) and obj.Name~="HumanoidRootPart" then return true end end --//Check if the Part is suitable 
-	-- -----------------------------------------------------------------------------------
+	
+	function checkPart(obj)  if (obj:IsA("Part") or obj:IsA("MeshPart")) and obj.Name~="HumanoidRootPart" then return true end end
+	
 	function actualESP(obj) 
 
 		for i=0,5 do
-			surface = Instance.new("SurfaceGui",obj) --//Creates the SurfaceGui
-			surface.Face = Enum.NormalId[faces[i+1]] --//Adjusts the Face and chooses from the face table
+			surface = Instance.new("SurfaceGui",obj) 
+			surface.Face = Enum.NormalId[faces[i+1]]
 			surface.AlwaysOnTop = true
 			surface.Enabled = ESPToggle
 			surface.Name = "OxiCheatESP"
 
-			frame = Instance.new("Frame",surface)	--//Creates the viewable Frame
+			frame = Instance.new("Frame",surface)	
 			frame.Size = UDim2.new(1,0,1,0)
 			frame.BorderSizePixel = 0												
 			frame.BackgroundTransparency = TRANSPARENCY
-			if currentPlayer.Team == players.LocalPlayer.Team then --//Checks the Players Team
-				frame.BackgroundColor3 = Color3.new(ALLYCOLOR[1],ALLYCOLOR[2],ALLYCOLOR[3])	--//If in same Team											
+			if currentPlayer.Team == players.LocalPlayer.Team then
+				frame.BackgroundColor3 = Color3.new(ALLYCOLOR[1],ALLYCOLOR[2],ALLYCOLOR[3])											
 			else
-				frame.BackgroundColor3 = Color3.new(ENEMYCOLOR[1],ENEMYCOLOR[2],ENEMYCOLOR[3])	--//If in another Team
+				frame.BackgroundColor3 = Color3.new(ENEMYCOLOR[1],ENEMYCOLOR[2],ENEMYCOLOR[3])
 			end
 
 		end
 	end
-	-- -----------------------------------------------------------------------------------
+
 	function createHealthbar(hrp) 
-		board =Instance.new("BillboardGui",hrp) --//Creates the BillboardGui with HumanoidRootPart as the Parent
+		board =Instance.new("BillboardGui",hrp)
 		board.Name = "OxiCheatESPHealth"
 		board.Size = UDim2.new(1,0,1,0)
 		board.StudsOffset = Vector3.new(3,1,0)
 		board.AlwaysOnTop = true
 		board.Enabled = ESPToggle
 
-		bar = Instance.new("Frame",board) --//Creates the red background
+		bar = Instance.new("Frame",board)
 		bar.BackgroundColor3 = Color3.new(255,0,0)
 		bar.BorderSizePixel = 0
 		bar.Size = UDim2.new(0.2,0,4,0)
 		bar.Name = "total2"
 
-		health = Instance.new("Frame",bar) --//Creates the changing green Frame
+		health = Instance.new("Frame",bar)
 		health.BackgroundColor3 = Color3.new(0,255,0)
 		health.BorderSizePixel = 0
-		health.Size = UDim2.new(1,0,hrp.Parent.Humanoid.Health/100,0)
-		hrp.Parent.Humanoid.Changed:Connect(function(property) --//Triggers when any Property changed
-			hrp.OxiCheatESPHealth.total2.Frame.Size = UDim2.new(1,0,hrp.Parent.Humanoid.Health/100,0) --//Adjusts the size of the green Frame								
+		health.Size = UDim2.new(1,0,hrp.Parent.Humanoid.Health/ hrp.Parent.Humanoid.MaxHealth,0)
+		hrp.Parent.Humanoid.Changed:Connect(function(property) 
+			hrp.OxiCheatESPHealth.total2.Frame.Size = UDim2.new(1,0, hrp.Parent.Humanoid.Health / hrp.Parent.Humanoid.MaxHealth, 0)							
 		end)
 	end
-	-- -----------------------------------------------------------------------------------
-	function createESP(c) --//Checks and calls the proper function
-		bugfix = c:WaitForChild("Head") --// *Used so the children of the character arent nil.
+
+	function createESP(c)
+		bugfix = c:WaitForChild("Head") 
 		for i,v in pairs(c:GetChildren()) do
 			if checkPart(v) then
 				actualESP(v)
 			end
 		end
-		if HEALTHBAR_ACTIVATED then --//If the user decided to
-			createHealthbar(c:WaitForChild("HumanoidRootPart")) --//Calls the function of the creation
+		if HEALTHBAR_ACTIVATED then
+			createHealthbar(c:WaitForChild("HumanoidRootPart")) 
 		end
 	end
-	-- -----------------------------------------------------------------------------------
+
 	for i,people in pairs(players:GetChildren())do
 		if people ~= players.LocalPlayer then
 			currentPlayer = people
-			--//Used for Players already in the Game
 			createESP(people.Character)
 			people.CharacterAdded:Connect(function(character)
 				createESP(character)			
 			end)
 		end
 	end
-	-- -----------------------------------------------------------------------------------
-end --//End of the entire function
+end
 
-spawn(createFlex) --// Does exactly that :)
+spawn(createFlex)
 
 function closeESP()
 	for i, v in pairs(workspace:GetDescendants()) do
@@ -1131,50 +1131,56 @@ end)
 
 local objInstance = {}
 local Texture = {}
+local textureMoving = false
 CameraPage:addToggle("Remove texture (Freeze warning)", nil, function(value)
-	if value then
-		local num = 0
-		for i, v in pairs(workspace:GetDescendants()) do
+	if textureMoving == false then
+		textureMoving = true
+		if value then
+			local num = 0
+			for i, v in pairs(workspace:GetDescendants()) do
 
-			if v:IsA("Part") or v:IsA("WedgePart") or v:IsA("MeshPart") then
-				table.insert(objInstance, 1, v)
-				table.insert(Texture, 1, v.Material)
-				v.Material = Enum.Material.SmoothPlastic
-				num += 1
-			end
-
-			if v:IsA("Texture") then
-				table.insert(objInstance, 1, v)
-				table.insert(Texture, 1, v.Texture)
-				v.Texture = ""
-				num += 1
-			end
-
-			if num >= 200 then
-				num = 0
-				game:GetService("RunService").RenderStepped:Wait()
-			end
-		end
-	else
-		local num = 0
-		for i, v in pairs(objInstance) do
-			if v then
 				if v:IsA("Part") or v:IsA("WedgePart") or v:IsA("MeshPart") then
-					v.Material = Texture[i]
+					table.insert(objInstance, 1, v)
+					table.insert(Texture, 1, v.Material)
+					v.Material = Enum.Material.SmoothPlastic
 					num += 1
 				end
-				
+
 				if v:IsA("Texture") then
-					v.Texture = Texture[i]
+					table.insert(objInstance, 1, v)
+					table.insert(Texture, 1, v.Texture)
+					v.Texture = ""
 					num += 1
 				end
-				
-				if num >= 200 then
+
+				if num >= 500 then
 					num = 0
 					game:GetService("RunService").RenderStepped:Wait()
 				end
 			end
+		else
+			local num = 0
+			for i, v in pairs(objInstance) do
+				if v then
+					if v:IsA("Part") or v:IsA("WedgePart") or v:IsA("MeshPart") then
+						v.Material = Texture[i]
+						num += 1
+					end
+
+					if v:IsA("Texture") then
+						v.Texture = Texture[i]
+						num += 1
+					end
+
+					if num >= 500 then
+						num = 0
+						game:GetService("RunService").RenderStepped:Wait()
+					end
+				end
+			end
 		end
+		textureMoving = false
+		CameraPage:updateToggle("Remove texture (Freeze warning)", nil, value)
 	end
 end)
 
@@ -1386,6 +1392,33 @@ end)
 game:GetService("RunService").RenderStepped:Wait()
 
 
+
+
+--LagTester
+if game.PlaceId == 6356806222 then
+	local page = venyx:addPage("Lag tester", 8998677319)
+
+	local NormalPage = page:addSection("Basic")
+	
+	NormalPage:addToggle("Auto Delete Part", nil, function(value)
+		if value then
+			for i, v in pairs(workspace.Parts:GetChildren()) do
+				v:Destroy()
+			end
+		end
+		autoDeletePart = value
+	end)
+	
+	workspace.Parts.ChildAdded:Connect(function(child)
+		if autoDeletePart then
+			wait()
+			child:Destroy()
+		end
+	end)
+end
+
+
+game:GetService("RunService").RenderStepped:Wait()
 
 -- ANIMAL SIMULATOR
 
@@ -2593,7 +2626,7 @@ spawn(customloopPizza)
 
 
 -- load
-venyx:SelectPage(venyx.pages[1], true)
+--venyx:SelectPage(venyx.pages[1], true)
 for theme, color in pairs(themes) do -- all in one theme changer, i know, im cool
 	venyx:setTheme(theme, color)
 end
