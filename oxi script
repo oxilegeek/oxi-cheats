@@ -370,6 +370,7 @@ function createFlex()
 	players.PlayerAdded:Connect(function(p)
 		currentPlayer = p
 		p.CharacterAdded:Connect(function(character) --//For when a new Player joins the game 
+			wait()
 			createESP(character)			
 		end)		
 	end)
@@ -768,7 +769,10 @@ end
 
 --DefaultSet
 DefaultSky = GetDefaultSky()
-DefaultSkyStat = {DefaultSky.CelestialBodiesShown, DefaultSky.MoonAngularSize, DefaultSky.MoonTextureId, DefaultSky.SkyboxBk, DefaultSky.SkyboxDn, DefaultSky.SkyboxFt, DefaultSky.SkyboxLf, DefaultSky.SkyboxRt, DefaultSky.SkyboxUp, DefaultSky.StarCount, DefaultSky.SunAngularSize, DefaultSky.SunTextureId}
+if DefaultSky then
+	DefaultSkyStat = {DefaultSky.CelestialBodiesShown, DefaultSky.MoonAngularSize, DefaultSky.MoonTextureId, DefaultSky.SkyboxBk, DefaultSky.SkyboxDn, DefaultSky.SkyboxFt, DefaultSky.SkyboxLf, DefaultSky.SkyboxRt, DefaultSky.SkyboxUp, DefaultSky.StarCount, DefaultSky.SunAngularSize, DefaultSky.SunTextureId}
+
+end
 
 
 
@@ -1236,18 +1240,20 @@ local SkyPage = page:addSection("Sky")
 local TimePage = page:addSection("Time")
 
 SkyPage:addButton("Default game sky", function()
-	DefaultSky.CelestialBodiesShown = DefaultSkyStat[1]
-	DefaultSky.MoonAngularSize = DefaultSkyStat[2]
-	DefaultSky.MoonTextureId = DefaultSkyStat[3]
-	DefaultSky.SkyboxBk = DefaultSkyStat[4]
-	DefaultSky.SkyboxDn = DefaultSkyStat[5]
-	DefaultSky.SkyboxFt = DefaultSkyStat[6]
-	DefaultSky.SkyboxLf = DefaultSkyStat[7]
-	DefaultSky.SkyboxRt = DefaultSkyStat[8]
-	DefaultSky.SkyboxUp = DefaultSkyStat[9]
-	DefaultSky.StarCount = DefaultSkyStat[10]
-	DefaultSky.SunAngularSize = DefaultSkyStat[11]
-	DefaultSky.SunTextureId = DefaultSkyStat[12]
+	if DefaultSky then
+		DefaultSky.CelestialBodiesShown = DefaultSkyStat[1]
+		DefaultSky.MoonAngularSize = DefaultSkyStat[2]
+		DefaultSky.MoonTextureId = DefaultSkyStat[3]
+		DefaultSky.SkyboxBk = DefaultSkyStat[4]
+		DefaultSky.SkyboxDn = DefaultSkyStat[5]
+		DefaultSky.SkyboxFt = DefaultSkyStat[6]
+		DefaultSky.SkyboxLf = DefaultSkyStat[7]
+		DefaultSky.SkyboxRt = DefaultSkyStat[8]
+		DefaultSky.SkyboxUp = DefaultSkyStat[9]
+		DefaultSky.StarCount = DefaultSkyStat[10]
+		DefaultSky.SunAngularSize = DefaultSkyStat[11]
+		DefaultSky.SunTextureId = DefaultSkyStat[12]
+	end
 end)
 
 SkyPage:addButton("Realistic sky", function()
@@ -1507,7 +1513,7 @@ if game.GameId == 2023680558 then
 
 
 	-- TP
-	local page = venyx:addPage("TP", 5012544693)
+	local page = venyx:addPage("TP", 8988803597)
 
 	local TpPage = page:addSection("Teleport")
 
@@ -1538,7 +1544,7 @@ if game.GameId == 2023680558 then
 
 
 	-- PVP
-	local page = venyx:addPage("PVP", 5012544693)
+	local page = venyx:addPage("PVP", 8988803597)
 
 	local keyboardPage = page:addSection("Autokeyboard")
 	--local ItemPage = page:addSection("GiveItem")
@@ -1681,7 +1687,7 @@ if game.GameId == 2023680558 then
 
 
 	-- Autofarm
-	local page = venyx:addPage("Autofarm", 5012544693)
+	local page = venyx:addPage("Autofarm", 8988803597)
 
 	local onlineAutofarmPage = page:addSection("Online autofarm")
 	local afkAutofarmPage = page:addSection("afk autofarm")
