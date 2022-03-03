@@ -45,7 +45,7 @@ do
 		for i, module in pairs(children or {}) do
 			module.Parent = object
 		end
-
+		run.RenderStepped:Wait()
 		return object
 	end
 
