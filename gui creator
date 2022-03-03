@@ -25,11 +25,6 @@ local themes = {
 do
 	function utility:Create(instance, properties, children)
 		local object = Instance.new(instance)
-		
-		if properties[1] == "Main" then
-			local detectVar = Instance.new("IntValue", object)
-			detectVar.Name = "imAFox"
-		end
 
 		for i, v in pairs(properties or {}) do
 			object[i] = v
@@ -221,6 +216,9 @@ do
 			Name = title,
 			Parent = game.CoreGui
 		}, {
+			utility:Create("IntValue", {
+				Name = "imAFox",
+			}),
 			utility:Create("ImageLabel", {
 				Name = "Main",
 				BackgroundTransparency = 1,
@@ -1811,8 +1809,8 @@ do
 
 		return dropdown
 	end
-	
-	
+
+
 	function section:addPlayerList(title, callback)
 		local dropdown = utility:Create("Frame", {
 			Name = "Dropdown",
