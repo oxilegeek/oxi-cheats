@@ -1054,7 +1054,7 @@ do
 
 		local tab = utility:Create("ImageLabel", {
 			Name = "ColorPicker",
-			Parent = library.container.Main,
+			Parent = self.container,
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.75, 0, 0.400000006, 0),
 			Selectable = true,
@@ -1314,7 +1314,7 @@ do
 			})
 		})
 
-		utility:DraggingEnabled(tab)
+		--utility:DraggingEnabled(tab)
 		table.insert(self.modules, colorpicker)
 		--self:Resize()
 
