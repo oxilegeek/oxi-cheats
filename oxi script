@@ -15,6 +15,24 @@ local themes = {
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/gui-creator/main/gui%20creator"))()
 local venyx = library.new(name, 8988759357)
 
+local function deleteGui()
+	game.CoreGui:FindFirstChild(name):Destroy()
+	alive = false
+	for i, v in pairs(workspace:GetDescendants()) do
+		if v.Name == "OxiCheatESP" or v.Name == "OxiCheatESPHealth" then
+			v:Destroy()
+		end
+	end
+end
+
+-- delete old menu
+game.CoreGui.ChildAdded:Connect(function(child)
+	print(child:FindFirstChild("imAFox"))
+	if ( child.Name == name or child:FindFirstChild("imAFox") ) and alive == true then
+		deleteGui()
+	end
+end)
+
 local AcessTable = {
 	785920831, --[[juju]]
 	426302615, --[[Goldo]]
@@ -428,7 +446,7 @@ function createFlex()
 	-- -----------------------------------------------------------------------------------
 end --//End of the entire function
 
-createFlex() --// Does exactly that :)
+spawn(createFlex) --// Does exactly that :)
 
 function closeESP()
 	for i, v in pairs(workspace:GetDescendants()) do
@@ -756,23 +774,7 @@ DefaultSkyStat = {DefaultSky.CelestialBodiesShown, DefaultSky.MoonAngularSize, D
 
 
 
-local function deleteGui()
-	game.CoreGui:FindFirstChild(name):Destroy()
-	alive = false
-	for i, v in pairs(workspace:GetDescendants()) do
-		if v.Name == "OxiCheatESP" or v.Name == "OxiCheatESPHealth" then
-			v:Destroy()
-		end
-	end
-end
 
--- delete old menu
-game.CoreGui.ChildAdded:Connect(function(child)
-	print(child:FindFirstChild("imAFox"))
-	if ( child.Name == name or child:FindFirstChild("imAFox") ) and alive == true then
-		deleteGui()
-	end
-end)
 
 -- CHARACTER
 local page = venyx:addPage("Character", 8988743366)
@@ -1123,8 +1125,53 @@ LightingPage:addToggle("HideGlobalShadows", nil, function(value)
 	game.Lighting.GlobalShadows = not value
 end)
 
-CameraPage:addButton("Shaders", function()
+local objInstance = {}
+local Texture = {}
+CameraPage:addToggle("Remove texture (Freeze warning)", nil, function(value)
+	if value then
+		local num = 0
+		for i, v in pairs(workspace:GetDescendants()) do
 
+			if v:IsA("Part") or v:IsA("WedgePart") or v:IsA("MeshPart") then
+				table.insert(objInstance, 1, v)
+				table.insert(Texture, 1, v.Material)
+				v.Material = Enum.Material.SmoothPlastic
+				num += 1
+			end
+
+			if v:IsA("Texture") then
+				table.insert(objInstance, 1, v)
+				table.insert(Texture, 1, v.Texture)
+				v.Texture = ""
+				num += 1
+			end
+
+			if num >= 200 then
+				num = 0
+				game:GetService("RunService").RenderStepped:Wait()
+			end
+		end
+	else
+		local num = 0
+		for i, v in pairs(objInstance) do
+			if v then
+				if v:IsA("Part") or v:IsA("WedgePart") or v:IsA("MeshPart") then
+					v.Material = Texture[i]
+					num += 1
+				end
+				
+				if v:IsA("Texture") then
+					v.Texture = Texture[i]
+					num += 1
+				end
+				
+				if num >= 200 then
+					num = 0
+					game:GetService("RunService").RenderStepped:Wait()
+				end
+			end
+		end
+	end
 end)
 
 GuiPage:addToggle("HideMenu", nil, function(value)
@@ -1137,6 +1184,11 @@ end)
 
 
 game:GetService("RunService").RenderStepped:Wait()
+
+
+
+
+
 
 -- BasicTp
 local page = venyx:addPage("Custom tp", 8988776454)
