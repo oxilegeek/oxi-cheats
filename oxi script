@@ -131,6 +131,7 @@ local shiftToSprint = false
 local sprintSpeed = 20
 local autoDeletePart = false
 local alwaysNight = false
+local timePositionValue = 0
 
 local function deleteGui()
 	game.CoreGui:FindFirstChild(name):Destroy()
@@ -1400,7 +1401,7 @@ end)
 
 MusicPage:addTextbox("Music id", "Put id here", function(value, focusLost)
 	if focusLost then
-		local success = pcall(function() MusicIdToPlay.SoundId = "rbxassetid://" ..value end) 
+		local success = pcall(function() MusicIdToPlay.SoundId = "rbxassetid://" ..value MusicIdToPlay:Stop() end) 
 
 		if not success then
 			venyx:Notify("Error", "Music not found")
@@ -1411,6 +1412,7 @@ end)
 MusicPage:addToggle("Play music", nil, function(value)
 	if value then
 		MusicIdToPlay:Play()
+		MusicPage:updateSlider("Time", nil, math.floor(MusicIdToPlay.TimePosition), 0, math.floor(MusicIdToPlay.TimeLength), 0)
 	else
 		MusicIdToPlay:Stop()
 	end
@@ -1420,9 +1422,34 @@ MusicPage:addSlider("Volume", 15, 0, 90, function(value)
 	MusicIdToPlay.Volume = value / 30
 end)
 
+
 MusicPage:addSlider("Music speed (20 = normal)", 20, 0, 60, function(value)
 	MusicIdToPlay.PlaybackSpeed = value / 20
 end)
+
+MusicPage:addSlider("Time", 0, 0, 100, function(value)
+	--if math.floor(value * math.floor(MusicIdToPlay.TimeLength) / 100 ) + 1  ~= math.floor(MusicIdToPlay.TimePosition) and math.floor(value * math.floor(MusicIdToPlay.TimeLength) / 100 ) + 2  ~= math.floor(MusicIdToPlay.TimePosition) then
+		
+	--	print("timePositionValue : " ..timePositionValue)
+	--	print("value : " .. math.floor(value * math.floor(MusicIdToPlay.TimeLength) / 100 ) + 1)
+	--	print("MusicIdToPlay : " ..math.floor(MusicIdToPlay.TimePosition))
+	--	MusicIdToPlay.TimePosition = math.floor(value * math.floor(MusicIdToPlay.TimeLength) / 100 ) + 1
+		
+	--end
+	timePositionValue = value
+	
+	
+end)
+
+local function countSecond()
+	while wait(0.1) do
+		if MusicIdToPlay.Playing and MusicIdToPlay.TimeLength > 0 and math.floor(MusicIdToPlay.TimePosition) ~= timePositionValue then
+			MusicPage:updateSlider("Time", nil, math.floor(MusicIdToPlay.TimePosition), 0, math.floor(MusicIdToPlay.TimeLength), 0)
+		end
+	end
+end
+
+spawn(countSecond)
 
 
 
@@ -1454,10 +1481,6 @@ if game.PlaceId == 6356806222 then
 			end
 		end)
 	end
-
-	NormalPage:addButton("RemoveSpawn", function()
-		workspace.Parts:Destroy()
-	end)
 end
 
 
