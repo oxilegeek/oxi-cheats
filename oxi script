@@ -130,9 +130,11 @@ local currentSpeed = 0
 local shiftToSprint = false
 local sprintSpeed = 20
 local autoDeletePart = false
+local alwaysNight = false
 
 local function deleteGui()
 	game.CoreGui:FindFirstChild(name):Destroy()
+	game.CoreGui:FindFirstChild("FoxiMusic"):Destroy()
 	alive = false
 	for i, v in pairs(workspace:GetDescendants()) do
 		if v.Name == "OxiCheatESP" or v.Name == "OxiCheatESPHealth" then
@@ -376,9 +378,9 @@ function createFlex()
 			createESP(character)			
 		end)		
 	end)
-	
+
 	function checkPart(obj)  if (obj:IsA("Part") or obj:IsA("MeshPart")) and obj.Name~="HumanoidRootPart" then return true end end
-	
+
 	function actualESP(obj) 
 
 		for i=0,5 do
@@ -773,6 +775,10 @@ if DefaultSky then
 	DefaultSkyStat = {DefaultSky.CelestialBodiesShown, DefaultSky.MoonAngularSize, DefaultSky.MoonTextureId, DefaultSky.SkyboxBk, DefaultSky.SkyboxDn, DefaultSky.SkyboxFt, DefaultSky.SkyboxLf, DefaultSky.SkyboxRt, DefaultSky.SkyboxUp, DefaultSky.StarCount, DefaultSky.SunAngularSize, DefaultSky.SunTextureId}
 
 end
+
+local MusicIdToPlay = Instance.new("Sound", game.CoreGui)
+MusicIdToPlay.Name = "FoxiMusic"
+MusicIdToPlay.Looped = true
 
 
 
@@ -1244,6 +1250,7 @@ game:GetService("RunService").RenderStepped:Wait()
 local page = venyx:addPage("Custom world", 8988796619)
 local SkyPage = page:addSection("Sky")
 local TimePage = page:addSection("Time")
+local MusicPage = page:addSection("Local music")
 
 SkyPage:addButton("Default game sky", function()
 	if DefaultSky then
@@ -1387,6 +1394,36 @@ TimePage:addToggle("Always day", nil, function(value)
 	alwaysDay = value
 end)
 
+TimePage:addToggle("Always night", nil, function(value)
+	alwaysNight = value
+end)
+
+MusicPage:addTextbox("Music id", "Put id here", function(value, focusLost)
+	if focusLost then
+		local success = pcall(function() MusicIdToPlay.SoundId = "rbxassetid://" ..value end) 
+
+		if not success then
+			venyx:Notify("Error", "Music not found")
+		end
+	end
+end)
+
+MusicPage:addToggle("Play music", nil, function(value)
+	if value then
+		MusicIdToPlay:Play()
+	else
+		MusicIdToPlay:Stop()
+	end
+end)
+
+MusicPage:addSlider("Volume", 15, 0, 90, function(value)
+	MusicIdToPlay.Volume = value / 30
+end)
+
+MusicPage:addSlider("Music speed (20 = normal)", 20, 0, 60, function(value)
+	MusicIdToPlay.PlaybackSpeed = value / 20
+end)
+
 
 
 game:GetService("RunService").RenderStepped:Wait()
@@ -1399,7 +1436,7 @@ if game.PlaceId == 6356806222 then
 	local page = venyx:addPage("Lag tester", 8998677319)
 
 	local NormalPage = page:addSection("Basic")
-	
+
 	NormalPage:addToggle("Auto Delete Part", nil, function(value)
 		if value then
 			for i, v in pairs(workspace.Parts:GetChildren()) do
@@ -1408,12 +1445,18 @@ if game.PlaceId == 6356806222 then
 		end
 		autoDeletePart = value
 	end)
-	
-	workspace.Parts.ChildAdded:Connect(function(child)
-		if autoDeletePart then
-			game:GetService("RunService").RenderStepped:Wait()
-			child:Destroy()
-		end
+
+	if workspace:FindFirstChild("Parts") then
+		workspace.Parts.ChildAdded:Connect(function(child)
+			if autoDeletePart and alive then
+				game:GetService("RunService").RenderStepped:Wait()
+				child:Destroy()
+			end
+		end)
+	end
+
+	NormalPage:addButton("RemoveSpawn", function()
+		workspace.Parts:Destroy()
 	end)
 end
 
@@ -2078,6 +2121,10 @@ runservice.Stepped:Connect(function()
 
 		if alwaysDay then
 			game.Lighting.ClockTime = 12
+		end
+
+		if alwaysNight then
+			game.Lighting.ClockTime = 0
 		end
 
 
