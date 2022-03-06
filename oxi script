@@ -132,6 +132,8 @@ local sprintSpeed = 20
 local autoDeletePart = false
 local alwaysNight = false
 local timePositionValue = 0
+local showFarmOffer = false
+local PriceFrame = nil
 
 local function deleteGui()
 	game.CoreGui:FindFirstChild(name):Destroy()
@@ -878,7 +880,7 @@ HumanoidStat:addToggle("Coordinate", nil, function(value)
 	end
 end)
 
-HumanoidStat:addSlider("Speed", 16, 0, 300, function(value)
+HumanoidStat:addSlider("Speed", math.floor(baseSpeed), 0, 300, function(value)
 	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
 	basicSpeed = value
 
@@ -895,7 +897,7 @@ HumanoidStat:addSlider("Speed", 16, 0, 300, function(value)
 
 end)
 
-HumanoidStat:addSlider("Jump power", 50, 0, 500, function(value)
+HumanoidStat:addSlider("Jump power", math.floor(baseJump), 0, 500, function(value)
 	game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
 	basicJump = value
 
@@ -911,12 +913,12 @@ HumanoidStat:addSlider("Jump power", 50, 0, 500, function(value)
 	end)
 end)
 
-HumanoidStat:addSlider("Gravity", 196.2, 0, 500, function(value)
+HumanoidStat:addSlider("Gravity", math.floor(baseGravity), 0, 500, function(value)
 	game.Workspace.Gravity = value
 	basicGravity = value
 end)
 
-HumanoidStat:addSlider("Levitation", 1, 0, 500, function(value)
+HumanoidStat:addSlider("Levitation", math.floor(baseLevit), 0, 500, function(value)
 	game.Players.LocalPlayer.Character.Humanoid.HipHeight = value / 10
 	basicLevitation = value
 
@@ -937,6 +939,12 @@ HumanoidStat:addButton("Reset", function()
 	game.Workspace.Gravity = baseGravity
 	game.Players.LocalPlayer.Character.Humanoid.JumpPower = baseJump
 	game.Players.LocalPlayer.Character.Humanoid.HipHeight = baseLevit
+	
+	local human = game.Players.LocalPlayer.Character.Humanoid
+	HumanoidStat:updateSlider("Speed", nil, math.floor(baseSpeed), 0, 300)
+	HumanoidStat:updateSlider("Jump power", nil, math.floor(baseJump), 0, 500)
+		HumanoidStat:updateSlider("Gravity", nil, math.floor(baseGravity), 0, 500)
+			HumanoidStat:updateSlider("Levitation", nil, math.floor(baseLevit), 0, 500)
 end)
 
 HumanoidStat:addToggle("auto setSpeed (lag warning)", nil, function(value)
@@ -1471,6 +1479,59 @@ if game.PlaceId == 6356806222 then
 			end
 		end
 		autoDeletePart = value
+	end)
+
+	if workspace:FindFirstChild("Parts") then
+		workspace.Parts.ChildAdded:Connect(function(child)
+			if autoDeletePart and alive then
+				game:GetService("RunService").RenderStepped:Wait()
+				child:Destroy()
+			end
+		end)
+	end
+end
+
+game:GetService("RunService").RenderStepped:Wait()
+
+
+--Farming and friends
+if game.PlaceId == 2772610559 then
+	local page = venyx:addPage("Farming and friends", 9027120450)
+
+	local NormalPage = page:addSection("Basic")
+
+	NormalPage:addToggle("Show prices", nil, function(value)
+		showFarmOffer = value
+		local hostFrame = nil
+		
+		if value then
+			hostFrame = Instance.new("Frame")
+			hostFrame.Parent = game.CoreGui:FindFirstChild(name)
+			hostFrame.Name = "Price"
+			hostFrame.BackgroundTransparency = 1
+			hostFrame.Size = UDim2.new(0.15, 0, 0.7, 0)
+			hostFrame.Position = UDim2.new(0.82, 0, 0.03, 0)
+			
+			PriceFrame = workspace.SellValues.SellValues.SurfaceGui.Frame:Clone()
+			PriceFrame.Parent = hostFrame
+			PriceFrame.Size = UDim2.new(1, 0, 1, 0)
+			
+			while true do
+				wait(1)
+				
+				if not PriceFrame then
+					break
+				end
+				
+				PriceFrame:Destroy()
+				PriceFrame = workspace.SellValues.SellValues.SurfaceGui.Frame:Clone()
+				PriceFrame.Parent = hostFrame
+				PriceFrame.Size = UDim2.new(1, 0, 1, 0)
+				
+			end
+		else
+			hostFrame:Destroy()
+		end
 	end)
 
 	if workspace:FindFirstChild("Parts") then
