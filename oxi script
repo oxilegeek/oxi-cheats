@@ -1,4 +1,4 @@
-local name = "Foxi cheats V2 (anti afk always enabled) Update [opti :D]!"
+local name = "Foxi cheats V2 (anti afk always enabled) Update [Freecam]!"
 
 -- themes
 local themes = {
@@ -373,7 +373,7 @@ function createFlex()
 	players.PlayerAdded:Connect(function(p)
 		currentPlayer = p
 		p.CharacterAdded:Connect(function(character)
-			wait(0.1)
+			wait(0.2)
 			createESP(character)			
 		end)		
 	end)
@@ -1588,7 +1588,7 @@ CameraPage:addToggle("Freecam", nil, function(value)
 	FreecamToggle = true
 end)
 
-CameraPage:addKeybind("fly keybind : ", nil, function()
+CameraPage:addKeybind("Freecam keybind : ", Enum.KeyCode.P, function()
 	if FreecamToggle then
 		ToggleFreecam()
 	end
