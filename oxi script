@@ -766,7 +766,7 @@ if game.GameId == 47545 then
 	end
 end
 
-local plr = game.Players.LocalPlayer
+plr = game.Players.LocalPlayer
 
 ------------------------------------------------------------------------
 -- Freecam
