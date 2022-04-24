@@ -135,7 +135,7 @@ local timePositionValue = 0
 local showFarmOffer = false
 local PriceFrame = nil
 local ArtistToCopyName = ""
-local PaintSpeed = 5
+local PaintSpeed = 0.4
 local ArtistPlotNum = 1
 local PaintID = 1
 
@@ -1512,7 +1512,7 @@ if game.PlaceId == 8916037983 then
 	end)
 	
 	NormalPage:addSlider("Paint speed", 5, 1, 20, function(value)
-		PaintSpeed = (20 - value) / 10
+		PaintSpeed = (20 - value) / 35
 	end)
 	
 	NormalPage:addButton("Preview paint", function()
