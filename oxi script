@@ -32,7 +32,6 @@ local AcessTable = {
 	720726589, --[[Skylleur]]
 	1025947173, --[[furylebg]]
 	1728043758, --[[FURYMOB_5]]
-	2054979003, --[[Multron]]
 }
 
 local Acess = false
@@ -135,6 +134,10 @@ local alwaysNight = false
 local timePositionValue = 0
 local showFarmOffer = false
 local PriceFrame = nil
+local ArtistToCopyName = ""
+local PaintSpeed = 5
+local ArtistPlotNum = 1
+local PaintID = 1
 
 local function deleteGui()
 	game.CoreGui:FindFirstChild(name):Destroy()
@@ -1482,6 +1485,180 @@ spawn(countSecond)
 game:GetService("RunService").RenderStepped:Wait()
 
 
+
+
+--Starving artist
+if game.PlaceId == 8916037983 then
+	local page = venyx:addPage("Starving artist", 9460743904)
+
+	local NormalPage = page:addSection("Copy art")
+	
+	
+	
+	NormalPage:addTextbox("Player to copy", "player name", function(value, focusLost)
+		if focusLost then
+			if game.Players:FindFirstChild(value) then
+				ArtistToCopyName = value
+			else
+				venyx:Notify("Error", "Player not found")
+			end
+		end
+	end)
+	
+	NormalPage:addTextbox("Art number", "Enter number", function(value, focusLost)
+		if focusLost then
+			ArtistPlotNum = value
+		end
+	end)
+	
+	NormalPage:addSlider("Paint speed", 5, 1, 20, function(value)
+		PaintSpeed = (20 - value) / 10
+	end)
+	
+	NormalPage:addButton("Preview paint", function()
+		local imageBytes = {}
+		local IDPAINT = PaintID
+
+
+		for i=1,1024 do
+			table.insert(imageBytes, i, workspace.Plots[ArtistToCopyName].Easels[ArtistPlotNum].Canvas.SurfaceGui.Grid[i].BackgroundColor3)
+		end
+
+
+		local UI = game.Players.LocalPlayer.PlayerGui.MainGui.PaintFrame.GridHolder.Grid
+		for i,v in pairs(imageBytes) do
+			UI[i].BackgroundColor3  = v
+			if PaintID ~= IDPAINT then
+				break
+			end
+		end
+
+
+		local function color_pixel(index,color)
+			local connection = (getconnections(UI[tostring(index)].MouseButton1Click))[1]
+			setupvalue(connection.Function,9,color)
+			connection.Function()
+		end
+		local low_quality = 25
+
+		lq=low_quality
+		for i=1,1024 do
+			v=imageBytes[i]
+			if not v  or not v.R or not v.G or not v.B then continue end
+			if v.R == 0 and v.G == 0 and v.B == 0 then v = {R=255,G=255,B=255} end
+			local r,g,b = v.R or 0,v.G or 0,v.B or 0
+			print(i, r-(r%lq),g-(g%lq),b-(b%lq))
+			color_pixel(i,Color3.fromRGB(r-(r%lq),g-(g%lq),b-(b%lq)))
+		end
+		
+		wait(0.5)
+		
+		local imageBytes = {}
+		local IDPAINT = PaintID
+
+
+		for i=1,1024 do
+			table.insert(imageBytes, i, Color3.new(1, 1, 1))
+		end
+
+
+		local UI = game.Players.LocalPlayer.PlayerGui.MainGui.PaintFrame.GridHolder.Grid
+		for i,v in pairs(imageBytes) do
+			UI[i].BackgroundColor3  = v
+			if PaintID ~= IDPAINT then
+				break
+			end
+		end
+
+
+		local function color_pixel(index,color)
+			local connection = (getconnections(UI[tostring(index)].MouseButton1Click))[1]
+			setupvalue(connection.Function,9,color)
+			connection.Function()
+		end
+		local low_quality = 25
+
+		lq=low_quality
+		for i=1,1024 do
+			v=imageBytes[i]
+			if not v  or not v.R or not v.G or not v.B then continue end
+			if v.R == 0 and v.G == 0 and v.B == 0 then v = {R=255,G=255,B=255} end
+			local r,g,b = v.R or 0,v.G or 0,v.B or 0
+			print(i, r-(r%lq),g-(g%lq),b-(b%lq))
+			color_pixel(i,Color3.fromRGB(r-(r%lq),g-(g%lq),b-(b%lq)))
+		end
+	end)
+	
+	NormalPage:addButton("Start paint", function()
+		PaintID += 1
+		
+		local imageBytes = {}
+		local IDPAINT = PaintID
+		
+
+		for i=1,1024 do
+			table.insert(imageBytes, i, workspace.Plots[ArtistToCopyName].Easels[ArtistPlotNum].Canvas.SurfaceGui.Grid[i].BackgroundColor3)
+		end
+
+
+		local UI = game.Players.LocalPlayer.PlayerGui.MainGui.PaintFrame.GridHolder.Grid
+		for i,v in pairs(imageBytes) do
+			UI[i].BackgroundColor3  = v
+			wait(PaintSpeed)
+			if PaintID ~= IDPAINT then
+				break
+			end
+		end
+
+
+		local function color_pixel(index,color)
+			local connection = (getconnections(UI[tostring(index)].MouseButton1Click))[1]
+			setupvalue(connection.Function,9,color)
+			connection.Function()
+		end
+		local low_quality = 25
+
+		lq=low_quality
+		for i=1,1024 do
+			v=imageBytes[i]
+			if not v  or not v.R or not v.G or not v.B then continue end
+			if v.R == 0 and v.G == 0 and v.B == 0 then v = {R=255,G=255,B=255} end
+			local r,g,b = v.R or 0,v.G or 0,v.B or 0
+			print(i, r-(r%lq),g-(g%lq),b-(b%lq))
+			color_pixel(i,Color3.fromRGB(r-(r%lq),g-(g%lq),b-(b%lq)))
+		end
+	end)
+	
+	NormalPage:addButton("Stop paint", function()
+		PaintID += 1
+	end)
+	
+	NormalPage:addButton("Show art number", function()
+		for i, v in pairs(workspace.Plots:GetChildren()) do
+			for i, b in pairs(v.Easels:GetChildren()) do
+				local ArtInfo = b.ArtInfo:Clone()
+				ArtInfo.Parent = b.Canvas
+				ArtInfo.AlwaysOnTop = true
+				ArtInfo.StudsOffset = Vector3.new(0, 0, 0)
+				ArtInfo.MaxDistance = 50
+				
+				for i, c in pairs(ArtInfo.Frame.Info:GetChildren()) do
+					if c.Name ~= "ArtName" and c.Name ~= "UIListLayout" then
+						c:Destroy()
+					end
+				end
+				
+				ArtInfo.Frame.Info.ArtName.Text = "Art number : " ..b.Name
+				
+				game:GetService("Debris"):AddItem(ArtInfo, 3)
+			end
+		end
+	end)
+end
+
+
+
+game:GetService("RunService").RenderStepped:Wait()
 
 
 --LagTester
