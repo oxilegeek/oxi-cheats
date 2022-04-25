@@ -32,6 +32,7 @@ local AcessTable = {
 	720726589, --[[Skylleur]]
 	1025947173, --[[furylebg]]
 	1728043758, --[[FURYMOB_5]]
+2257280158,
 }
 
 local Acess = false
