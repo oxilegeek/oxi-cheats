@@ -2995,4 +2995,4 @@ spawn(customloopPizza)
 --venyx:SelectPage(venyx.pages[1], true)
 for theme, color in pairs(themes) do -- all in one theme changer, i know, im cool
 	venyx:setTheme(theme, color)
-endd
+end
