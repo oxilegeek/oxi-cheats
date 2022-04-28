@@ -32,7 +32,7 @@ local AcessTable = {
 	720726589, --[[Skylleur]]
 	1025947173, --[[furylebg]]
 	1728043758, --[[FURYMOB_5]]
-2257280158,
+	2264001548, --[[jefaikaka_desbrindil]]
 }
 
 local Acess = false
@@ -139,6 +139,8 @@ local ArtistToCopyName = ""
 local PaintSpeed = 0.4
 local ArtistPlotNum = 1
 local PaintID = 1
+local invisibleWallTable = {}
+local invisibleWallsShowed = false
 
 local function deleteGui()
 	game.CoreGui:FindFirstChild(name):Destroy()
@@ -149,6 +151,16 @@ local function deleteGui()
 			v:Destroy()
 		end
 	end
+	
+	for i, v in pairs(invisibleWallTable) do
+		if v then
+			v.Transparency = 1
+		end
+	end
+
+	invisibleWallTable = {}
+	
+	
 end
 
 -- delete old menu
@@ -776,6 +788,34 @@ if game.GameId == 47545 then
 end
 
 
+local function toggleInvisibleWall()
+	if not invisibleWallsShowed then
+		invisibleWallsShowed = true
+
+		for i, v in pairs(workspace:GetDescendants()) do
+			if v:IsA("Part") or v:IsA("MeshPart") or v:IsA("WedgePart") or v:IsA("UnionOperator") then
+				if v.Transparency == 1 then
+					table.insert(invisibleWallTable, 1, v)
+					v.BrickColor = BrickColor.new("Yellow flip/flop")
+					v.Transparency = 0.5
+				end
+			end
+		end
+
+	else
+		invisibleWallsShowed = false
+		for i, v in pairs(invisibleWallTable) do
+			if v then
+				v.Transparency = 1
+			end
+		end
+
+		invisibleWallTable = {}
+	end
+end
+
+
+
 
 --DefaultSet
 DefaultSky = GetDefaultSky()
@@ -888,34 +928,11 @@ end)
 HumanoidStat:addSlider("Speed", math.floor(baseSpeed), 0, 300, function(value)
 	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
 	basicSpeed = value
-
-	game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
-		if alive then
-			local human = char:WaitForChild('Humanoid')
-			human.Changed:Connect(function()
-				if human.WalkSpeed ~= value and alive then
-					HumanoidStat:updateSlider("Speed", nil, human.WalkSpeed, 0, 300, 0)
-				end
-			end)
-		end
-	end)
-
 end)
 
 HumanoidStat:addSlider("Jump power", math.floor(baseJump), 0, 500, function(value)
 	game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
 	basicJump = value
-
-	game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
-		if alive then
-			local human = char:WaitForChild('Humanoid')
-			human.Changed:Connect(function()
-				if human.JumpPower ~= value and alive then
-					HumanoidStat:updateSlider("Jump power", nil, human.JumpPower, 0, 500, 0)
-				end
-			end)
-		end
-	end)
 end)
 
 HumanoidStat:addSlider("Gravity", math.floor(baseGravity), 0, 500, function(value)
@@ -923,20 +940,38 @@ HumanoidStat:addSlider("Gravity", math.floor(baseGravity), 0, 500, function(valu
 	basicGravity = value
 end)
 
-HumanoidStat:addSlider("Levitation", math.floor(baseLevit), 0, 500, function(value)
+HumanoidStat:addSlider("Levitation", math.floor(baseLevit * 10), 0, 500, function(value)
 	game.Players.LocalPlayer.Character.Humanoid.HipHeight = value / 10
 	basicLevitation = value
+end)
 
-	game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
-		if alive then
-			local human = char:WaitForChild('Humanoid')
-			human.Changed:Connect(function()
-				if human.HipHeight ~= value / 10 and alive then
-					HumanoidStat:updateSlider("Jump power", nil, human.HipHeight * 10, 0, 500, 0)
-				end
-			end)
-		end
-	end)
+local function updateAllBasicBars(human)
+	if human.WalkSpeed ~= basicSpeed and alive then
+		HumanoidStat:updateSlider("Speed", nil, human.WalkSpeed, 0, 300, 0)
+		basicSpeed = human.WalkSpeed
+	end
+
+	if human.JumpPower ~= basicJump and alive then
+		HumanoidStat:updateSlider("Jump power", nil, human.JumpPower, 0, 500, 0)
+		basicJump = human.JumpPower
+	end
+
+	if human.HipHeight ~= basicLevitation and alive then
+		HumanoidStat:updateSlider("Levitation", nil, math.floor(human.HipHeight * 10), 0, 500, 0)
+		basicLevitation = human.HipHeight
+	end
+end
+
+--Update bars
+game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
+	if alive then
+		local human = char:WaitForChild('Humanoid')
+		wait(0.3)
+		updateAllBasicBars(human)
+		human.Changed:Connect(function()
+			updateAllBasicBars(human)
+		end)
+	end
 end)
 
 HumanoidStat:addButton("Reset", function()
@@ -949,7 +984,7 @@ HumanoidStat:addButton("Reset", function()
 	HumanoidStat:updateSlider("Speed", nil, math.floor(baseSpeed), 0, 300)
 	HumanoidStat:updateSlider("Jump power", nil, math.floor(baseJump), 0, 500)
 	HumanoidStat:updateSlider("Gravity", nil, math.floor(baseGravity), 0, 500)
-	HumanoidStat:updateSlider("Levitation", nil, math.floor(baseLevit), 0, 500)
+	HumanoidStat:updateSlider("Levitation", nil, math.floor(baseLevit * 10) , 0, 500)
 end)
 
 HumanoidStat:addToggle("auto setSpeed (lag warning)", nil, function(value)
@@ -1202,6 +1237,10 @@ CameraPage:addToggle("Remove texture (Freeze warning)", nil, function(value)
 		textureMoving = false
 		CameraPage:updateToggle("Remove texture (Freeze warning)", nil, value)
 	end
+end)
+
+CameraPage:addToggle("Show invisible walls", nil, function(value)
+	toggleInvisibleWall()
 end)
 
 GuiPage:addToggle("HideMenu", nil, function(value)
@@ -2396,7 +2435,7 @@ runservice.Stepped:Connect(function()
 			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = basicSpeed
 			game.Players.LocalPlayer.Character.Humanoid.JumpPower = basicJump
 			game.Workspace.Gravity = basicGravity
-			game.Players.LocalPlayer.Character.Humanoid.HipHeight = basicLevitation / 10
+			game.Players.LocalPlayer.Character.Humanoid.HipHeight = math.floor(basicLevitation / 10) 
 		end
 
 		if alwaysDay then
@@ -2956,4 +2995,4 @@ spawn(customloopPizza)
 --venyx:SelectPage(venyx.pages[1], true)
 for theme, color in pairs(themes) do -- all in one theme changer, i know, im cool
 	venyx:setTheme(theme, color)
-end
+endd
