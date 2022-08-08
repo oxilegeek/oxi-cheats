@@ -14,6 +14,9 @@ local themes = {
 -- init
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/gui-creator/main/gui%20creator"))()
 local venyx = library.new(name, 8988759357)
+game.CoreGui:FindFirstChild(name).Main.Visible = false
+venyx:toggle()
+game.CoreGui:FindFirstChild(name).Main.Visible = true
 
 
 
@@ -35,7 +38,7 @@ local AcessTable = {
 	2264001548, --[[jefaikaka_desbrindil]]
 }
 
-local Acess = false
+local Acess = true
 
 for i, v in pairs(AcessTable) do
 	if game.Players.LocalPlayer.UserId == v then
@@ -57,6 +60,8 @@ if not Acess then
 else
 	print("Valid ^^")
 end
+
+local UIS = game:GetService("UserInputService")
 
 -- var
 local alive = true
@@ -142,6 +147,7 @@ local PaintID = 1
 local invisibleWallTable = {}
 local invisibleWallsShowed = false
 local keys = shared.keys or {"A", "S", "D", "F"} -- MAKE THIS YOUR ROBEATS KEYBINDS FROM LEFT TO RIGHT, OR SET IN SHARED.KEYS
+local Autoplayer = {}
 
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local camera = workspace.CurrentCamera
@@ -406,7 +412,7 @@ function createFlex()
 		end)		
 	end)
 
-	function checkPart(obj)  if (obj:IsA("Part") or obj:IsA("MeshPart")) and obj.Name~="HumanoidRootPart" then return true end end
+	function checkPart(obj)  if (obj:IsA("Part") or obj:IsA("MeshPart") or obj:IsA("UnionOperation")) then return true end end
 
 	function actualESP(obj) 
 
@@ -414,18 +420,30 @@ function createFlex()
 			surface = Instance.new("SurfaceGui",obj) 
 			surface.Face = Enum.NormalId[faces[i+1]]
 			surface.AlwaysOnTop = true
+			--surface.MaxDistance = math.huge
 			surface.Enabled = ESPToggle
 			surface.Name = "OxiCheatESP"
 
-			frame = Instance.new("Frame",surface)	
+			local frame = Instance.new("Frame",surface)	
 			frame.Size = UDim2.new(1,0,1,0)
 			frame.BorderSizePixel = 0												
 			frame.BackgroundTransparency = TRANSPARENCY
-			if currentPlayer.Team == players.LocalPlayer.Team then
-				frame.BackgroundColor3 = Color3.new(ALLYCOLOR[1],ALLYCOLOR[2],ALLYCOLOR[3])											
-			else
-				frame.BackgroundColor3 = Color3.new(ENEMYCOLOR[1],ENEMYCOLOR[2],ENEMYCOLOR[3])
+			spawn(function()
+				local TempPlr = players:FindFirstChild(surface.Parent.Parent.Name) 
+			while true do 
+				if TempPlr.Team == players.LocalPlayer.Team then
+					frame.BackgroundColor3 = Color3.new(ALLYCOLOR[1],ALLYCOLOR[2],ALLYCOLOR[3])											
+				else
+					frame.BackgroundColor3 = Color3.new(ENEMYCOLOR[1],ENEMYCOLOR[2],ENEMYCOLOR[3])
+				end
+				wait(1)
 			end
+			end)
+			
+
+			surface:GetPropertyChangedSignal("AlwaysOnTop"):connect(function()
+				surface.AlwaysOnTop = true
+			end)
 
 		end
 	end
@@ -437,6 +455,7 @@ function createFlex()
 		board.StudsOffset = Vector3.new(3,1,0)
 		board.AlwaysOnTop = true
 		board.Enabled = ESPToggle
+		--board.MaxDistance = math.huge
 
 		bar = Instance.new("Frame",board)
 		bar.BackgroundColor3 = Color3.new(255,0,0)
@@ -449,11 +468,18 @@ function createFlex()
 		health.BorderSizePixel = 0
 		health.Size = UDim2.new(1,0,hrp.Parent.Humanoid.Health/ hrp.Parent.Humanoid.MaxHealth,0)
 		hrp.Parent.Humanoid.Changed:Connect(function(property) 
+			if hrp:FindFirstChild("OxiCheatESPHealth") then
 			hrp.OxiCheatESPHealth.total2.Frame.Size = UDim2.new(1,0, hrp.Parent.Humanoid.Health / hrp.Parent.Humanoid.MaxHealth, 0)							
+			end
+		end)
+
+		board:GetPropertyChangedSignal("AlwaysOnTop"):connect(function()
+			board.AlwaysOnTop = true
 		end)
 	end
 
 	function createESP(c)
+		if c then
 		bugfix = c:WaitForChild("Head") 
 		for i,v in pairs(c:GetChildren()) do
 			if checkPart(v) then
@@ -463,6 +489,7 @@ function createFlex()
 		if HEALTHBAR_ACTIVATED then
 			createHealthbar(c:WaitForChild("HumanoidRootPart")) 
 		end
+	end
 	end
 
 	for i,people in pairs(players:GetChildren())do
@@ -476,22 +503,17 @@ function createFlex()
 	end
 end
 
-spawn(createFlex)
 
 function closeESP()
 	for i, v in pairs(workspace:GetDescendants()) do
 		if v.Name == "OxiCheatESP" or v.Name == "OxiCheatESPHealth" then
-			v.Enabled = false
+			v:Destroy()
 		end
 	end
 end
 
 function openESP()
-	for i, v in pairs(workspace:GetDescendants()) do
-		if v.Name == "OxiCheatESP" or v.Name == "OxiCheatESPHealth" then
-			v.Enabled = true
-		end
-	end
+	spawn(createFlex)
 end
 
 
@@ -822,6 +844,99 @@ local function toggleInvisibleWall()
 	end
 end
 
+--Infinite yield
+
+
+function respawn(plr)
+	--if invisRunning then TurnVisible() end
+	local char = plr.Character
+	if char:FindFirstChildOfClass("Humanoid") then char:FindFirstChildOfClass("Humanoid"):ChangeState(15) end
+	char:ClearAllChildren()
+	local newChar = Instance.new("Model")
+	newChar.Parent = workspace
+	plr.Character = newChar
+	wait()
+	plr.Character = char
+	newChar:Destroy()
+end
+
+local refreshCmd = false
+function refresh(plr)
+	refreshCmd = true
+	local Human = plr.Character and plr.Character:FindFirstChildOfClass("Humanoid", true)
+	local pos = Human and Human.RootPart and Human.RootPart.CFrame
+	local pos1 = workspace.CurrentCamera.CFrame
+	respawn(plr)
+	task.spawn(function()
+		plr.CharacterAdded:Wait():WaitForChild("Humanoid").RootPart.CFrame, workspace.CurrentCamera.CFrame = pos, wait() and pos1
+		refreshCmd = false
+	end)
+end
+
+function getRoot(char)
+	local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
+	return rootPart
+end
+
+function tools(plr)
+	if plr:FindFirstChildOfClass("Backpack"):FindFirstChildOfClass('Tool') or plr.Character:FindFirstChildOfClass('Tool') then
+		return true
+	end
+end
+
+function attach(speaker,target)
+	if tools(speaker) then
+		local char = speaker.Character
+		local tchar = target
+		local hum = speaker.Character:FindFirstChildOfClass("Humanoid")
+		local hrp = getRoot(speaker.Character)
+		local hrp2 = getRoot(target)
+		hum.Name = "1"
+		local newHum = hum:Clone()
+		newHum.Parent = char
+		newHum.Name = "Humanoid"
+		wait()
+		hum:Destroy()
+		workspace.CurrentCamera.CameraSubject = char
+		newHum.DisplayDistanceType = "None"
+		local tool = speaker:FindFirstChildOfClass("Backpack"):FindFirstChildOfClass("Tool") or speaker.Character:FindFirstChildOfClass("Tool")
+		tool.Parent = char
+		hrp.CFrame = hrp2.CFrame * CFrame.new(0, 0, 0) * CFrame.new(math.random(-100, 100)/200,math.random(-100, 100)/200,math.random(-100, 100)/200)
+		local n = 0
+		repeat
+			wait(.1)
+			n = n + 1
+			hrp.CFrame = hrp2.CFrame
+		until (tool.Parent ~= char or not hrp or not hrp2 or not hrp.Parent or not hrp2.Parent or n > 250) and n > 2
+	else
+		venyx.notify("Error", 'Tool Required','You need to have an item in your inventory to use this command')
+	end
+end
+
+function bring(speaker,target,fast)
+	if tools(speaker) then
+		if target ~= nil then
+			local NormPos = getRoot(speaker.Character).CFrame
+			if not fast then
+				refresh(speaker)
+				wait()
+				repeat wait() until speaker.Character ~= nil and getRoot(speaker.Character)
+				wait(0.3)
+			end
+			local hrp = getRoot(speaker.Character)
+			attach(speaker,target)
+			repeat
+				wait()
+				hrp.CFrame = NormPos
+			until not getRoot(target) or not getRoot(speaker.Character)
+			wait(game.Players.RespawnTime)
+			speaker.CharacterAdded:Wait():WaitForChild("HumanoidRootPart").CFrame = NormPos
+		end
+	else
+		venyx.notify("Error", 'Tool Required','You need to have an item in your inventory to use this command')
+	end
+end
+
 
 
 
@@ -1044,6 +1159,23 @@ TeleportPage:addButton("Teleport", function()
 end)
 
 
+TeleportPage:addButton("Bring (need tool)", function()
+	
+	
+	if not game:GetService("Players"):FindFirstChild(tpPlayerFocus) then
+		venyx:Notify("ERROR", "player not found")
+		
+	else
+		spawn(function()
+			bring(game.Players.LocalPlayer, game:GetService("Players"):FindFirstChild(tpPlayerFocus).Character, false)
+		end)
+	end
+
+end)
+
+
+
+
 
 TeleportPage:addButton("Spectate", function()
 	local success = pcall(function() game.Workspace.CurrentCamera.CameraSubject = game.Players:FindFirstChild(tpPlayerFocus).Character.Humanoid end)
@@ -1160,6 +1292,16 @@ end)
 CameraPage:addToggle("ESP", nil, function(value)
 	ESPToggle = value
 	if value then
+		openESP()
+	else
+		closeESP()
+	end
+end)
+
+CameraPage:addKeybind("ESP keybind : ", nil, function()
+	CameraPage:updateToggle("ESP", "ESP", not ESPToggle)
+	ESPToggle = not ESPToggle
+	if ESPToggle then
 		openESP()
 	else
 		closeESP()
@@ -1539,14 +1681,39 @@ if game.PlaceId == 698448212 then
 
 	local NormalPage = page:addSection("AutoPlay")
 
-	NormalPage:addToggle("Autoplay", nil, function(value)
+	NormalPage:addToggle("Auto play", nil, function(value)
 		RobeatsAutoplayToggle = value
+	end)
 
+	NormalPage:addSlider("Random", 0, 0, 80, function(value)
+		Autoplayer.distanceLowerBound = 0.4 - value / 10
+		Autoplayer.distanceUpperBound = 0.6 + value / 10
+	end)
 
-
-
+	NormalPage:addSlider("Spam level", 20, 1, 20, function(value)
+		Autoplayer.delayLowerBound = 0.05 * 20 / value
+		Autoplayer.delayUpperBound = 0.1 * 20 / value
+		Autoplayer.sliderDebounce = 0.08 * 20 / value
 	end)
 end
+
+
+
+game:GetService("RunService").RenderStepped:Wait()
+
+
+--Transfur outbreak
+if game.PlaceId == 5987922834 then
+	local page = venyx:addPage("Transfur outbreak", 10517320477)
+
+	local LatexPage = page:addSection("Latex")
+
+	LatexPage:addButton("Red speed", function()
+		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-947, 170, 298)
+	end)
+end
+
 
 
 game:GetService("RunService").RenderStepped:Wait()
@@ -1805,6 +1972,7 @@ if game.PlaceId == 2772610559 then
 
 	local NormalPage = page:addSection("Basic")
 
+
 	NormalPage:addToggle("Show prices", nil, function(value)
 		showFarmOffer = value
 		local hostFrame = nil
@@ -1847,6 +2015,28 @@ if game.PlaceId == 2772610559 then
 			end
 		end)
 	end
+
+	NormalPage:addButton("Sell egg", function()
+		local root = game.Players.LocalPlayer.Character.HumanoidRootPart
+		local basePos = root.CFrame
+
+		root.CFrame = CFrame.new(-388, 14, 1427)
+		wait(0.2)
+		root.CFrame = basePos
+	end)
+
+	NormalPage:addButton("Refresh seed", function()
+		local root = game.Players.LocalPlayer.Character.HumanoidRootPart
+		local basePos = root.CFrame
+
+		root.CFrame = CFrame.new(-388, -30000, 1427)
+		VirtualInputManager:SendKeyEvent(true, "F", false, game)
+		wait(0.1)
+		VirtualInputManager:SendKeyEvent(false, "F", false, game)
+		wait(0.5)
+		root.CFrame = basePos
+	end)
+
 end
 
 
@@ -2445,12 +2635,27 @@ end)
 -- cheat engine
 
 -- infini Jump
-UserInputService.InputBegan:Connect(function(input)
-	if input.KeyCode == Enum.KeyCode.Space then
-		if infiniJump == true then
-			game.Players.LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-			print(infiniJump)
-		end
+--UserInputService.InputBegan:Connect(function(input)
+--	if input.KeyCode == Enum.KeyCode.Space then
+--		if infiniJump == true then
+--			game.Players.LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+--			print(infiniJump)
+--		end
+--	end
+--end)
+
+
+function Action(Object, Function) if Object ~= nil then Function(Object); end end
+
+UIS.InputBegan:connect(function(UserInput)
+	if infiniJump and UserInput.UserInputType == Enum.UserInputType.Keyboard and UserInput.KeyCode == Enum.KeyCode.Space then
+		Action(game.Players.LocalPlayer.Character.Humanoid, function(self)
+			if self:GetState() == Enum.HumanoidStateType.Jumping or self:GetState() == Enum.HumanoidStateType.Freefall then
+				Action(self.Parent.HumanoidRootPart, function(self)
+					self.Velocity = Vector3.new(0, math.random(49000000, 50000000) / 1000000, 0);
+				end)
+			end
+		end)
 	end
 end)
 
@@ -3056,15 +3261,15 @@ end
 spawn(customloopPizza)
 
 local function RobeatsAutoplayAsync()
-	local Autoplayer = {
+	Autoplayer = {
 		noteY = 3879,
 		sliderY = 3878,
-		laneDistanceThreshold = 50,
-		distanceLowerBound = 0.2,
-		distanceUpperBound = 0.8,
-		delayLowerBound = 0.03,
-		delayUpperBound = 0.05,
-		sliderDebounce = 0.06,
+		laneDistanceThreshold = 25,
+		distanceLowerBound = 0.4,
+		distanceUpperBound = 0.6,
+		delayLowerBound = 0.05,
+		delayUpperBound = 0.1,
+		sliderDebounce = 0.08,
 		random = Random.new(),
 		pressedLanes = {},
 		heldLanes = {},
@@ -3099,7 +3304,7 @@ local function RobeatsAutoplayAsync()
 			}
 		}
 	}
-	
+
 	--robeats func
 	if game.PlaceId == 698448212 then
 		function UpdateLanePositions() -- table.sort cant be used here
@@ -3140,64 +3345,73 @@ local function RobeatsAutoplayAsync()
 			return nearestLane[1], nearestLane[2]
 		end
 	end
+	--[[while true do 
+		local breaked = false
+		wait(5)
 
-	for index, instance in next, workspace:GetDescendants() do
-		if instance.ClassName == "CylinderHandleAdornment" then
-			instance:GetPropertyChangedSignal("CFrame"):Connect(function()
-				if RobeatsAutoplayToggle and alive then
-					if instance.Transparency == 0 and math.floor(instance.CFrame.Y * 10) == Autoplayer.noteY then
-						local noteLane, lanePosition = GetNearestLane(instance.CFrame.Position)
+		spawn(function()
+			wait(30)
+			breaked = true
+		end)]]
+		for index, instance in next, workspace:GetDescendants() do
+			if instance.ClassName == "CylinderHandleAdornment" then
+				wait()
+				instance:GetPropertyChangedSignal("CFrame"):Connect(function()
+					if RobeatsAutoplayToggle and alive and not breaked then
+						if instance.Transparency == 0 and math.floor(instance.CFrame.Y * 10) == Autoplayer.noteY then
+							local noteLane, lanePosition = GetNearestLane(instance.CFrame.Position)
 
-						if noteLane then
-							local randomDistance = Autoplayer.random:NextNumber(Autoplayer.distanceLowerBound, Autoplayer.distanceUpperBound)
-							local distance = instance.CFrame.Position.X - lanePosition.X
+							if noteLane then
+								local randomDistance = Autoplayer.random:NextNumber(Autoplayer.distanceLowerBound, Autoplayer.distanceUpperBound)
+								local distance = instance.CFrame.Position.X - lanePosition.X
 
-							if Autoplayer.currentLanePositionsIndex > 2 then 
-								distance = math.abs(distance)
+								if Autoplayer.currentLanePositionsIndex > 2 then 
+									distance = math.abs(distance)
+								end
+
+								if not Autoplayer.pressedLanes[noteLane] and distance <= randomDistance then
+									Autoplayer.pressedLanes[noteLane] = true
+
+									VirtualInputManager:SendKeyEvent(true, keys[noteLane], false, game)
+									task.wait(Autoplayer.random:NextNumber(Autoplayer.delayLowerBound, Autoplayer.delayUpperBound))
+									VirtualInputManager:SendKeyEvent(false, keys[noteLane], false, game)
+
+									Autoplayer.pressedLanes[noteLane] = false
+								end
 							end
+						elseif instance.Transparency < 1 and instance.Height > 0.2 and math.floor(instance.CFrame.Y * 10) == Autoplayer.sliderY then
+							local noteLane, lanePosition = GetNearestLane(instance.CFrame.Position)
 
-							if not Autoplayer.pressedLanes[noteLane] and distance <= randomDistance then
-								Autoplayer.pressedLanes[noteLane] = true
+							if noteLane then
+								local randomDistance = Autoplayer.random:NextNumber(Autoplayer.distanceLowerBound, Autoplayer.distanceUpperBound)
+								local distance = (instance.CFrame - instance.CFrame.LookVector * instance.Height / 2).X - lanePosition.X
 
-								VirtualInputManager:SendKeyEvent(true, keys[noteLane], false, game)
-								task.wait(Autoplayer.random:NextNumber(Autoplayer.delayLowerBound, Autoplayer.delayUpperBound))
-								VirtualInputManager:SendKeyEvent(false, keys[noteLane], false, game)
+								if Autoplayer.currentLanePositionsIndex > 2 then 
+									distance = math.abs(distance)
+								end
 
-								Autoplayer.pressedLanes[noteLane] = false
+								if not Autoplayer.heldLanes[noteLane] and distance <= randomDistance then
+									Autoplayer.heldLanes[noteLane] = true
+
+									VirtualInputManager:SendKeyEvent(true, keys[noteLane], false, game)
+
+									repeat
+										task.wait() -- ugly but whatever
+									until (Autoplayer.currentLanePositionsIndex > 2 and math.abs((instance.CFrame + instance.CFrame.LookVector * instance.Height / 2).X - lanePosition.X) or (instance.CFrame + instance.CFrame.LookVector * instance.Height / 2).X - lanePosition.X) <= randomDistance
+
+									VirtualInputManager:SendKeyEvent(false, keys[noteLane], false, game)
+
+									task.wait(Autoplayer.sliderDebounce)
+
+									Autoplayer.heldLanes[noteLane] = false
+								end
 							end
 						end
-					elseif instance.Transparency < 1 and instance.Height > 0.2 and math.floor(instance.CFrame.Y * 10) == Autoplayer.sliderY then
-						local noteLane, lanePosition = GetNearestLane(instance.CFrame.Position)
-
-						if noteLane then
-							local randomDistance = Autoplayer.random:NextNumber(Autoplayer.distanceLowerBound, Autoplayer.distanceUpperBound)
-							local distance = (instance.CFrame - instance.CFrame.LookVector * instance.Height / 2).X - lanePosition.X
-
-							if Autoplayer.currentLanePositionsIndex > 2 then 
-								distance = math.abs(distance)
-							end
-
-							if not Autoplayer.heldLanes[noteLane] and distance <= randomDistance then
-								Autoplayer.heldLanes[noteLane] = true
-
-								VirtualInputManager:SendKeyEvent(true, keys[noteLane], false, game)
-
-								repeat
-									task.wait() -- ugly but whatever
-								until (Autoplayer.currentLanePositionsIndex > 2 and math.abs((instance.CFrame + instance.CFrame.LookVector * instance.Height / 2).X - lanePosition.X) or (instance.CFrame + instance.CFrame.LookVector * instance.Height / 2).X - lanePosition.X) <= randomDistance
-
-								VirtualInputManager:SendKeyEvent(false, keys[noteLane], false, game)
-
-								task.wait(Autoplayer.sliderDebounce)
-
-								Autoplayer.heldLanes[noteLane] = false
-							end
-						end
-					end
-				end	
-			end)
+					end	
+				end)
+			end
 		end
-	end
+	--end
 end
 
 spawn(RobeatsAutoplayAsync)
@@ -3213,3 +3427,4 @@ spawn(RobeatsAutoplayAsync)
 for theme, color in pairs(themes) do -- all in one theme changer, i know, im cool
 	venyx:setTheme(theme, color)
 end
+
