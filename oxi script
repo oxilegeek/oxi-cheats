@@ -1706,7 +1706,15 @@ game:GetService("RunService").RenderStepped:Wait()
 if game.PlaceId == 5987922834 then
 	local page = venyx:addPage("Transfur outbreak", 10517320477)
 
+	local UtilityPage = page:addSection("Utility")
 	local LatexPage = page:addSection("Latex")
+
+	UtilityPage:addButton("Reset", function()
+		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+		game.Players.LocalPlayer.Character.Humanoid.Health = 0
+		end
+	end)
+
 
 	LatexPage:addButton("Red speed", function()
 		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
