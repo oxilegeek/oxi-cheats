@@ -1709,8 +1709,9 @@ if game.PlaceId == 5987922834 then
 	local LatexPage = page:addSection("Latex")
 
 	LatexPage:addButton("Red speed", function()
-		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-947, 170, 298)
+		end
 	end)
 end
 
