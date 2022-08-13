@@ -63,19 +63,24 @@ local utility = {}
 
 -- themes
 local objects = {}
-local themes = {
-	NotToggledColor =  Color3.fromRGB(255, 100, 89),
-	Background = Color3.fromRGB(25,25,25),
-	Glow = Color3.fromRGB(0,0,0),
-	Accent = Color3.fromRGB(255, 113, 51),
-	LightContrast = Color3.fromRGB(40,40,40),
-	DarkContrast = Color3.fromRGB(30,30,30),
-	TextColor = Color3.fromRGB(255, 255, 255),
-	ButtonColor = Color3.fromRGB(62, 62, 62),
-	ToggledColor = Color3.fromRGB(255, 113, 51),
-	SliderColor = Color3.fromRGB(255, 113, 51),
-	TopBarColor = Color3.fromRGB(35,35,35),
-}
+
+
+
+if not themes then
+	themes = {
+		NotToggledColor =  Color3.fromRGB(255, 100, 89),
+		Background = Color3.fromRGB(25,25,25),
+		Glow = Color3.fromRGB(0,0,0),
+		Accent = Color3.fromRGB(255, 113, 51),
+		LightContrast = Color3.fromRGB(40,40,40),
+		DarkContrast = Color3.fromRGB(30,30,30),
+		TextColor = Color3.fromRGB(255, 255, 255),
+		ButtonColor = Color3.fromRGB(62, 62, 62),
+		ToggledColor = Color3.fromRGB(255, 113, 51),
+		SliderColor = Color3.fromRGB(255, 113, 51),
+		TopBarColor = Color3.fromRGB(35,35,35),
+	}
+end
 
 do
 	-- Dynamic Scroll
@@ -2342,9 +2347,11 @@ end
 --local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/gui-creator/main/gui%20creator"))()
 local venyx = library.new(name, 8988759357)
 
---game.CoreGui:FindFirstChild(name).Main.Visible = false
---venyx:toggle()
---game.CoreGui:FindFirstChild(name).Main.Visible = true
+if hided then
+	game.CoreGui:FindFirstChild(name).Main.Visible = false
+	venyx:toggle()
+	game.CoreGui:FindFirstChild(name).Main.Visible = true
+end
 
 
 
