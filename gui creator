@@ -218,9 +218,6 @@ do
 			Name = title,
 			Parent = game.CoreGui
 		}, {
-			utility:Create("IntValue", {
-				Name = "imAFox",
-			}),
 			utility:Create("ImageLabel", {
 				Name = "Main",
 				BackgroundTransparency = 1,
@@ -299,7 +296,9 @@ do
 
 		utility:InitializeKeybind()
 		utility:DraggingEnabled(container.Main.TopBar, container.Main)
-
+		
+		utility:Create("IntValue", {})
+		
 		return setmetatable({
 			container = container,
 			pagesContainer = container.Main.Pages.Pages_Container,
@@ -323,17 +322,23 @@ do
 			utility:Create("TextLabel", {
 				Name = "Title",
 				AnchorPoint = Vector2.new(0, 0.5),
-				BackgroundTransparency = 1,
+				BackgroundTransparency = 0.5,
+				BackgroundColor3 = Color3.new(1, 1, 1),
 				Position = UDim2.new(0, 40, 0.5, 0),
 				Size = UDim2.new(0, 76, 1, 0),
 				ZIndex = 3,
-				Font = Enum.Font.Gotham,
+				Font = Enum.Font.FredokaOne,
 				Text = title,
 				TextColor3 = themes.TextColor,
 				TextSize = 12,
 				TextTransparency = 0.65,
 				TextXAlignment = Enum.TextXAlignment.Left
-			}),
+				
+			}, {
+
+				utility:Create("UICorner", {
+					CornerRadius = UDim.new(0, 12)
+				}),
 			icon and utility:Create("ImageLabel", {
 				Name = "Icon", 
 				AnchorPoint = Vector2.new(0, 0.5),
@@ -347,7 +352,7 @@ do
 				ScaleType = Enum.ScaleType.Fit
 			}) or {}
 		})
-
+		})
 		local container = utility:Create("ScrollingFrame", {
 			Name = title,
 			Parent = library.container.Main,
@@ -365,7 +370,8 @@ do
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				Padding = UDim.new(0, 10)
 			})
-		})
+			})
+		
 
 		return setmetatable({
 			library = library,
