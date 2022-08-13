@@ -1,3 +1,52 @@
+local name = "Foxi cheats V2 (anti afk always enabled) Update [Visual]!"
+
+
+
+
+local AcessTable = {
+	785920831, --[[juju]]
+	426302615, --[[Goldo]]
+	780331817, --[[Goldo2]]
+	1521284139, --[[oxifox]]
+	1748832444, --[[oxifox2]]
+	794604054, --[[licorne]]
+	2541104873, --[[licorne2]]
+	1201813160, --[[Lazy]]
+	3301222843, --[[Girafelol]]
+	3250939132, --[[leraptou alt]]
+	3134085834, --[[leraptou alt2]]
+	720726589, --[[Skylleur]]
+	1025947173, --[[furylebg]]
+	1728043758, --[[FURYMOB_5]]
+	2264001548, --[[jefaikaka_desbrindil]]
+}
+
+local Acess = true
+
+for i, v in pairs(AcessTable) do
+	if game.Players.LocalPlayer.UserId == v then
+		Acess = true
+		print("yeeeee")
+	end
+end
+
+if not Acess then
+	print("refused")
+	--game.CoreGui:FindFirstChild(name).Main.Visible = false
+	--venyx:Notify("You're not whitelisted", "Do you want to buy the cheat ?", function(value)
+	--	if value then
+	--		print(game.PlaceId)
+	--		game:GetService("TeleportService"):Teleport(31285342 , game.Players.LocalPlayer)
+	--	end
+	--end)
+	return
+else
+	print("Valid ^^")
+end
+
+
+
+
 -- Venyx Ui
 -- init
 local player = game.Players.LocalPlayer
@@ -14,19 +63,24 @@ local utility = {}
 
 -- themes
 local objects = {}
-local themes = {
-	NotToggledColor =  Color3.fromRGB(255, 100, 89),
-	Background = Color3.fromRGB(25,25,25),
-	Glow = Color3.fromRGB(0,0,0),
-	Accent = Color3.fromRGB(255, 113, 51),
-	LightContrast = Color3.fromRGB(40,40,40),
-	DarkContrast = Color3.fromRGB(30,30,30),
-	TextColor = Color3.fromRGB(255, 255, 255),
-	ButtonColor = Color3.fromRGB(255, 113, 51),
-	ToggledColor = Color3.fromRGB(255, 113, 51),
-	SliderColor = Color3.fromRGB(255, 113, 51),
-	TopBarColor = Color3.fromRGB(35,35,35),
-}
+
+
+
+if not themes then
+	themes = {
+	DarkContrast = Color3.new(0.117647, 0.117647, 0.117647),
+		Glow = Color3.new(0, 0, 0),
+		LightContrast = Color3.new(0.156863, 0.156863, 0.156863),
+		SliderColor = Color3.new(1, 0.443137, 0.2),
+		NotToggledColor = Color3.new(0, 1, 0.791667),
+		ButtonColor = Color3.new(0.243137, 0.243137, 0.243137),
+		ToggledColor = Color3.new(0.126866, 0.925, 0.0128472),
+		TopBarColor = Color3.new(0.137255, 0.137255, 0.137255),
+		Background = Color3.new(0.0980392, 0.0980392, 0.0980392),
+		TextColor = Color3.new(1, 1, 1),
+		Accent = Color3.new(1, 0.443137, 0.2),
+			}
+end
 
 do
 	-- Dynamic Scroll
@@ -234,7 +288,7 @@ do
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.25, 0, 0.052435593, 0),
 				Size = UDim2.new(0, 511, 0, 390),
-				Image = "rbxassetid://10574963725",
+				Image = "rbxassetid://4641149554",
 				ImageColor3 = themes.Background,
 				ScaleType = Enum.ScaleType.Slice,
 				SliceCenter = Rect.new(4, 4, 296, 296)
@@ -284,7 +338,7 @@ do
 						Size = UDim2.new(0,70,0,70),
 						ZIndex = 5,
 						ImageColor3 = Color3.new(1,1,1),
-						Image = "http://www.roblox.com/asset/?id=8631982009",
+						Image = "rbxassetid://10574963725",
 
 					}),
 
@@ -475,7 +529,7 @@ do
 		}, section)
 	end
 
-	function library:NewPage(...)
+	function library:addPage(...)
 
 		local page = page.new(self, ...)
 		local button = page.button
@@ -489,7 +543,7 @@ do
 		return page
 	end
 
-	function page:NewSecction(...)
+	function page:addSection(...)
 		local section = section.new(self, ...)
 
 		table.insert(self.sections, section)
@@ -715,7 +769,7 @@ do
 		end)
 	end
 
-	function section:Button(title, callback)
+	function section:addButton(title, callback)
 		local button = utility:Create("ImageButton", {
 			Name = "Button",
 			Parent = self.container,
@@ -779,7 +833,7 @@ do
 		return buttonfunc,button
 	end
 
-	function section:Toggle(title, default, callback)
+	function section:addToggle(title, default, callback)
 		local sec = self 
 
 		-- local title = t or "Toggle"
@@ -820,7 +874,7 @@ do
 				Size = UDim2.new(0, 40, 0, 16),
 				ZIndex = 2,
 				Image = "rbxassetid://5028857472",
-				ImageColor3 = themes.LightContrast,
+				ImageColor3 = themes.NotToggledColor,
 				ScaleType = Enum.ScaleType.Slice,
 				SliceCenter = Rect.new(2, 2, 298, 298)
 			}, {
@@ -871,7 +925,7 @@ do
 		return togglefunc,toggle
 	end
 
-	function section:Textbox(title, default, callback)
+	function section:addTextbox(title, default, callback)
 		local textbox = utility:Create("ImageButton", {
 			Name = "Textbox",
 			Parent = self.container,
@@ -979,7 +1033,7 @@ do
 		return textbox
 	end
 
-	function section:Keybind(title, default, callback, changedCallback)
+	function section:addKeybind(title, default, callback, changedCallback)
 		local keybind = utility:Create("ImageButton", {
 			Name = "Keybind",
 			Parent = self.container,
@@ -1084,7 +1138,7 @@ do
 		return keybind
 	end
 
-	function section:ColorPicker(title, default, callback)
+	function section:addColorPicker(title, default, callback)
 		local colorpicker = utility:Create("ImageButton", {
 			Name = "ColorPicker",
 			Parent = self.container,
@@ -1608,8 +1662,7 @@ do
 		return colorpicker
 	end
 
-	function section:Slider(title, min, default, max, callback)
-		local sel = self 
+	function section:addSlider(title, default, min, max, callback)
 		local slider = utility:Create("ImageButton", {
 			Name = "Slider",
 			Parent = self.container,
@@ -1751,28 +1804,16 @@ do
 
 			if not allowed[text] and not tonumber(text) then
 				textbox.Text = text:sub(1, #text - 1)
-			elseif not allowed[text] then
+			elseif not allowed[text] then	
 				value = self:updateSlider(slider, nil, tonumber(text) or value, min, max)
 				callback(value)
 			end
 		end)
 
-		local sliderfunc = {}
-		function sliderfunc:Set(newva)
-			local text = tonumber(newva)
-
-			if not allowed[text] and not tonumber(text) then
-				textbox.Text = text:sub(1, #text - 1)
-			elseif not allowed[text] then
-				value = sel:updateSlider(slider, nil, tonumber(text) or value, min, max)
-				callback(value)
-			end
-		end 
-
-		return sliderfunc,slider
+		return slider
 	end
 
-	function section:Dropdown(title, list, callback)
+	function section:addDropdown(title, list, callback)
 		local dropdown = utility:Create("Frame", {
 			Name = "Dropdown",
 			Parent = self.container,
@@ -2103,6 +2144,8 @@ do
 		end)
 	end
 
+
+
 	function section:updateTextbox(textbox, title, value)
 		textbox = self:getModule(textbox)
 
@@ -2298,46 +2341,3467 @@ do
 	end
 end
 
-local win = library.new("FOX HUB")
 
-local page1 = win:NewPage("Main")
-local section1 = page1:NewSecction("Test1")
-local section2 = page1:NewSecction("Test2")
 
-section1:Toggle("Toggle", false, function(t)
-	print(t)
-end)
 
-section1:Button("Button", function(t)
-	print("asd")
-end)
 
-section1:Textbox("Notification", "Default", function(value, kuy)
-	print("Input", value)
+-- init
+--local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/gui-creator/main/gui%20creator"))()
+local venyx = library.new(name, 8988759357)
 
-	if focusLost then
-		win:Notify("Test1", "Hello", value)
+if hided then
+	game.CoreGui:FindFirstChild(name).Main.Visible = false
+	venyx:toggle()
+	game.CoreGui:FindFirstChild(name).Main.Visible = true
+end
+
+
+
+local UIS = game:GetService("UserInputService")
+
+-- var
+local alive = true
+local noclip = false
+local UserInputService = game:GetService("UserInputService")
+local infiniJump = false
+local runservice = game:GetService("RunService")
+local bot = false
+local bringChest = false
+local toChest = false
+local autocollect = false
+local HideReward = false
+local baseSpeed = game.StarterPlayer.CharacterWalkSpeed
+local baseJump = game.StarterPlayer.CharacterJumpPower
+local baseGravity = game.Workspace.Gravity
+local baseLevit = 2
+local killAuraTarget1 = nil
+local killAuraTarget2 = nil
+local killAuraTarget3 = nil
+local killAuraTarget4 = nil
+local spamHit1 = false
+local spamHit2 = false
+local spamHit3 = false
+local spamHit4 = false
+local KillAura = false
+local autoHit = false
+local tpPlayerFocus = nil
+local autofarm = false
+local BotFocus = nil
+local FollowBot = false
+local autoEat = false
+local cooldownEat = 0
+local CanKillGorilla = true
+local CanKillCerber = true
+local eToTeleport = false
+local oldMaxZoom = game.Players.LocalPlayer.CameraMaxZoomDistance
+local createPackName = nil
+local RoleplayName = nil
+local ShowPosition = false
+local BossKillFarm = false
+local BossKillFarmFix = false
+local testSpeedValue = 16
+local BossKillFarmFixFocus = "Trex"
+local BABAutofarmSpeed = 1
+local antiPortalAbuse = false
+local slowloop = 1
+local ZombieKillAura = false
+local ZombieAutofarm = false
+local flyKeybindToggle = true
+local doCashier = false
+local doCook = false
+local doBoxer = false
+local ffc = game.FindFirstChild
+local orderDict={["3540529228"]="Cheese",["3540530535"]="Sausage",["3540529917"]="Pepperoni",["2512571151"]="Dew",["2512441325"]="Dew"}
+local cookingDict = {Cheese=0,Sausage=0,Pepperoni=0,Dew=0}
+local cookPtick = 0
+local cookDtick = 0
+local cookWarned = false
+local boxerWarned = false
+local basicSpeed = baseSpeed
+local basicJump = baseJump
+local basicLevitation = baseLevit
+local basicGravity = baseGravity
+local autoSetSpeed = false
+local doDelivery = false
+local DefaultSky
+local DefaultSkyStat
+local alwaysDay = false
+local doSupplier = false
+local ESPToggle = false
+local currentSpeed = 0
+local shiftToSprint = false
+local sprintSpeed = 20
+local autoDeletePart = false
+local alwaysNight = false
+local timePositionValue = 0
+local showFarmOffer = false
+local PriceFrame = nil
+local ArtistToCopyName = ""
+local PaintSpeed = 0.4
+local ArtistPlotNum = 1
+local PaintID = 1
+local invisibleWallTable = {}
+local invisibleWallsShowed = false
+local keys = shared.keys or {"A", "S", "D", "F"} -- MAKE THIS YOUR ROBEATS KEYBINDS FROM LEFT TO RIGHT, OR SET IN SHARED.KEYS
+local Autoplayer = {}
+
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local camera = workspace.CurrentCamera
+local RobeatsAutoplayToggle = false
+
+
+
+local function deleteGui()
+	game.CoreGui:FindFirstChild(name):Destroy()
+	game.CoreGui:FindFirstChild("FoxiMusic"):Destroy()
+	alive = false
+	for i, v in pairs(workspace:GetDescendants()) do
+		if v.Name == "OxiCheatESP" or v.Name == "OxiCheatESPHealth" then
+			v:Destroy()
+		end
+	end
+
+	for i, v in pairs(invisibleWallTable) do
+		if v then
+			v.Transparency = 1
+		end
+	end
+
+	invisibleWallTable = {}
+
+
+end
+
+-- delete old menu
+game.CoreGui.ChildAdded:Connect(function(child)
+	print(child:FindFirstChild("imAFox"))
+	if ( child.Name == name or child:FindFirstChild("imAFox") ) and alive == true then
+		deleteGui()
 	end
 end)
 
-section2:Keybind("Toggle Keybind", Enum.KeyCode.RightControl, function()
-	print("Activated Keybind")
-	win:toggle()
+--local DefaultSky = game.Lighting.Sky print("{" ..DefaultSky.MoonAngularSize ..", " ..'"' ..DefaultSky.MoonTextureId ..'"' ..", " ..'"' ..DefaultSky.SkyboxBk ..'"' ..", " ..'"' ..DefaultSky.SkyboxDn ..'"' ..", " ..'"' ..DefaultSky.SkyboxFt ..'"' ..", " ..'"' ..DefaultSky.SkyboxLf ..'"' ..", " ..'"' ..DefaultSky.SkyboxRt ..'"' ..", " ..'"' ..DefaultSky.SkyboxUp ..'"' ..", " ..DefaultSky.StarCount ..", " ..DefaultSky.SunAngularSize ..", " ..'"' ..DefaultSky.SunTextureId ..'"' .."}")
+
+local presetsSky = {
+	["Realistic sky"] = {true, 11, "rbxasset://sky/moon.jpg", "http://www.roblox.com/asset/?id=144933338", "http://www.roblox.com/asset/?id=144931530", "http://www.roblox.com/asset/?id=144933262", "http://www.roblox.com/asset/?id=144933244", "http://www.roblox.com/asset/?id=144933299", "http://www.roblox.com/asset/?id=144931564", 1500, 5, "rbxasset://sky/sun.jpg"},
+	["Cartoon sky"] = {true, 11, "rbxasset://sky/moon.jpg", "http://www.roblox.com/asset/?id=5333954202", "http://www.roblox.com/asset/?id=5333944933", "http://www.roblox.com/asset/?id=5333954202", "http://www.roblox.com/asset/?id=5333954202", "http://www.roblox.com/asset/?id=5333954202", "http://www.roblox.com/asset/?id=5333943668", 3000, 21, "rbxasset://sky/sun.jpg"},
+	["Pink sky"] = {false, 11, "rbxasset://sky/moon.jpg", "http://www.roblox.com/asset/?id=271042516", "http://www.roblox.com/asset/?id=271077243", "http://www.roblox.com/asset/?id=271042556", "http://www.roblox.com/asset/?id=271042310", "http://www.roblox.com/asset/?id=271042467", "http://www.roblox.com/asset/?id=271077958", 1334, 21, "rbxasset://sky/sun.jpg"},
+	["Island theme sky"] = {false, 11, "rbxasset://sky/moon.jpg", "rbxassetid://600830446", "rbxassetid://600831635", "rbxassetid://600832720", "rbxassetid://600886090", "rbxassetid://600833862", "rbxassetid://600835177", 3000, 21, "rbxasset://sky/sun.jpg"},
+	["Galaxy sky"] = {false, 11, "rbxasset://sky/moon.jpg", "http://www.roblox.com/asset/?id=159454299", "http://www.roblox.com/asset/?id=159454296", "http://www.roblox.com/asset/?id=159454293", "http://www.roblox.com/asset/?id=159454286", "http://www.roblox.com/asset/?id=159454300", "http://www.roblox.com/asset/?id=159454288", 0, 21, "rbxasset://sky/sun.jpg"},
+	["Night time sky"] = {false, 1.5, "rbxassetid://1075087760", "rbxassetid://2670643994", "rbxassetid://2670643365", "rbxassetid://2670643214", "rbxassetid://2670643070", "rbxassetid://2670644173", "rbxassetid://2670644331", 500, 12, "rbxassetid://1084351190"},
+	["Night City sky"] = {true, 11, "rbxasset://sky/moon.jpg", "http://www.roblox.com/asset/?id=386170521", "http://www.roblox.com/asset/?id=386170789", "http://www.roblox.com/asset/?id=386170521", "http://www.roblox.com/asset/?id=386170521", "http://www.roblox.com/asset/?id=386170521", "http://www.roblox.com/asset/?ID=2013298", 3000, 21, "rbxassetid://4693618"},
+
+}
+local ActiveSky = "Default"
+
+--database var
+local basicPrint = "hi ^^"
+
+--build a boat
+local BABFastAutofarm = false
+local TheEnd = false
+local SlotNumber = nil
+
+
+--Database
+--local printData = game:GetService("DataStoreService"):GetDataStore("PrintData")
+
+
+-- function
+local vu = game:GetService("VirtualUser")
+game:GetService("Players").LocalPlayer.Idled:connect(function()
+	vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+	wait(1)
+	vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+
+end)
+
+
+function findNearestTorso(pos)
+	local list = game.Players:GetPlayers()
+	local torso = nil
+	local dist = 1000
+	local temp = nil
+	local human = nil
+	local temp2 = nil
+	for x = 1, #list do
+		temp2 = list[x]
+		if temp2.Name == game.Players.LocalPlayer.Name then
+
+		else
+			temp = temp2.Character:findFirstChild("HumanoidRootPart")
+			human = temp2.Character:findFirstChild("Humanoid")
+			if (temp ~= nil) and (human ~= nil) and (human.Health > 0) then
+				if (temp.Position - pos).magnitude < dist then
+					torso = temp
+					dist = (temp.Position - pos).magnitude
+				end
+			end
+		end
+	end
+	return torso
+end
+
+
+
+
+local function autoFarmBAB()
+	repeat wait(0.1) until game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+	local stages = game.Workspace.BoatStages.NormalStages:GetChildren()
+	for i = 1, #stages do
+		if alive then
+			if i < 11 then
+				if BABFastAutofarm then
+					print(stages[i].Name)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(stages[i].DarknessPart.Position)
+					wait(BABAutofarmSpeed)
+				end
+			else
+				if i == 12 then
+					break
+				end
+				if BABFastAutofarm then
+					TheEnd = true
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.BoatStages.NormalStages.TheEnd.GoldenChest.Base.LockPosition.Position)
+				end
+			end
+		end
+	end
+end
+
+if game.GameId == 210851291 then
+	game.Players.LocalPlayer.PlayerGui.RiverResultsGui.Frame.Changed:Connect(function()
+		print("respawned")
+		if BABFastAutofarm then
+			autoFarmBAB()
+		end
+	end)
+end
+
+function bot()
+	while wait() do
+		local goal = game.Players:FindFirstChild(FollowBot).Character.HumanoidRootPart
+
+		local pathfinding = game:GetService("PathfindingService")
+
+		local path = pathfinding:CreatePath()
+		path:ComputeAsync(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, goal.Position)
+
+		local waypoints = path:GetWaypoints()
+
+
+		for i, waypoint in pairs(waypoints) do
+
+			if waypoint.Action == Enum.PathWaypointAction.Jump then
+
+				game.Players.LocalPlayer.Character.Humanoid.Jump = true
+			end
+
+			game.Players.LocalPlayer.Character.Humanoid:MoveTo(waypoint.Position)
+
+			game.Players.LocalPlayer.Character.Humanoid.MoveToFinished:Wait()
+
+		end
+	end
+end
+
+_G.FLYING = false
+local CONTROL = {F = 0, B = 0, L = 0, R = 0}
+local lCONTROL = {F = 0, B = 0, L = 0, R = 0}
+local SPEED = 5
+local MOUSE = game.Players.LocalPlayer:GetMouse()
+local flySpeed = 50
+
+
+local function FLY()
+	local BG = Instance.new('BodyGyro', game.Players.LocalPlayer.Character.HumanoidRootPart)
+	local BV = Instance.new('BodyVelocity', game.Players.LocalPlayer.Character.HumanoidRootPart)
+	BG.P = 9e4
+	BG.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+	BG.cframe = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+	BV.velocity = Vector3.new(0, 0.1, 0)
+	BV.maxForce = Vector3.new(9e9, 9e9, 9e9)
+
+
+	spawn(function()
+		repeat wait()
+			game.Players.LocalPlayer.Character.Humanoid.PlatformStand = true
+			if CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 then
+				SPEED = flySpeed
+			elseif not (CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0) and SPEED ~= 0 then
+				SPEED = 0
+			end
+			if (CONTROL.L + CONTROL.R) ~= 0 or (CONTROL.F + CONTROL.B) ~= 0 then
+				BV.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (CONTROL.F + CONTROL.B)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(CONTROL.L + CONTROL.R, (CONTROL.F + CONTROL.B) * 0.2, 0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+				lCONTROL = {F = CONTROL.F, B = CONTROL.B, L = CONTROL.L, R = CONTROL.R}
+			elseif (CONTROL.L + CONTROL.R) == 0 and (CONTROL.F + CONTROL.B) == 0 and SPEED ~= 0 then
+				BV.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (lCONTROL.F + lCONTROL.B)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lCONTROL.L + lCONTROL.R, (lCONTROL.F + lCONTROL.B) * 0.2, 0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+			else
+				BV.velocity = Vector3.new(0, 0.1, 0)
+			end
+			BG.cframe = game.Workspace.CurrentCamera.CoordinateFrame
+		until not _G.FLYING or _G.FLYING and not flyKeybindToggle
+		CONTROL = {F = 0, B = 0, L = 0, R = 0}
+		lCONTROL = {F = 0, B = 0, L = 0, R = 0}
+		SPEED = 0
+		BG:destroy()
+		BV:destroy()
+		game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
+	end)
+end
+
+MOUSE.KeyDown:connect(function(KEY)
+	if KEY:lower() == 'w' then
+		CONTROL.F = 1
+	elseif KEY:lower() == 's' then
+		CONTROL.B = -1
+	elseif KEY:lower() == 'a' then
+		CONTROL.L = -1 
+	elseif KEY:lower() == 'd' then 
+		CONTROL.R = 1
+	end
+end)
+
+MOUSE.KeyUp:connect(function(KEY)
+	if KEY:lower() == 'w' then
+		CONTROL.F = 0
+	elseif KEY:lower() == 's' then
+		CONTROL.B = 0
+	elseif KEY:lower() == 'a' then
+		CONTROL.L = 0
+	elseif KEY:lower() == 'd' then
+		CONTROL.R = 0
+	end
+end)
+
+function GetDefaultSky()
+	local skyFounded = false
+	for i, v in pairs(game.Lighting:GetChildren()) do
+		if not skyFounded and v:IsA("Sky") then
+			skyFounded = true
+			return v
+		end
+	end
+end
+
+ALLYCOLOR = {0,255,255}  	
+ENEMYCOLOR =  {255,0,0} 	
+TRANSPARENCY = 0.5		
+HEALTHBAR_ACTIVATED = true 	
+
+
+
+
+function createFlex()
+
+
+	players = game:GetService("Players")
+	faces = {"Front","Back","Bottom","Left","Right","Top"}
+	currentPlayer = nil 
+	lplayer = players.LocalPlayer 
+
+	players.PlayerAdded:Connect(function(p)
+		currentPlayer = p
+		p.CharacterAdded:Connect(function(character)
+			wait(0.1)
+			createESP(character)			
+		end)		
+	end)
+
+	function checkPart(obj)  if (obj:IsA("Part") or obj:IsA("MeshPart") or obj:IsA("UnionOperation")) then return true end end
+
+	function actualESP(obj) 
+
+		for i=0,5 do
+			surface = Instance.new("SurfaceGui",obj) 
+			surface.Face = Enum.NormalId[faces[i+1]]
+			surface.AlwaysOnTop = true
+			--surface.MaxDistance = math.huge
+			surface.Enabled = ESPToggle
+			surface.Name = "OxiCheatESP"
+
+			local frame = Instance.new("Frame",surface)	
+			frame.Size = UDim2.new(1,0,1,0)
+			frame.BorderSizePixel = 0												
+			frame.BackgroundTransparency = TRANSPARENCY
+			spawn(function()
+				local TempPlr = players:FindFirstChild(surface.Parent.Parent.Name) 
+				while true do 
+					if TempPlr.Team == players.LocalPlayer.Team then
+						frame.BackgroundColor3 = Color3.new(ALLYCOLOR[1],ALLYCOLOR[2],ALLYCOLOR[3])											
+					else
+						frame.BackgroundColor3 = Color3.new(ENEMYCOLOR[1],ENEMYCOLOR[2],ENEMYCOLOR[3])
+					end
+					wait(1)
+				end
+			end)
+
+
+			surface:GetPropertyChangedSignal("AlwaysOnTop"):connect(function()
+				surface.AlwaysOnTop = true
+			end)
+
+		end
+	end
+
+	function createHealthbar(hrp) 
+		board =Instance.new("BillboardGui",hrp)
+		board.Name = "OxiCheatESPHealth"
+		board.Size = UDim2.new(1,0,1,0)
+		board.StudsOffset = Vector3.new(3,1,0)
+		board.AlwaysOnTop = true
+		board.Enabled = ESPToggle
+		--board.MaxDistance = math.huge
+
+		bar = Instance.new("Frame",board)
+		bar.BackgroundColor3 = Color3.new(255,0,0)
+		bar.BorderSizePixel = 0
+		bar.Size = UDim2.new(0.2,0,4,0)
+		bar.Name = "total2"
+
+		health = Instance.new("Frame",bar)
+		health.BackgroundColor3 = Color3.new(0,255,0)
+		health.BorderSizePixel = 0
+		health.Size = UDim2.new(1,0,hrp.Parent.Humanoid.Health/ hrp.Parent.Humanoid.MaxHealth,0)
+		hrp.Parent.Humanoid.Changed:Connect(function(property) 
+			if hrp:FindFirstChild("OxiCheatESPHealth") then
+				hrp.OxiCheatESPHealth.total2.Frame.Size = UDim2.new(1,0, hrp.Parent.Humanoid.Health / hrp.Parent.Humanoid.MaxHealth, 0)							
+			end
+		end)
+
+		board:GetPropertyChangedSignal("AlwaysOnTop"):connect(function()
+			board.AlwaysOnTop = true
+		end)
+	end
+
+	function createESP(c)
+		if c then
+			bugfix = c:WaitForChild("Head") 
+			for i,v in pairs(c:GetChildren()) do
+				if checkPart(v) then
+					actualESP(v)
+				end
+			end
+			if HEALTHBAR_ACTIVATED then
+				createHealthbar(c:WaitForChild("HumanoidRootPart")) 
+			end
+		end
+	end
+
+	for i,people in pairs(players:GetChildren())do
+		if people ~= players.LocalPlayer then
+			currentPlayer = people
+			createESP(people.Character)
+			people.CharacterAdded:Connect(function(character)
+				createESP(character)			
+			end)
+		end
+	end
+end
+
+
+function closeESP()
+	for i, v in pairs(workspace:GetDescendants()) do
+		if v.Name == "OxiCheatESP" or v.Name == "OxiCheatESPHealth" then
+			v:Destroy()
+		end
+	end
+end
+
+function openESP()
+	spawn(createFlex)
+end
+
+
+
+--Animal function
+if game.GameId == 2023680558 then
+	function findNearestZombieTorso(pos)
+		local list = game:GetService("Workspace").NPC:GetChildren()
+		local torso = nil
+		local dist = 1000
+		local temp = nil
+		local human = nil
+		local temp2 = nil
+		for x = 1, #list do
+			temp2 = list[x]
+			if temp2.Name == "Zombie" or temp2.Name == "BigSpider" then
+				temp = temp2:findFirstChild("HumanoidRootPart")
+				human = temp2:findFirstChild("Humanoid")
+				if (temp ~= nil) and (human ~= nil) and (human.Health > 0) then
+					if (temp.Position - pos).magnitude < dist then
+						torso = temp
+						dist = (temp.Position - pos).magnitude
+					end
+				end
+			end
+		end
+		return torso
+	end
+end
+
+
+
+local supplyCounts = {TomatoSauce=99,Cheese=99,Sausage=99,Pepperoni=99,Dough=99,Box=99,Dew=99}
+local player = game:GetService("Players").LocalPlayer
+local ffc = game.FindFirstChild
+local RNG = Random.new()
+local network
+local character,root
+local boxPtick=0
+local boxDtick=0
+local delTool
+local delTouched=false
+local bcolorToSupply = {["Dark orange"]="Sausage",["Bright blue"]="Pepperoni",["Bright yellow"]="Cheese",["Bright red"]="TomatoSauce",["Dark green"]="Dew",["Brick yellow"]="Dough",["Light stone grey"]="Box",["Really black"]="Dew"}
+local supplyButtons = {}
+
+--Work at a pizza place func
+if game.GameId == 47545 then
+
+	for _,button in ipairs(workspace.SupplyButtons:GetChildren()) do
+		supplyButtons[bcolorToSupply[button.Unpressed.BrickColor.Name]] = button.Unpressed
+	end
+
+	do
+		local reg = (getreg or debug.getregistry)()
+		for i=1,#reg do
+			local f = reg[i]
+			if type(f)=="function" and tostring(getfenv(f).script)=="Paycheck" then
+				for k,v in next,getupvalues(f) do
+					if tostring(v) == "CashOut" then
+						setupvalue(f,k,{MouseButton1Click={wait=function()end,Wait=function()end}})
+						break
+					end
+				end
+			elseif type(f)=="table" and rawget(f,"FireServer") and rawget(f,"BindEvents") then
+				network = f
+			end
+		end
+		local mt=getrawmetatable(game)
+		if setreadonly then
+			setreadonly(mt,false)
+		elseif make_writeable then
+			make_writeable(mt)
+		end
+		local old__newindex=mt.__newindex
+		if newcclosure then
+			mt.__newindex=newcclosure(function(t,k,v)
+				if t~=workspace.CurrentCamera or tostring(getfenv(2).script)~="LocalMain" then
+					return old__newindex(t,k,v)
+				end
+			end)
+		else
+			mt.__newindex=function(t,k,v)
+				if t~=workspace.CurrentCamera or tostring(getfenv(2).script)~="LocalMain" then
+					return old__newindex(t,k,v)
+				end
+			end
+		end
+		workspace.Main.RealignCamera.RealignCamera:Destroy()
+		Instance.new("BindableEvent",workspace.Main.RealignCamera).Name="RealignCamera"
+	end
+	assert(network,"failed to find network")
+
+	function onCharacterAdded(char)
+		if not char then return end
+		character=char
+		root = character:WaitForChild("HumanoidRootPart")
+		character:WaitForChild("Humanoid"):GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+			if delTool then
+				character.Humanoid.WalkSpeed=16
+			end
+		end)
+	end
+	onCharacterAdded(player.Character or player.CharacterAdded:Wait())
+	player.CharacterAdded:Connect(onCharacterAdded)
+
+
+	for name in pairs(supplyCounts) do
+		local lbl = workspace.SupplyCounters[name=="Dew" and "CounterMountainDew" or "Counter"..name].a.SG.Counter
+		supplyCounts[name]=tonumber(lbl.Text)
+		lbl.Changed:Connect(function()
+			supplyCounts[name]=tonumber(lbl.Text)
+		end)
+	end
+
+	function FindFirstCustomer()
+		local children = workspace.Customers:GetChildren()
+		for i=1,#children do
+			local c = children[i]
+			if ffc(c,"Head") and ffc(c,"Humanoid") and c.Head.CFrame.Z<102 and ffc(c.Head,"Dialog") and ffc(c.Head.Dialog,"Correct") and ((c.Humanoid.SeatPart and c.Humanoid.SeatPart.Anchored) or (c.Humanoid.SeatPart==nil and (c.Head.Velocity.Z^2)^.5<.0001)) then
+				return c
+
+			end
+		end
+	end
+
+
+
+	function getOrders()
+		local orders={}
+		local tempCookingDict = {}
+		for i,v in pairs(cookingDict) do tempCookingDict[i]=v end
+		local children = workspace.Orders:GetChildren()
+		for i=1,#children do
+			local o = orderDict[children[i].SG.ImageLabel.Image:match("%d+$")]
+			if o then
+				if tempCookingDict[o]>0 then
+					--ignores oven pizzas, so new orders are priority
+					tempCookingDict[o]=tempCookingDict[o]-1
+				elseif (o=="Dew" and #workspace.AllMountainDew:GetChildren()>0) or (supplyCounts[o]>0 and supplyCounts.TomatoSauce>0 and supplyCounts.Cheese>0) then
+					--need supplies
+					orders[#orders+1]=o
+				end
+			end
+		end
+		return orders
+	end
+
+	function FindFirstDew()
+		local children = workspace.AllMountainDew:GetChildren()
+		for i=1,#children do
+			if not children[i].Anchored then
+				return children[i]
+			end
+		end
+	end
+
+	function FindDoughAndWithout(str)
+		local goodraw,p,raw,trash
+		local children = workspace.AllDough:GetChildren()
+		for i = #children, 2, -1 do --shuffle
+			local j = RNG:NextInteger(1, i)
+			children[j], children[i] = children[i], children[j]
+		end
+		for i=1,#children do
+			local d = children[i]
+			if d.Anchored==false and #d:GetChildren()>9 then
+				if d.IsBurned.Value or d.HasBugs.Value or d.Cold.Value or (d.BrickColor.Name=="Bright orange" and ffc(d,"XBillboard")) then
+					if trash==nil and d.Position.Y > 0 then
+						trash=d
+					end
+				elseif p==nil and d.BrickColor.Name=="Bright orange" then
+					p=d
+				elseif goodraw==nil and d.Position.X<55 and d.BrickColor.Name=="Brick yellow" and ((str and not ffc(d.SG.Frame,str)) or (str==nil and ffc(d.SG.Frame,"Sausage")==nil and ffc(d.SG.Frame,"Pepperoni")==nil)) then
+					--prefers flat
+					if d.Mesh.Scale.Y<1.1 then
+						goodraw=d
+					else
+						raw=d
+					end
+				end
+				if goodraw and p and trash then
+					return goodraw,p,trash
+				end
+			end
+		end
+		return goodraw or raw,p,trash
+	end
+
+	function getOvenNear(pos)
+		local children = workspace.Ovens:GetChildren()
+		for i=1,#children do
+			if (children[i].Bottom.Position-pos).magnitude < 1.5 then
+				return children[i]
+			end
+		end
+	end
+	function getDoughNear(pos)
+		local children = workspace.AllDough:GetChildren()
+		for i=1,#children do
+			if (children[i].Position-pos).magnitude < 1.5 then
+				return children[i]
+			end
+		end
+	end
+	function isFullyOpen(oven)
+		return oven.IsOpen.Value==true and (oven.Door.Meter.RotVelocity.Z^2)^.5<.0001
+	end
+
+	function FindBoxes()
+		local c,o,f
+		local children = workspace.AllBox:GetChildren()
+		for i=1,#children do
+			local b = children[i]
+			if ffc(b,"HasPizzaInside") or ffc(b,"Pizza") then
+				if c==nil and b.Name=="BoxClosed" and b.Anchored==false and not b.HasPizzaInside.Value then
+					c=b
+				elseif o==nil and b.Name=="BoxOpen" and b.Anchored==false and not b.Pizza.Value then
+					o=b
+				elseif f==nil and (b.Name=="BoxOpen" and b.Pizza.Value) or (b.Name=="BoxClosed" and b.HasPizzaInside.Value) then
+					f=b
+				end
+				if c and o and f then
+					return c,o,f
+				end
+			end
+		end
+		return c,o,f
+	end
+
+	function FindBoxingFoods()
+		local p,d
+		local children = workspace.BoxingRoom:GetChildren()
+		for i=1,#children do
+			local f = children[i]
+			if not f.Anchored then
+				if p==nil and f.Name=="Pizza" then
+					p=f
+				elseif d==nil and f.Name=="Dew" then
+					d=f
+				end
+				if p and d then
+					return p,d
+				end
+			end
+		end
+		return p,d
+	end
+
+
+	function FindFirstDeliveryTool()
+		local t
+		local children = workspace:GetChildren()
+		for i=1,#children do
+			local v = children[i]
+			if v.ClassName=="Tool" and v.Name:match("^%u%d$") and ffc(v,"House") and ffc(v,"Handle") and ffc(v,"Order") and v.Order.Value:match("%a") then
+				if ffc(v.Handle,"X10") then
+					return v
+				end
+				t = v
+			end
+		end
+		return t
+	end
+	function getHousePart(address)
+		local houses = workspace.Houses:GetChildren()
+		for i=1,#houses do
+			local h = houses[i]
+			if ffc(h,"Address") and h.Address.Value==address and ffc(h,"CurrentUpgrade") and h.CurrentUpgrade.Value and ffc(h.CurrentUpgrade.Value,"GivePizza") then
+				return h.CurrentUpgrade.Value.GivePizza
+			end
+		end
+	end
+	local delTouched=false
+	function forgetDeliveryTool()
+		if delTool then
+			if delTool.Parent==player.Backpack then
+				delTool.Parent = character
+			end
+			if delTool.Parent==character then
+				wait(0.1)
+				delTool.Parent = workspace
+				wait(0.1)
+			end
+		end
+		delTool=nil
+		delTouched=false
+		if ffc(character,"RightHand") and ffc(character.RightHand,"RightGrip") then
+			character.RightHand.RightGrip:Destroy()
+		end
+	end
+
+	function simTouch(part)
+		local oldcc = part.CanCollide
+		local oldcf = part.CFrame
+		part.CanCollide = false
+		root.CFrame = part.CFrame
+		delay(0.01,function()
+			part.CFrame = oldcf
+			part.CanCollide = oldcc
+		end)
+	end
+end
+
+
+local function toggleInvisibleWall()
+	if not invisibleWallsShowed then
+		invisibleWallsShowed = true
+
+		for i, v in pairs(workspace:GetDescendants()) do
+			if v:IsA("Part") or v:IsA("MeshPart") or v:IsA("WedgePart") or v:IsA("UnionOperator") then
+				if v.Transparency == 1 then
+					table.insert(invisibleWallTable, 1, v)
+					v.BrickColor = BrickColor.new("Yellow flip/flop")
+					v.Transparency = 0.5
+				end
+			end
+		end
+
+	else
+		invisibleWallsShowed = false
+		for i, v in pairs(invisibleWallTable) do
+			if v then
+				v.Transparency = 1
+			end
+		end
+
+		invisibleWallTable = {}
+	end
+end
+
+--Infinite yield
+
+
+function respawn(plr)
+	--if invisRunning then TurnVisible() end
+	local char = plr.Character
+	if char:FindFirstChildOfClass("Humanoid") then char:FindFirstChildOfClass("Humanoid"):ChangeState(15) end
+	char:ClearAllChildren()
+	local newChar = Instance.new("Model")
+	newChar.Parent = workspace
+	plr.Character = newChar
+	wait()
+	plr.Character = char
+	newChar:Destroy()
+end
+
+local refreshCmd = false
+function refresh(plr)
+	refreshCmd = true
+	local Human = plr.Character and plr.Character:FindFirstChildOfClass("Humanoid", true)
+	local pos = Human and Human.RootPart and Human.RootPart.CFrame
+	local pos1 = workspace.CurrentCamera.CFrame
+	respawn(plr)
+	task.spawn(function()
+		plr.CharacterAdded:Wait():WaitForChild("Humanoid").RootPart.CFrame, workspace.CurrentCamera.CFrame = pos, wait() and pos1
+		refreshCmd = false
+	end)
+end
+
+function getRoot(char)
+	local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
+	return rootPart
+end
+
+function tools(plr)
+	if plr:FindFirstChildOfClass("Backpack"):FindFirstChildOfClass('Tool') or plr.Character:FindFirstChildOfClass('Tool') then
+		return true
+	end
+end
+
+function attach(speaker,target)
+	if tools(speaker) then
+		local char = speaker.Character
+		local tchar = target
+		local hum = speaker.Character:FindFirstChildOfClass("Humanoid")
+		local hrp = getRoot(speaker.Character)
+		local hrp2 = getRoot(target)
+		hum.Name = "1"
+		local newHum = hum:Clone()
+		newHum.Parent = char
+		newHum.Name = "Humanoid"
+		wait()
+		hum:Destroy()
+		workspace.CurrentCamera.CameraSubject = char
+		newHum.DisplayDistanceType = "None"
+		local tool = speaker:FindFirstChildOfClass("Backpack"):FindFirstChildOfClass("Tool") or speaker.Character:FindFirstChildOfClass("Tool")
+		tool.Parent = char
+		hrp.CFrame = hrp2.CFrame * CFrame.new(0, 0, 0) * CFrame.new(math.random(-100, 100)/200,math.random(-100, 100)/200,math.random(-100, 100)/200)
+		local n = 0
+		repeat
+			wait(.1)
+			n = n + 1
+			hrp.CFrame = hrp2.CFrame
+		until (tool.Parent ~= char or not hrp or not hrp2 or not hrp.Parent or not hrp2.Parent or n > 250) and n > 2
+	else
+		venyx.notify("Error", 'Tool Required','You need to have an item in your inventory to use this command')
+	end
+end
+
+function bring(speaker,target,fast)
+	if tools(speaker) then
+		if target ~= nil then
+			local NormPos = getRoot(speaker.Character).CFrame
+			if not fast then
+				refresh(speaker)
+				wait()
+				repeat wait() until speaker.Character ~= nil and getRoot(speaker.Character)
+				wait(0.3)
+			end
+			local hrp = getRoot(speaker.Character)
+			attach(speaker,target)
+			repeat
+				wait()
+				hrp.CFrame = NormPos
+			until not getRoot(target) or not getRoot(speaker.Character)
+			wait(game.Players.RespawnTime)
+			speaker.CharacterAdded:Wait():WaitForChild("HumanoidRootPart").CFrame = NormPos
+		end
+	else
+		venyx.notify("Error", 'Tool Required','You need to have an item in your inventory to use this command')
+	end
+end
+
+
+
+
+--DefaultSet
+DefaultSky = GetDefaultSky()
+if DefaultSky then
+	DefaultSkyStat = {DefaultSky.CelestialBodiesShown, DefaultSky.MoonAngularSize, DefaultSky.MoonTextureId, DefaultSky.SkyboxBk, DefaultSky.SkyboxDn, DefaultSky.SkyboxFt, DefaultSky.SkyboxLf, DefaultSky.SkyboxRt, DefaultSky.SkyboxUp, DefaultSky.StarCount, DefaultSky.SunAngularSize, DefaultSky.SunTextureId}
+
+end
+
+local MusicIdToPlay = Instance.new("Sound", game.CoreGui)
+MusicIdToPlay.Name = "FoxiMusic"
+MusicIdToPlay.Looped = true
+
+
+
+
+
+
+
+-- CHARACTER
+local page = venyx:addPage("Character", 8988743366)
+local BasicHack = page:addSection("Basic hack")
+local HumanoidStat = page:addSection("Humanoid stat")
+local TeleportPage = page:addSection("Teleport and spectate")
+local BotPage = page:addSection("Bot")
+local FunPage = page:addSection("Fun")
+local GameAddonPage = page:addSection("GameAddon")
+
+BasicHack:addToggle("infinity jump", nil, function(value)
+	infiniJump = value
+end)
+
+
+BasicHack:addToggle("noclip", nil, function(value)
+	noclip = value
+end)
+
+BasicHack:addToggle("Invisible", nil, function(value)
+	venyx:Notify("Error", "Comming soon")
+end)
+
+BasicHack:addToggle("key to teleport", nil, function(value)
+	eToTeleport = value
+end)
+
+BasicHack:addKeybind("TeleportKey : ", Enum.KeyCode.E, function()
+	local mouse = game.Players.LocalPlayer:GetMouse()
+	if mouse.Target then
+		if eToTeleport then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(mouse.Hit.x, mouse.Hit.y + 5, mouse.Hit.z)
+		end
+	end
+end)
+
+BasicHack:addToggle("Anchored", nil, function(value)
+	if value then
+		game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+	else
+		game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+	end
+end)
+
+BasicHack:addToggle("fly", nil, function(value)
+	_G.FLYING = value
+	FLY()
+end)
+
+BasicHack:addKeybind("fly keybind : ", nil, function()
+	BasicHack:updateToggle("fly", "fly", not _G.FLYING)
+	_G.FLYING = not _G.FLYING
+	FLY()
+	--if _G.FLYING then
+	--	FLY()
+	--	flyKeybindToggle = not flyKeybindToggle
+	--end
+end)
+
+BasicHack:addTextbox("Fly speed", "50", function(value, focusLost)
+	if focusLost then
+		if tonumber(value) > 0 then
+			flySpeed = tonumber(value)
+		end
+	end
+end)
+
+
+
+
+HumanoidStat:addToggle("Coordinate", nil, function(value)
+	if value then
+		local CoUi = Instance.new("ScreenGui", game.CoreGui)
+		CoUi.Name = "PositionGui"
+		CoUi.ResetOnSpawn = false
+
+		local CoLabel = Instance.new("TextLabel", CoUi)
+		CoLabel.Name = "Pos"
+		CoLabel.BackgroundTransparency = 1
+		CoLabel.TextScaled = true
+		CoLabel.Size = UDim2.new(0.3, 0, 0.1, 0)
+		CoLabel.Position = UDim2.new(0.7, 0,0.2, 0)
+		CoLabel.TextColor3 = Color3.new(255, 255, 255)
+		CoLabel.TextStrokeTransparency = 0
+
+		ShowPosition = true
+	else
+		ShowPosition = false
+		game.CoreGui.PositionGui:Destroy()
+	end
+end)
+
+HumanoidStat:addSlider("Speed", math.floor(baseSpeed), 0, 300, function(value)
+	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+	basicSpeed = value
+end)
+
+HumanoidStat:addSlider("Jump power", math.floor(baseJump), 0, 500, function(value)
+	game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
+	basicJump = value
+end)
+
+HumanoidStat:addSlider("Gravity", math.floor(baseGravity), 0, 500, function(value)
+	game.Workspace.Gravity = value
+	basicGravity = value
+end)
+
+HumanoidStat:addSlider("Levitation", math.floor(baseLevit * 10), 0, 500, function(value)
+	game.Players.LocalPlayer.Character.Humanoid.HipHeight = value / 10
+	basicLevitation = value
+end)
+
+local function updateAllBasicBars(human)
+	if human.WalkSpeed ~= basicSpeed and alive then
+		HumanoidStat:updateSlider("Speed", nil, human.WalkSpeed, 0, 300, 0)
+		basicSpeed = human.WalkSpeed
+	end
+
+	if human.JumpPower ~= basicJump and alive then
+		HumanoidStat:updateSlider("Jump power", nil, human.JumpPower, 0, 500, 0)
+		basicJump = human.JumpPower
+	end
+
+	if human.HipHeight ~= basicLevitation and alive then
+		HumanoidStat:updateSlider("Levitation", nil, math.floor(human.HipHeight * 10), 0, 500, 0)
+		basicLevitation = human.HipHeight
+	end
+end
+
+--Update bars
+game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
+	if alive then
+		local human = char:WaitForChild('Humanoid')
+		wait(0.3)
+		updateAllBasicBars(human)
+		human.Changed:Connect(function()
+			updateAllBasicBars(human)
+		end)
+	end
+end)
+
+HumanoidStat:addButton("Reset", function()
+	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = baseSpeed
+	game.Workspace.Gravity = baseGravity
+	game.Players.LocalPlayer.Character.Humanoid.JumpPower = baseJump
+	game.Players.LocalPlayer.Character.Humanoid.HipHeight = baseLevit
+
+	local human = game.Players.LocalPlayer.Character.Humanoid
+	HumanoidStat:updateSlider("Speed", nil, math.floor(baseSpeed), 0, 300)
+	HumanoidStat:updateSlider("Jump power", nil, math.floor(baseJump), 0, 500)
+	HumanoidStat:updateSlider("Gravity", nil, math.floor(baseGravity), 0, 500)
+	HumanoidStat:updateSlider("Levitation", nil, math.floor(baseLevit * 10) , 0, 500)
+end)
+
+HumanoidStat:addToggle("auto setSpeed (lag warning)", nil, function(value)
+	autoSetSpeed = value
+end)
+
+
+
+TeleportPage:addTextbox("Player", "player name", function(value, focusLost)
+	if focusLost then
+		tpPlayerFocus = value
+	end
+end)
+
+--local plrNameTable = {}
+--for i, v in pairs(game.Players:GetPlayers()) do
+--	table.insert(plrNameTable, 1, v.Name)
+--end
+
+--TeleportPage:addDropdown("plr to teleport", plrNameTable, function(value)
+--	tpPlayerFocus = value
+--end)
+
+--function updatePlayerDropdown(theDropdown)
+--	if alive then
+--		local plrNameTableTemp = {}
+--		for i, v in pairs(game.Players:GetPlayers()) do
+--			table.insert(plrNameTableTemp, 1, v.Name)
+--		end
+
+--		TeleportPage:updateDropdown(theDropdown, nil, plrNameTableTemp)
+--	end
+--end
+
+--game.Players.PlayerAdded:Connect(function()
+--	updatePlayerDropdown("plr to teleport")
+--end)
+
+--game.Players.PlayerRemoving:Connect(function()
+--	updatePlayerDropdown("plr to teleport")
+--end)
+
+TeleportPage:addButton("Teleport", function()
+	local success = pcall(function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players:FindFirstChild(tpPlayerFocus).Character.HumanoidRootPart.Position) end)
+	if not success then
+		venyx:Notify("ERROR", "player not found")
+	end
+
+end)
+
+
+TeleportPage:addButton("Bring (need tool)", function()
+
+
+	if not game:GetService("Players"):FindFirstChild(tpPlayerFocus) then
+		venyx:Notify("ERROR", "player not found")
+
+	else
+		spawn(function()
+			bring(game.Players.LocalPlayer, game:GetService("Players"):FindFirstChild(tpPlayerFocus).Character, false)
+		end)
+	end
+
+end)
+
+
+
+
+
+TeleportPage:addButton("Spectate", function()
+	local success = pcall(function() game.Workspace.CurrentCamera.CameraSubject = game.Players:FindFirstChild(tpPlayerFocus).Character.Humanoid end)
+	if not success then
+		venyx:Notify("ERROR", "player not found")
+	end
+end)
+
+TeleportPage:addButton("Unspectate", function()
+	game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
+end)
+
+
+
+BotPage:addTextbox("Bot", "player name", function(value, focusLost)
+	if focusLost then
+		BotFocus = value
+	end
+end)
+
+BotPage:addButton("Folow player", function()
+	if FollowBot == false then
+		FollowBot = true
+	end
+end)
+
+BotPage:addButton("Stop bot", function()
+	FollowBot = false
+end)
+
+
+
+
+FunPage:addButton("Sit", function()
+	pcall(function() game.Players.LocalPlayer.Character.Humanoid.Sit = true end)
+end)
+
+FunPage:addButton("Delete animation", function()
+
+	pcall(function() game.Players.LocalPlayer.Character.Humanoid.Animator:Destroy() end)
+end)
+
+FunPage:addButton("Special reset character", function()
+	pcall(function() game.Players.LocalPlayer.Character.Humanoid:Destroy() end)
+end)
+
+FunPage:addButton("AMOGUS", function()
+	local args = {
+		[1] = "AMOGUS",
+		[2] = "All"
+	}
+
+	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+end)
+
+
+GameAddonPage:addToggle("Shift to sprint", nil, function(value)
+	shiftToSprint = value
+end)
+
+GameAddonPage:addSlider("Sprint speed", 20, 0, 300, function(value)
+	sprintSpeed = value
+end)
+
+UserInputService.InputBegan:Connect(function(input)
+	if input.KeyCode == Enum.KeyCode.LeftShift and shiftToSprint then
+		player.Character.Humanoid.WalkSpeed = sprintSpeed
+		game:GetService("TweenService"):Create(workspace.Camera, TweenInfo.new(0.2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {FieldOfView = 85}):Play()
+	end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+	if input.KeyCode == Enum.KeyCode.LeftShift and shiftToSprint then
+		player.Character.Humanoid.WalkSpeed = baseSpeed
+		game:GetService("TweenService"):Create(workspace.Camera, TweenInfo.new(0.2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {FieldOfView = 70}):Play()
+	end
+end)
+
+venyx:SelectPage(venyx.pages[1], true)
+
+game:GetService("RunService").RenderStepped:Wait()
+
+
+
+
+
+
+
+
+
+-- Visual
+local page = venyx:addPage("Visual", 8988759357)
+local CameraPage = page:addSection("Camera")
+local LightingPage = page:addSection("Lighting")
+local GuiPage = page:addSection("Gui")
+
+
+CameraPage:addToggle("Camera noclip", nil, function(value)
+	if value then
+		game.Players.LocalPlayer.DevCameraOcclusionMode = 1
+	else
+		game.Players.LocalPlayer.DevCameraOcclusionMode = 0
+	end
+end)
+
+CameraPage:addToggle("Unlock Camera max zoom distance", nil, function(value)
+	if value then
+		game.Players.LocalPlayer.CameraMaxZoomDistance = 100000
+	else
+		game.Players.LocalPlayer.CameraMaxZoomDistance = oldMaxZoom
+	end
+end)
+
+CameraPage:addToggle("ESP", nil, function(value)
+	ESPToggle = value
+	if value then
+		openESP()
+	else
+		closeESP()
+	end
+end)
+
+CameraPage:addKeybind("ESP keybind : ", nil, function()
+	CameraPage:updateToggle("ESP", "ESP", not ESPToggle)
+	ESPToggle = not ESPToggle
+	if ESPToggle then
+		openESP()
+	else
+		closeESP()
+	end
+end)
+
+CameraPage:addSlider("FOV", 70, 0, 120, function(value)
+	game.Workspace.Camera.FieldOfView = value
+end)
+
+CameraPage:addButton("Reset fov", function()
+	game.Workspace.Camera.FieldOfView = 70
+end)
+
+CameraPage:addToggle("Freeze cam", nil, function(value)
+	if value then
+		game.Workspace.Camera.CameraType = "Scriptable"
+	else
+		game.Workspace.Camera.CameraType = "Custom"
+	end
+end)
+
+
+
+LightingPage:addSlider("Brightness", 2, 0, 120, function(value)
+	game.Lighting.Brightness = value
+end)
+
+LightingPage:addToggle("HideGlobalShadows", nil, function(value)
+	game.Lighting.GlobalShadows = not value
+end)
+
+local objInstance = {}
+local Texture = {}
+local textureMoving = false
+CameraPage:addToggle("Remove texture (Freeze warning)", nil, function(value)
+	if textureMoving == false then
+		textureMoving = true
+		if value then
+			local num = 0
+			for i, v in pairs(workspace:GetDescendants()) do
+
+				if v:IsA("Part") or v:IsA("WedgePart") or v:IsA("MeshPart") then
+					table.insert(objInstance, 1, v)
+					table.insert(Texture, 1, v.Material)
+					v.Material = Enum.Material.SmoothPlastic
+					num += 1
+				end
+
+				if v:IsA("Texture") then
+					table.insert(objInstance, 1, v)
+					table.insert(Texture, 1, v.Texture)
+					v.Texture = ""
+					num += 1
+				end
+
+				if num >= 500 then
+					num = 0
+					game:GetService("RunService").RenderStepped:Wait()
+				end
+			end
+		else
+			local num = 0
+			for i, v in pairs(objInstance) do
+				if v then
+					if v:IsA("Part") or v:IsA("WedgePart") or v:IsA("MeshPart") then
+						v.Material = Texture[i]
+						num += 1
+					end
+
+					if v:IsA("Texture") then
+						v.Texture = Texture[i]
+						num += 1
+					end
+
+					if num >= 500 then
+						num = 0
+						game:GetService("RunService").RenderStepped:Wait()
+					end
+				end
+			end
+		end
+		textureMoving = false
+		CameraPage:updateToggle("Remove texture (Freeze warning)", nil, value)
+	end
+end)
+
+CameraPage:addToggle("Show invisible walls", nil, function(value)
+	toggleInvisibleWall()
+end)
+
+GuiPage:addToggle("HideMenu", nil, function(value)
+	for i, v in pairs(game.Players.LocalPlayer.PlayerGui:GetChildren()) do
+		if v:IsA("ScreenGui") then
+			v.Enabled = not value
+		end
+	end
+end)
+
+
+game:GetService("RunService").RenderStepped:Wait()
+
+
+
+
+
+
+-- BasicTp
+local page = venyx:addPage("Custom tp", 8988776454)
+local locationcreator = page:addSection("create a location")
+
+locationcreator:addTextbox("CustomTp", "location name", function(value, focusLost)
+	if focusLost then
+		customTpName = value
+	end
+end)
+
+locationcreator:addButton("Create location", function()
+	if customTpName ~= nil then
+		if game.CoreGui:FindFirstChild(name).Main:FindFirstChild("Custom tp"):FindFirstChild(customTpName) then
+			venyx:Notify("Error", "Incorect name")
+		else
+			local tppage = page:addSection(customTpName)
+			local buttonPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+			tppage:addButton("Tp boutton", function()
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(buttonPosition)
+			end)
+
+			tppage:addKeybind("TP keybind : ", nil, function()
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(buttonPosition)
+			end)
+
+			tppage:addButton("Delete location (comming soon)", function()
+
+				spawn(function()
+					--section = tppage:findFirstChild(section)
+					for i, v in pairs(self.sections) do
+						if v == section then
+							table.remove(tppage.sections, i)
+						end
+					end
+
+					section:Destroy()
+				end)
+			end)
+
+			venyx:SelectPage(venyx.pages[1], true)
+			venyx:SelectPage(venyx.pages[3], true)
+		end
+	else
+		venyx:Notify("Error", "Incorect name")
+	end
+end)
+
+game:GetService("RunService").RenderStepped:Wait()
+
+
+--Custom Map
+local page = venyx:addPage("Custom world", 8988796619)
+local SkyPage = page:addSection("Sky")
+local TimePage = page:addSection("Time")
+local MusicPage = page:addSection("Local music")
+
+SkyPage:addButton("Default game sky", function()
+	if DefaultSky then
+		DefaultSky.CelestialBodiesShown = DefaultSkyStat[1]
+		DefaultSky.MoonAngularSize = DefaultSkyStat[2]
+		DefaultSky.MoonTextureId = DefaultSkyStat[3]
+		DefaultSky.SkyboxBk = DefaultSkyStat[4]
+		DefaultSky.SkyboxDn = DefaultSkyStat[5]
+		DefaultSky.SkyboxFt = DefaultSkyStat[6]
+		DefaultSky.SkyboxLf = DefaultSkyStat[7]
+		DefaultSky.SkyboxRt = DefaultSkyStat[8]
+		DefaultSky.SkyboxUp = DefaultSkyStat[9]
+		DefaultSky.StarCount = DefaultSkyStat[10]
+		DefaultSky.SunAngularSize = DefaultSkyStat[11]
+		DefaultSky.SunTextureId = DefaultSkyStat[12]
+	end
+end)
+
+SkyPage:addButton("Realistic sky", function()
+	local ThePresetSky = presetsSky["Realistic sky"]
+
+	DefaultSky.CelestialBodiesShown = ThePresetSky[1]
+	DefaultSky.MoonAngularSize = ThePresetSky[2]
+	DefaultSky.MoonTextureId = ThePresetSky[3]
+	DefaultSky.SkyboxBk = ThePresetSky[4]
+	DefaultSky.SkyboxDn = ThePresetSky[5]
+	DefaultSky.SkyboxFt = ThePresetSky[6]
+	DefaultSky.SkyboxLf = ThePresetSky[7]
+	DefaultSky.SkyboxRt = ThePresetSky[8]
+	DefaultSky.SkyboxUp = ThePresetSky[9]
+	DefaultSky.StarCount = ThePresetSky[10]
+	DefaultSky.SunAngularSize = ThePresetSky[11]
+	DefaultSky.SunTextureId = ThePresetSky[12]
+end)
+
+SkyPage:addButton("Cartoon sky", function()
+	local ThePresetSky = presetsSky["Cartoon sky"]
+
+	DefaultSky.CelestialBodiesShown = ThePresetSky[1]
+	DefaultSky.MoonAngularSize = ThePresetSky[2]
+	DefaultSky.MoonTextureId = ThePresetSky[3]
+	DefaultSky.SkyboxBk = ThePresetSky[4]
+	DefaultSky.SkyboxDn = ThePresetSky[5]
+	DefaultSky.SkyboxFt = ThePresetSky[6]
+	DefaultSky.SkyboxLf = ThePresetSky[7]
+	DefaultSky.SkyboxRt = ThePresetSky[8]
+	DefaultSky.SkyboxUp = ThePresetSky[9]
+	DefaultSky.StarCount = ThePresetSky[10]
+	DefaultSky.SunAngularSize = ThePresetSky[11]
+	DefaultSky.SunTextureId = ThePresetSky[12]
+end)
+
+SkyPage:addButton("Pink sky", function()
+	local ThePresetSky = presetsSky["Pink sky"]
+
+	DefaultSky.CelestialBodiesShown = ThePresetSky[1]
+	DefaultSky.MoonAngularSize = ThePresetSky[2]
+	DefaultSky.MoonTextureId = ThePresetSky[3]
+	DefaultSky.SkyboxBk = ThePresetSky[4]
+	DefaultSky.SkyboxDn = ThePresetSky[5]
+	DefaultSky.SkyboxFt = ThePresetSky[6]
+	DefaultSky.SkyboxLf = ThePresetSky[7]
+	DefaultSky.SkyboxRt = ThePresetSky[8]
+	DefaultSky.SkyboxUp = ThePresetSky[9]
+	DefaultSky.StarCount = ThePresetSky[10]
+	DefaultSky.SunAngularSize = ThePresetSky[11]
+	DefaultSky.SunTextureId = ThePresetSky[12]
+end)
+
+SkyPage:addButton("Island theme sky", function()
+	local ThePresetSky = presetsSky["Island theme sky"]
+
+	DefaultSky.CelestialBodiesShown = ThePresetSky[1]
+	DefaultSky.MoonAngularSize = ThePresetSky[2]
+	DefaultSky.MoonTextureId = ThePresetSky[3]
+	DefaultSky.SkyboxBk = ThePresetSky[4]
+	DefaultSky.SkyboxDn = ThePresetSky[5]
+	DefaultSky.SkyboxFt = ThePresetSky[6]
+	DefaultSky.SkyboxLf = ThePresetSky[7]
+	DefaultSky.SkyboxRt = ThePresetSky[8]
+	DefaultSky.SkyboxUp = ThePresetSky[9]
+	DefaultSky.StarCount = ThePresetSky[10]
+	DefaultSky.SunAngularSize = ThePresetSky[11]
+	DefaultSky.SunTextureId = ThePresetSky[12]
+end)
+
+SkyPage:addButton("Galaxy sky", function()
+	local ThePresetSky = presetsSky["Galaxy sky"]
+
+	DefaultSky.CelestialBodiesShown = ThePresetSky[1]
+	DefaultSky.MoonAngularSize = ThePresetSky[2]
+	DefaultSky.MoonTextureId = ThePresetSky[3]
+	DefaultSky.SkyboxBk = ThePresetSky[4]
+	DefaultSky.SkyboxDn = ThePresetSky[5]
+	DefaultSky.SkyboxFt = ThePresetSky[6]
+	DefaultSky.SkyboxLf = ThePresetSky[7]
+	DefaultSky.SkyboxRt = ThePresetSky[8]
+	DefaultSky.SkyboxUp = ThePresetSky[9]
+	DefaultSky.StarCount = ThePresetSky[10]
+	DefaultSky.SunAngularSize = ThePresetSky[11]
+	DefaultSky.SunTextureId = ThePresetSky[12]
+end)
+
+SkyPage:addButton("Night time sky", function()
+	local ThePresetSky = presetsSky["Night time sky"]
+
+	DefaultSky.CelestialBodiesShown = ThePresetSky[1]
+	DefaultSky.MoonAngularSize = ThePresetSky[2]
+	DefaultSky.MoonTextureId = ThePresetSky[3]
+	DefaultSky.SkyboxBk = ThePresetSky[4]
+	DefaultSky.SkyboxDn = ThePresetSky[5]
+	DefaultSky.SkyboxFt = ThePresetSky[6]
+	DefaultSky.SkyboxLf = ThePresetSky[7]
+	DefaultSky.SkyboxRt = ThePresetSky[8]
+	DefaultSky.SkyboxUp = ThePresetSky[9]
+	DefaultSky.StarCount = ThePresetSky[10]
+	DefaultSky.SunAngularSize = ThePresetSky[11]
+	DefaultSky.SunTextureId = ThePresetSky[12]
+end)
+
+SkyPage:addButton("Night City sky", function()
+	local ThePresetSky = presetsSky["Night City sky"]
+
+	DefaultSky.CelestialBodiesShown = ThePresetSky[1]
+	DefaultSky.MoonAngularSize = ThePresetSky[2]
+	DefaultSky.MoonTextureId = ThePresetSky[3]
+	DefaultSky.SkyboxBk = ThePresetSky[4]
+	DefaultSky.SkyboxDn = ThePresetSky[5]
+	DefaultSky.SkyboxFt = ThePresetSky[6]
+	DefaultSky.SkyboxLf = ThePresetSky[7]
+	DefaultSky.SkyboxRt = ThePresetSky[8]
+	DefaultSky.SkyboxUp = ThePresetSky[9]
+	DefaultSky.StarCount = ThePresetSky[10]
+	DefaultSky.SunAngularSize = ThePresetSky[11]
+	DefaultSky.SunTextureId = ThePresetSky[12]
+end)
+
+
+
+TimePage:addToggle("Always day", nil, function(value)
+	alwaysDay = value
+end)
+
+TimePage:addToggle("Always night", nil, function(value)
+	alwaysNight = value
+end)
+
+MusicPage:addTextbox("Music id", "Put id here", function(value, focusLost)
+	if focusLost then
+		pcall(function() MusicIdToPlay.SoundId = "rbxassetid://" ..value MusicIdToPlay:Stop() end) 
+
+		local times = 0
+		repeat
+			wait(0.3)
+			times += 1
+		until MusicIdToPlay.IsLoaded or times == 3
+
+		if not MusicIdToPlay.IsLoaded then
+			venyx:Notify("Error", "Music not found")
+		end
+	end
+end)
+
+MusicPage:addButton("Play music", function()
+	MusicIdToPlay:Play()
+	MusicIdToPlay:Resume()
+	MusicPage:updateToggle("Pause music", "Pause music", false)
+	MusicPage:updateSlider("Time", nil, math.floor(MusicIdToPlay.TimePosition), 0, math.floor(MusicIdToPlay.TimeLength), 0)
+end)
+
+MusicPage:addButton("Stop music", function()
+	MusicIdToPlay:Stop()
+	MusicIdToPlay:Pause()
+end)
+
+MusicPage:addToggle("Pause music", nil, function(value)
+	if value then
+		MusicIdToPlay:Pause()
+	else
+		MusicIdToPlay:Resume()
+	end
+end)
+
+MusicPage:addSlider("Volume", 15, 0, 90, function(value)
+	MusicIdToPlay.Volume = value / 30
+end)
+
+
+MusicPage:addSlider("Music speed (20 = normal)", 20, 0, 60, function(value)
+	MusicIdToPlay.PlaybackSpeed = value / 20
+end)
+
+MusicPage:addSlider("Time", 0, 0, 100, function(value)
+	--if math.floor(value * math.floor(MusicIdToPlay.TimeLength) / 100 ) + 1  ~= math.floor(MusicIdToPlay.TimePosition) and math.floor(value * math.floor(MusicIdToPlay.TimeLength) / 100 ) + 2  ~= math.floor(MusicIdToPlay.TimePosition) then
+
+	--	print("timePositionValue : " ..timePositionValue)
+	--	print("value : " .. math.floor(value * math.floor(MusicIdToPlay.TimeLength) / 100 ) + 1)
+	--	print("MusicIdToPlay : " ..math.floor(MusicIdToPlay.TimePosition))
+	--	MusicIdToPlay.TimePosition = math.floor(value * math.floor(MusicIdToPlay.TimeLength) / 100 ) + 1
+
+	--end
+	timePositionValue = value
+
+
+end)
+
+local function countSecond()
+	while wait(0.1) do
+		if MusicIdToPlay.Playing and MusicIdToPlay.TimeLength > 0 and math.floor(MusicIdToPlay.TimePosition) ~= timePositionValue then
+			MusicPage:updateSlider("Time", nil, math.floor(MusicIdToPlay.TimePosition), 0, math.floor(MusicIdToPlay.TimeLength), 0)
+		end
+	end
+end
+
+spawn(countSecond)
+
+
+
+game:GetService("RunService").RenderStepped:Wait()
+
+
+--Robeats
+if game.PlaceId == 698448212 then
+	local page = venyx:addPage("Robeats", 9667400753)
+
+	local NormalPage = page:addSection("AutoPlay")
+
+	NormalPage:addToggle("Auto play", nil, function(value)
+		RobeatsAutoplayToggle = value
+	end)
+
+	NormalPage:addSlider("Random", 0, 0, 80, function(value)
+		Autoplayer.distanceLowerBound = 0.4 - value / 10
+		Autoplayer.distanceUpperBound = 0.6 + value / 10
+	end)
+
+	NormalPage:addSlider("Spam level", 20, 1, 20, function(value)
+		Autoplayer.delayLowerBound = 0.05 * 20 / value
+		Autoplayer.delayUpperBound = 0.1 * 20 / value
+		Autoplayer.sliderDebounce = 0.08 * 20 / value
+	end)
+end
+
+
+
+game:GetService("RunService").RenderStepped:Wait()
+
+
+--Transfur outbreak
+if game.PlaceId == 5987922834 then
+	local page = venyx:addPage("Transfur outbreak", 10517320477)
+
+	local UtilityPage = page:addSection("Utility")
+	local LatexPage = page:addSection("Latex")
+
+	UtilityPage:addButton("Reset", function()
+		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+			game.Players.LocalPlayer.Character.Humanoid.Health = 0
+		end
+	end)
+
+
+	LatexPage:addButton("Red speed", function()
+		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-947, 170, 298)
+		end
+	end)
+end
+
+
+
+
+
+game:GetService("RunService").RenderStepped:Wait()
+
+
+--Pls donate
+if game.PlaceId == 5987922834 then
+	local page = venyx:addPage("Transfur outbreak", 10517320477)
+
+	local UtilityPage = page:addSection("Utility")
+	local LatexPage = page:addSection("Latex")
+
+	UtilityPage:addButton("Reset", function()
+		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+			game.Players.LocalPlayer.Character.Humanoid.Health = 0
+		end
+	end)
+
+
+	LatexPage:addButton("Red speed", function()
+		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-947, 170, 298)
+		end
+	end)
+end
+
+
+
+game:GetService("RunService").RenderStepped:Wait()
+
+--Starving artist
+if game.PlaceId == 8916037983 then
+	local page = venyx:addPage("Starving artist", 9460743904)
+
+	local NormalPage = page:addSection("Copy art")
+
+
+
+	NormalPage:addTextbox("Player to copy", "player name", function(value, focusLost)
+		if focusLost then
+			if game.Players:FindFirstChild(value) then
+				ArtistToCopyName = value
+			else
+				venyx:Notify("Error", "Player not found")
+			end
+		end
+	end)
+
+	NormalPage:addTextbox("Art number", "Enter number", function(value, focusLost)
+		if focusLost then
+			ArtistPlotNum = value
+		end
+	end)
+
+	NormalPage:addSlider("Paint speed", 5, 1, 20, function(value)
+		PaintSpeed = (20 - value) / 35
+	end)
+
+	NormalPage:addButton("Preview paint", function()
+		local imageBytes = {}
+		local IDPAINT = PaintID
+
+
+		for i=1,1024 do
+			table.insert(imageBytes, i, workspace.Plots[ArtistToCopyName].Easels[ArtistPlotNum].Canvas.SurfaceGui.Grid[i].BackgroundColor3)
+		end
+
+
+		local UI = game.Players.LocalPlayer.PlayerGui.MainGui.PaintFrame.GridHolder.Grid
+		for i,v in pairs(imageBytes) do
+			UI[i].BackgroundColor3  = v
+			if PaintID ~= IDPAINT then
+				break
+			end
+		end
+
+
+		local function color_pixel(index,color)
+			local connection = (getconnections(UI[tostring(index)].MouseButton1Click))[1]
+			setupvalue(connection.Function,9,color)
+			connection.Function()
+		end
+		local low_quality = 25
+
+		lq=low_quality
+		for i=1,1024 do
+			v=imageBytes[i]
+			if not v  or not v.R or not v.G or not v.B then continue end
+			if v.R == 0 and v.G == 0 and v.B == 0 then v = {R=255,G=255,B=255} end
+			local r,g,b = v.R or 0,v.G or 0,v.B or 0
+			print(i, r-(r%lq),g-(g%lq),b-(b%lq))
+			color_pixel(i,Color3.fromRGB(r-(r%lq),g-(g%lq),b-(b%lq)))
+		end
+
+		wait(0.5)
+
+		local imageBytes = {}
+		local IDPAINT = PaintID
+
+
+		for i=1,1024 do
+			table.insert(imageBytes, i, Color3.new(1, 1, 1))
+		end
+
+
+		local UI = game.Players.LocalPlayer.PlayerGui.MainGui.PaintFrame.GridHolder.Grid
+		for i,v in pairs(imageBytes) do
+			UI[i].BackgroundColor3  = v
+			if PaintID ~= IDPAINT then
+				break
+			end
+		end
+
+
+		local function color_pixel(index,color)
+			local connection = (getconnections(UI[tostring(index)].MouseButton1Click))[1]
+			setupvalue(connection.Function,9,color)
+			connection.Function()
+		end
+		local low_quality = 25
+
+		lq=low_quality
+		for i=1,1024 do
+			v=imageBytes[i]
+			if not v  or not v.R or not v.G or not v.B then continue end
+			if v.R == 0 and v.G == 0 and v.B == 0 then v = {R=255,G=255,B=255} end
+			local r,g,b = v.R or 0,v.G or 0,v.B or 0
+			color_pixel(i,Color3.fromRGB(r-(r%lq),g-(g%lq),b-(b%lq)))
+		end
+	end)
+
+	NormalPage:addButton("Start paint", function()
+		PaintID += 1
+
+		local imageBytes = {}
+		local IDPAINT = PaintID
+
+
+		for i=1,1024 do
+			table.insert(imageBytes, i, workspace.Plots[ArtistToCopyName].Easels[ArtistPlotNum].Canvas.SurfaceGui.Grid[i].BackgroundColor3)
+		end
+
+
+		local UI = game.Players.LocalPlayer.PlayerGui.MainGui.PaintFrame.GridHolder.Grid
+		for i,v in pairs(imageBytes) do
+			UI[i].BackgroundColor3  = v
+			wait(PaintSpeed)
+			if PaintID ~= IDPAINT then
+				break
+			end
+		end
+
+
+		local function color_pixel(index,color)
+			local connection = (getconnections(UI[tostring(index)].MouseButton1Click))[1]
+			setupvalue(connection.Function,9,color)
+			connection.Function()
+		end
+		local low_quality = 25
+
+		lq=low_quality
+		for i=1,1024 do
+			v=imageBytes[i]
+			if not v  or not v.R or not v.G or not v.B then continue end
+			if v.R == 0 and v.G == 0 and v.B == 0 then v = {R=255,G=255,B=255} end
+			local r,g,b = v.R or 0,v.G or 0,v.B or 0
+			color_pixel(i,Color3.fromRGB(r-(r%lq),g-(g%lq),b-(b%lq)))
+		end
+	end)
+
+	NormalPage:addButton("Stop paint", function()
+		PaintID += 1
+	end)
+
+	NormalPage:addButton("Show art number", function()
+		for i, v in pairs(workspace.Plots:GetChildren()) do
+			for i, b in pairs(v.Easels:GetChildren()) do
+				local ArtInfo = b.ArtInfo:Clone()
+				ArtInfo.Parent = b.Canvas
+				ArtInfo.AlwaysOnTop = true
+				ArtInfo.StudsOffset = Vector3.new(0, 0, 0)
+				ArtInfo.MaxDistance = 50
+
+				for i, c in pairs(ArtInfo.Frame.Info:GetChildren()) do
+					if c.Name ~= "ArtName" and c.Name ~= "UIListLayout" then
+						c:Destroy()
+					end
+				end
+
+				ArtInfo.Frame.Info.ArtName.Text = "Art number : " ..b.Name
+
+				game:GetService("Debris"):AddItem(ArtInfo, 3)
+			end
+		end
+	end)
+
+
+	NormalPage:addButton("Copy script to clipboard", function()
+
+		local imageBytes = {}
+
+
+		for i=1,1024 do
+			table.insert(imageBytes, i, workspace.Plots[ArtistToCopyName].Easels[ArtistPlotNum].Canvas.SurfaceGui.Grid[i].BackgroundColor3)
+		end
+
+		local afterScript = [[
+		local UI = game.Players.LocalPlayer.PlayerGui.MainGui.PaintFrame.GridHolder.Grid
+		for i,v in pairs(imageBytes) do
+			UI[i].BackgroundColor3  = v
+			wait(0.3)
+		end
+
+
+		local function color_pixel(index,color)
+			local connection = (getconnections(UI[tostring(index)].MouseButton1Click))[1]
+			setupvalue(connection.Function,9,color)
+			connection.Function()
+		end
+		local low_quality = 25
+
+		lq=low_quality
+		for i=1,1024 do
+			v=imageBytes[i]
+			if not v  or not v.R or not v.G or not v.B then continue end
+			if v.R == 0 and v.G == 0 and v.B == 0 then v = {R=255,G=255,B=255} end
+			local r,g,b = v.R or 0,v.G or 0,v.B or 0
+			color_pixel(i,Color3.fromRGB(r-(r%lq),g-(g%lq),b-(b%lq)))
+			end
+			]] 
+
+
+		local newbyte = ""
+
+		for i, v in pairs(imageBytes) do		
+			newbyte = newbyte.. "Color3.new(" ..tostring(v) ..") ,"
+		end
+
+
+		local byte = "local imageBytes = {" ..newbyte .."}"
+
+		setclipboard(byte .."\n" ..afterScript)
+	end)
+end
+
+
+
+game:GetService("RunService").RenderStepped:Wait()
+
+
+--LagTester
+if game.PlaceId == 6356806222 then
+	local page = venyx:addPage("Lag tester", 8998677319)
+
+	local NormalPage = page:addSection("Basic")
+
+	NormalPage:addToggle("Auto Delete Part", nil, function(value)
+		if value then
+			for i, v in pairs(workspace.Parts:GetChildren()) do
+				v:Destroy()
+			end
+		end
+		autoDeletePart = value
+	end)
+
+	if workspace:FindFirstChild("Parts") then
+		workspace.Parts.ChildAdded:Connect(function(child)
+			if autoDeletePart and alive then
+				game:GetService("RunService").RenderStepped:Wait()
+				child:Destroy()
+			end
+		end)
+	end
+end
+
+game:GetService("RunService").RenderStepped:Wait()
+
+
+--Farming and friends
+if game.PlaceId == 2772610559 then
+	local page = venyx:addPage("Farming and friends", 9027120450)
+
+	local NormalPage = page:addSection("Basic")
+
+
+	NormalPage:addToggle("Show prices", nil, function(value)
+		showFarmOffer = value
+		local hostFrame = nil
+
+		if value then
+			hostFrame = Instance.new("Frame")
+			hostFrame.Parent = game.CoreGui:FindFirstChild(name)
+			hostFrame.Name = "Price"
+			hostFrame.BackgroundTransparency = 1
+			hostFrame.Size = UDim2.new(0.15, 0, 0.7, 0)
+			hostFrame.Position = UDim2.new(0.82, 0, 0.03, 0)
+
+			PriceFrame = workspace.SellValues.SellValues.SurfaceGui.Frame:Clone()
+			PriceFrame.Parent = hostFrame
+			PriceFrame.Size = UDim2.new(1, 0, 1, 0)
+
+			while true do
+				wait(1)
+
+				if not PriceFrame then
+					break
+				end
+
+				PriceFrame:Destroy()
+				PriceFrame = workspace.SellValues.SellValues.SurfaceGui.Frame:Clone()
+				PriceFrame.Parent = hostFrame
+				PriceFrame.Size = UDim2.new(1, 0, 1, 0)
+
+			end
+		else
+			hostFrame:Destroy()
+		end
+	end)
+
+	if workspace:FindFirstChild("Parts") then
+		workspace.Parts.ChildAdded:Connect(function(child)
+			if autoDeletePart and alive then
+				game:GetService("RunService").RenderStepped:Wait()
+				child:Destroy()
+			end
+		end)
+	end
+
+	NormalPage:addButton("Sell egg", function()
+		local root = game.Players.LocalPlayer.Character.HumanoidRootPart
+		local basePos = root.CFrame
+
+		root.CFrame = CFrame.new(-388, 14, 1427)
+		wait(0.2)
+		root.CFrame = basePos
+	end)
+
+	NormalPage:addButton("Refresh seed", function()
+		local root = game.Players.LocalPlayer.Character.HumanoidRootPart
+		local basePos = root.CFrame
+
+		root.CFrame = CFrame.new(-388, -30000, 1427)
+		VirtualInputManager:SendKeyEvent(true, "F", false, game)
+		wait(0.1)
+		VirtualInputManager:SendKeyEvent(false, "F", false, game)
+		wait(0.5)
+		root.CFrame = basePos
+	end)
+
+end
+
+
+game:GetService("RunService").RenderStepped:Wait()
+
+-- ANIMAL SIMULATOR
+
+if game.GameId == 2023680558 then
+	local page = venyx:addPage("Animal simulator", 8988803597)
+
+	local ChestPage = page:addSection("Chest")
+	local packPage = page:addSection("Pack and Name")
+	local BossPage = page:addSection("Boss (beta)")
+	local trollPage = page:addSection("Troll")
+	local OtherPage = page:addSection("Other")
+
+	ChestPage:addToggle("farm bot", nil, function(value)
+		bot = value
+		if bot then
+			loadstring(game:HttpGet("https://pastebin.com/raw/Q37wgSjN", true))()
+		else
+			game.Players.LocalPlayer.Character.Humanoid.Name = "a"
+			wait(0.2)
+			game.Players.LocalPlayer.Character.a.Name = "Humanoid"
+		end
+	end)
+
+	ChestPage:addToggle("bring chest", nil, function(value)
+		bringChest = value
+	end)
+
+	ChestPage:addToggle("tp to chest", nil, function(value)
+		toChest = value
+	end)
+
+	ChestPage:addToggle("autocollect", nil, function(value)
+		autocollect = value
+	end)
+
+	ChestPage:addToggle("Hide chest reward", nil, function(value)
+		HideReward = value
+	end)
+
+
+
+
+
+	packPage:addButton("Create invisible pack", function()
+		game:GetService("Players").LocalPlayer.PlayerGui.TeamGUI.noTeamFrame.teamInfo.createBtn.createTeamEvent:FireServer(nil)
+		game:GetService("Players").LocalPlayer.PlayerGui.TeamGUI.Enabled = true
+	end)
+
+	packPage:addButton("Remove name caracter limit", function()
+		game.Players.LocalPlayer.PlayerGui.RolePlayName.Frame.NameTB.limit:Destroy()
+	end)
+
+
+
+
+	BossPage:addToggle("Killaura lava gorilla", nil, function(value)
+		_G.BossGorillaFarm = value
+	end)
+
+	BossPage:addButton("tp to Gorilla", function()
+		if game.Workspace.NPC:findFirstChild("LavaGorilla") and game.Workspace.NPC.LavaGorilla:findFirstChild("HumanoidRootPart") then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.NPC.LavaGorilla.HumanoidRootPart.Position)
+		else
+			venyx:Notify("ERROR", "gorilla is death !")
+		end
+	end)
+
+	BossPage:addToggle("Killaura cerbus", nil, function(value)
+		_G.BossCerberFarm = value
+	end)
+
+	BossPage:addButton("tp to cerber", function()
+		if game.Workspace.NPC:findFirstChild("Trex") and game.Workspace.NPC.Trex:findFirstChild("HumanoidRootPart") then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.NPC.Trex.HumanoidRootPart.Position)
+		else
+			venyx:Notify("ERROR", "cerber is death !")
+		end
+	end)
+
+	BossPage:addToggle("Killaura drake", nil, function(value)
+		_G.BossDrakeFarm = value
+	end)
+
+	BossPage:addButton("tp to drake", function()
+		if game.Workspace.NPC:findFirstChild("Drake") and game.Workspace.NPC.Drake:findFirstChild("HumanoidRootPart") then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.NPC.Drake.HumanoidRootPart.Position)
+		else
+			venyx:Notify("ERROR", "drake is death !")
+		end
+	end)
+
+	BossPage:addToggle("DragonSlayer", nil, function(value)
+		_G.BossDragonSlayerFarm = value
+	end)
+
+	BossPage:addButton("tp to DragonSlayer", function()
+		if game.Workspace.NPC:findFirstChild("DragonSlayer") and game.Workspace.NPC.DragonSlayer:findFirstChild("HumanoidRootPart") then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.NPC.DragonSlayer.HumanoidRootPart.Position)
+		else
+			venyx:Notify("ERROR", "DragonSlayer is death !")
+		end
+	end)
+
+
+
+	trollPage:addButton("Drop head (animal)", function()
+		game.Players.LocalPlayer.Character.Neck.Motor6D:Destroy()
+	end)
+
+
+	OtherPage:addToggle("Show player Username", nil, function(value)
+		if value then
+			game.Players.LocalPlayer.NameDisplayDistance = 100000
+		else
+			game.Players.LocalPlayer.NameDisplayDistance = 0
+		end
+	end)
+
+
+
+
+
+
+
+
+
+	-- TP
+	local page = venyx:addPage("TP", 8988803597)
+
+	local TpPage = page:addSection("Teleport")
+
+
+	TpPage:addButton("Safe zone", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-559, -408, 2489)
+	end)
+
+	TpPage:addButton("DJ", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-819, -403, 2486)
+	end)
+
+	TpPage:addButton("Gorrila spawn", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(516, -337, 2092)
+	end)
+
+	TpPage:addButton("Cerber spawn", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-254, -424, 3321)
+	end)
+
+	TpPage:addButton("Secret base", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-636, -410, 3012)
+	end)
+
+
+
+
+
+
+	-- PVP
+	local page = venyx:addPage("PVP", 8988803597)
+
+	local keyboardPage = page:addSection("Autokeyboard")
+	--local ItemPage = page:addSection("GiveItem")
+	local zombiePage = page:addSection("Zombie Kill aura")
+	local KillAuraPage = page:addSection("Kill aura")
+	local KillAuraPage1 = page:addSection("Kill aura1")
+	local KillAuraPage2 = page:addSection("Kill aura2")
+	local KillAuraPage3 = page:addSection("Kill aura3")
+	local KillAuraPage4 = page:addSection("Kill aura4")
+
+	keyboardPage:addToggle("auto hit", nil, function(value)
+		autoHit = value
+	end)
+
+	keyboardPage:addToggle("auto eat (unstable)", nil, function(value)
+		autoEat = value
+	end)
+
+
+
+	--ItemPage:addButton("Give fireball", function()
+	--	local FireFounded = false
+	--	for i, v in pairs(game.Players:GetDescendants()) do
+	--		if v.Name == "Fireball" and v:FindFirstChild("FireballEvent") then
+	--			v.Parent = game.Players.LocalPlayer.Backpack
+	--			FireFounded = true
+	--		end
+	--	end
+	--	if not FireFounded then
+	--		venyx:Notify("Error", "No fire found :c")
+	--	end
+	--end)
+
+
+	zombiePage:addToggle("Zombie kill aura", nil, function(value)
+		ZombieKillAura = value
+	end)
+
+
+
+
+
+	KillAuraPage:addToggle("Kill aura", nil, function(value)
+		KillAura = value
+	end)
+
+
+
+
+
+
+	KillAuraPage1:addTextbox("kill aura target", "player name", function(value, focusLost)
+		if focusLost then
+			killAuraTarget1 = value
+		end
+	end)
+
+	KillAuraPage1:addKeybind("Hit this player : ", Enum.KeyCode.E, function()
+		if game.Players:FindFirstChild(killAuraTarget1) then
+			game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget1).Character.Humanoid)
+		end
+	end)
+
+	KillAuraPage1:addToggle("spam hit", nil, function(value)
+		spamHit1 = value
+	end)
+
+
+
+
+
+
+	KillAuraPage2:addTextbox("kill aura target", "player name", function(value, focusLost)
+		if focusLost then
+			killAuraTarget2 = value
+		end
+	end)
+
+	KillAuraPage2:addKeybind("Hit this player : ", Enum.KeyCode.E, function()
+		if game.Players:FindFirstChild(killAuraTarget1) then
+			game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget1).Character.Humanoid)
+		end
+	end)
+
+	KillAuraPage2:addToggle("spam hit", nil, function(value)
+		spamHit2 = value
+	end)
+
+
+
+
+
+
+	KillAuraPage3:addTextbox("kill aura target", "player name", function(value, focusLost)
+		if focusLost then
+			killAuraTarget3 = value
+		end
+	end)
+
+	KillAuraPage3:addKeybind("Hit this player : ", Enum.KeyCode.E, function()
+		if game.Players:FindFirstChild(killAuraTarget1) then
+			game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget1).Character.Humanoid)
+		end
+	end)
+
+	KillAuraPage3:addToggle("spam hit", nil, function(value)
+		spamHit3 = value
+	end)
+
+
+
+
+
+
+	KillAuraPage4:addTextbox("kill aura target", "player name", function(value, focusLost)
+		if focusLost then
+			killAuraTarget4 = value
+		end
+	end)
+
+	KillAuraPage4:addKeybind("Hit this player : ", Enum.KeyCode.E, function()
+		if game.Players:FindFirstChild(killAuraTarget1) then
+			game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget1).Character.Humanoid)
+		end
+	end)
+
+	KillAuraPage4:addToggle("spam hit", nil, function(value)
+		spamHit4 = value
+	end)
+
+
+
+
+
+
+
+
+
+
+
+
+	-- Autofarm
+	local page = venyx:addPage("Autofarm", 8988803597)
+
+	local onlineAutofarmPage = page:addSection("Online autofarm")
+	local afkAutofarmPage = page:addSection("afk autofarm")
+
+
+	onlineAutofarmPage:addToggle("boss kill farm", nil, function(value)
+		BossKillFarm = value
+	end)
+
+
+
+	afkAutofarmPage:addToggle("training area farm", nil, function(value)
+		autofarm = value
+		if value then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-562 , -409, 2531)
+			for i, v in pairs(game.Workspace.pleaseno:GetChildren()) do
+				if i == 7 then
+					v.Name = "farm"
+				end
+			end
+		else
+
+		end
+	end)
+
+
+	afkAutofarmPage:addToggle("boss kill farm fix", nil, function(value)
+		if value then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(129, -70, 2443)
+			vu:SetKeyDown("t")
+			vu:SetKeyUp("t")
+		else
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(259.826, -12.396, 3053.77)
+		end
+		BossKillFarmFix = value
+	end)
+
+
+	afkAutofarmPage:addToggle("Zombie Autofarm", nil, function(value)
+		ZombieAutofarm = value
+		if value then
+
+		else
+			game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(259.826, -12.396, 3053.77)
+		end
+	end)
+end
+
+
+game:GetService("RunService").RenderStepped:Wait()
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------Pizza place-------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+print(game.GameId)
+if game.GameId == 47545 then
+	print("pizza")
+	local page = venyx:addPage("Pizza place", 8988812453)
+
+	local AutoworkPage = page:addSection("Autowork")
+
+
+	AutoworkPage:addToggle("Cashier", nil, function(value)
+		doCashier = value
+	end)
+
+	AutoworkPage:addToggle("Cook", nil, function(value)
+		doCook = value
+	end)
+
+	AutoworkPage:addToggle("Boxer", nil, function(value)
+		doBoxer = value
+	end)
+
+	AutoworkPage:addToggle("Delivrery", nil, function(value)
+		doDelivery = value
+	end)
+
+	AutoworkPage:addToggle("Supplier", nil, function(value)
+		doSupplier = value
+	end)
+
+end
+
+
+game:GetService("RunService").RenderStepped:Wait()
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------BUILD A BOAT------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+if game.GameId == 210851291 then
+	local page = venyx:addPage("Build a boat", 8988823793)
+
+	local AutofarmPage = page:addSection("Autofarm")
+	local MiscPage = page:addSection("Misc")
+	local Transform = page:addSection("Transform")
+	local Utility = page:addSection("Utility")
+
+
+	AutofarmPage:addToggle("fast autofarm", nil, function(value)
+		BABFastAutofarm = value
+		if value then
+			autoFarmBAB()
+		else
+
+		end
+	end)
+
+	AutofarmPage:addSlider("Autofarm speed", 4, 1, 5, function(value)
+		print(value)
+		BABAutofarmSpeed = 6 - value
+	end)
+
+	MiscPage:addButton("Water Godmode", function()
+		LocalPlayerName = game:GetService("Players").LocalPlayer.Name
+		LocalPlayerWorkspace = game:GetService("Workspace")[LocalPlayerName]
+		LocalPlayerWorkspace.WaterDetector:Destroy()
+	end)
+
+
+
+	Transform:addButton("Fox Character", function()
+		game.Workspace.ChangeCharacter:FireServer("FoxCharacter")
+	end)
+	Transform:addButton("Chicken Character", function()
+		game.Workspace.ChangeCharacter:FireServer("ChickenCharacter")
+	end)
+	Transform:addButton("Penguin Character", function()
+		game.Workspace.ChangeCharacter:FireServer("PenguinCharacter")
+	end)
+
+
+	Utility:addToggle("Anti Portal Abuse", nil, function(value)
+		antiPortalAbuse = value
+	end)
+
+	Utility:addTextbox("slot", "slot number", function(value, focusLost)
+		if focusLost then
+			SlotNumber = value
+		end
+	end)
+
+	Utility:addButton("Load slot", function()
+		local args = {
+			[1] = SlotNumber,
+			[2] = 0
+		}
+
+		workspace.LoadBoatData:FireServer(unpack(args))
+
+	end)
+
+	Utility:addButton("Clear all", function()
+		workspace.ClearAllPlayersBoatParts:FireServer()
+	end)
+
+	Utility:addButton("Buy 50 wood", function()
+		local args = {
+			[1] = "WoodBlock",
+			[2] = 1
+		}
+
+		workspace.ItemBoughtFromShop:InvokeServer(unpack(args))
+	end)
+
+	Utility:addButton("Hide menu", function()
+		game.Players.LocalPlayer.PlayerGui.ShopGui.SideFrame.MenuButton.Visible = false
+		game.Players.LocalPlayer.PlayerGui.GoldGui.Frame.Visible = false
+		game.Players.LocalPlayer.PlayerGui.LaunchBoatGui.LaunchFrame.Visible = false
+		game.Players.LocalPlayer.PlayerGui.PlayerListGui.Frame.Visible = false
+
+		for i, Item in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+			Item:Destroy()
+		end
+	end)
+end
+
+
+
+
+
+
+
+
+
+
+
+game:GetService("RunService").RenderStepped:Wait()
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------ISLAND------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+
+if game.GameId == 1659645941 then
+	local page = venyx:addPage("Caranboule", 5012544693)
+
+	local StarfruitPage = page:addSection("Starfruit")
+
+
+	StarfruitPage:addToggle("fast autofarm", nil, function(value)
+		if value then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/oxi-cheats/main/starfruit%20island", true))()
+		else
+			_G.LOL2 = false
+		end
+	end)
+end
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------TEST ZONE---------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+--local page = venyx:addPage("Test zone", 5012544693)
+
+--local testPage = page:addSection("Test")
+
+--testPage:addTextbox("Notification", "Default", function(value, focusLost)
+--	if focusLost then
+--		venyx:Notify("Title", "text")
+--	end
+--end)
+
+----local plrs = {}
+----for i, v in pairs(game.Players:GetPlayers()) do
+----	table.insert(plrs, 1, v.Name)
+----end
+----testPage:addDropdown("Dropdown", plrs, function(text)
+----	print("Selected", text)
+----end)
+
+--testPage:addTextbox("BasePrint", "Default", function(value, focusLost)
+--	if focusLost then
+--	end
+--end)
+
+
+
+--testPage:addSlider("test", testSpeedValue, 1, 1000, function(value)
+
+--end)
+
+
+
+
+game:GetService("RunService").RenderStepped:Wait()
+-- THEME
+local theme = venyx:addPage("Theme", 8988837477)
+local ThemePresets = theme:addSection("Theme Presets")
+local colors = theme:addSection("Colors")
+
+
+ThemePresets:addButton("Copy theme", function()
+	local stringText = [[themes = {
+	]]
+
+	for i, v in pairs(themes) do
+		stringText = stringText ..i .. " = Color3.new(" ..tostring(v) ..[[),
+		]]
+	end
+
+	stringText = stringText ..[[
+	}]]
+
+	setclipboard(stringText)
+end)
+
+ThemePresets:addButton("Copy base theme", function()
+	setclipboard([[themes = {
+		NotToggledColor =  Color3.fromRGB(255, 100, 89),
+		Background = Color3.fromRGB(25,25,25),
+		Glow = Color3.fromRGB(0,0,0),
+		Accent = Color3.fromRGB(255, 113, 51),
+		LightContrast = Color3.fromRGB(40,40,40),
+		DarkContrast = Color3.fromRGB(30,30,30),
+		TextColor = Color3.fromRGB(255, 255, 255),
+		ButtonColor = Color3.fromRGB(62, 62, 62),
+		ToggledColor = Color3.fromRGB(255, 113, 51),
+		SliderColor = Color3.fromRGB(255, 113, 51),
+		TopBarColor = Color3.fromRGB(35,35,35),
+		}]])
+end)
+
+for theme, color in pairs(themes) do -- all in one theme changer, i know, im cool
+	colors:addColorPicker(theme, color, function(color3)
+		venyx:setTheme(theme, color3)
+	end)
+end
+
+
+game:GetService("RunService").RenderStepped:Wait()
+-- SETTING
+local setting = venyx:addPage("Core", 8988843992)
+local BasicSetting = setting:addSection("Basic setting")
+local OtherGui = setting:addSection("Other Gui")
+
+BasicSetting:addKeybind("Toggle Keybind", Enum.KeyCode.RightShift, function()
+	venyx:toggle()
 end, function()
-	print("Changed Keybind")
-end)
-section2:ColorPicker("ColorPicker", Color3.fromRGB(50, 50, 50))
-
-section2:ColorPicker("ColorPicker2")
-
-section2:Slider("Slider", 0, -100, 100, function(value)
-	print("Dragged", value)
 end)
 
-section2:Dropdown("Dropdown", {"Hello", "World", "Hello World", "Word", 1, 2, 3})
-
-section2:Dropdown("Dropdown", {"Hello", "World", "Hello World", "Word", 1, 2, 3}, function(text)
-	print("Selected", text)
+BasicSetting:addButton("Refresh Gui", function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/oxilegeek/oxi-cheats/main/oxi%20script", true))()
 end)
+
+BasicSetting:addButton("Rejoin Game", function()
+	game:GetService("TeleportService"):Teleport(game.PlaceId , game.Players.LocalPlayer)
+end)
+
+BasicSetting:addButton("Delete Gui", function()
+	deleteGui()
+end)
+
+
+OtherGui:addButton("Dex explorer", function()
+	loadstring(game:HttpGet("https://cdn.wearedevs.net/scripts/Dex%20Explorer.txt"))()
+end)
+
+-- cheat engine
+
+-- infini Jump
+--UserInputService.InputBegan:Connect(function(input)
+--	if input.KeyCode == Enum.KeyCode.Space then
+--		if infiniJump == true then
+--			game.Players.LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+--			print(infiniJump)
+--		end
+--	end
+--end)
+
+
+function Action(Object, Function) if Object ~= nil then Function(Object); end end
+
+UIS.InputBegan:connect(function(UserInput)
+	if infiniJump and UserInput.UserInputType == Enum.UserInputType.Keyboard and UserInput.KeyCode == Enum.KeyCode.Space then
+		Action(game.Players.LocalPlayer.Character.Humanoid, function(self)
+			if self:GetState() == Enum.HumanoidStateType.Jumping or self:GetState() == Enum.HumanoidStateType.Freefall then
+				Action(self.Parent.HumanoidRootPart, function(self)
+					self.Velocity = Vector3.new(0, math.random(49000000, 50000000) / 1000000, 0);
+				end)
+			end
+		end)
+	end
+end)
+
+
+
+
+
+
+game:GetService("RunService").RenderStepped:Wait()
+----------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------BOUCLE-------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+runservice.Stepped:Connect(function()
+	if alive then
+		--Character
+
+		if noclip == true then
+			for a, b in pairs(workspace:GetChildren()) do
+				if b.Name == game.Players.LocalPlayer.Name then
+					for i, v in pairs(workspace[game.Players.LocalPlayer.Name]:GetChildren()) do
+						if v:IsA("BasePart") then
+							v.CanCollide = false
+						end end end end
+		else
+
+		end
+
+		if FollowBot then
+			local plrtrack = game.Workspace:FindFirstChild(BotFocus)
+			game.Players.LocalPlayer.Character.LowerTorso.Touched:Connect(function()
+				game.Players.LocalPlayer.Character.Humanoid.Jump = true
+			end)
+
+			local path = game:GetService("PathfindingService"):ComputeRawPathAsync(game.Players.LocalPlayer.Character.HumanoidRootPart.Position,plrtrack.HumanoidRootPart.Position,512)
+			if path.Status == Enum.PathStatus.Success then
+				local points = path:GetPointCoordinates()
+				if #points < 3 then
+					game.Players.LocalPlayer.Character.Humanoid:MoveTo(plrtrack.HumanoidRootPart.Position)
+				else
+					game.Players.LocalPlayer.Character.Humanoid:MoveTo(points[3])
+				end
+			else
+				game.Players.LocalPlayer.Character.Humanoid:MoveTo(plrtrack.HumanoidRootPart.Position)
+			end
+		end
+
+		if ShowPosition then
+			game.CoreGui.PositionGui.Pos.Text = "X : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X) .."  Y : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y) .."  Z : " ..math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
+		end
+
+		if autoSetSpeed then
+			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = basicSpeed
+			game.Players.LocalPlayer.Character.Humanoid.JumpPower = basicJump
+			game.Workspace.Gravity = basicGravity
+			game.Players.LocalPlayer.Character.Humanoid.HipHeight = math.floor(basicLevitation / 10) 
+		end
+
+		if alwaysDay then
+			game.Lighting.ClockTime = 12
+		end
+
+		if alwaysNight then
+			game.Lighting.ClockTime = 0
+		end
+
+
+
+
+
+
+
+
+
+
+		--Animal simulator
+		if game.GameId == 2023680558 then
+
+			if slowloop >= 10 then
+				slowloop = 1
+			end
+			slowloop = slowloop + 1
+
+
+			if bringChest then
+				game.Workspace.Treasures.Treasure1.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+			end
+
+			if toChest then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.Treasures.Treasure5.Position)
+			end
+
+			if autocollect then
+				game.ReplicatedStorage.TreasureEvent:FireServer()
+			end
+
+			if HideReward then
+				game.Players.LocalPlayer.PlayerGui.newRewardGui.Enabled = false
+			else
+				game.Players.LocalPlayer.PlayerGui.newRewardGui.Enabled = true
+			end
+
+			if spamHit1 then
+				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget1).Character.Humanoid)
+			end
+
+			if spamHit2 then
+				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget2).Character.Humanoid)
+			end
+
+			if spamHit3 then
+				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget3).Character.Humanoid)
+			end
+
+			if spamHit4 then
+				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Players:FindFirstChild(killAuraTarget4).Character.Humanoid)
+			end
+
+			if ZombieKillAura then
+				if slowloop >= 10 then
+					local hit = findNearestZombieTorso(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+					game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(hit.Parent.Humanoid)
+				end
+			end
+			local function tpZombie()
+				if ZombieAutofarm then
+					if slowloop >= 10 then
+						local hit = findNearestZombieTorso(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+						game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+						game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(hit.Parent.Humanoid)
+						wait(0.5)
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(hit.Position.X, hit.Position.Y + 20, hit.Position.Z)
+					end
+				end
+			end
+			spawn(tpZombie)
+
+			if KillAura then
+				if slowloop >= 10 then
+					local hit = findNearestTorso(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+					game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(hit.Parent.Humanoid)
+				end
+			end
+
+			if autoHit then
+				vu:SetKeyDown("q")
+				vu:SetKeyUp("q")
+			end
+
+			if autoEat then
+				if cooldownEat >= 10 then
+					cooldownEat = 0
+					if game.Players.LocalPlayer.Character.Humanoid.Health < game.Players.LocalPlayer.Character.Humanoid.MaxHealth then
+						vu:ClickButton1(Vector2.new(0.0))
+						game.Players.LocalPlayer.Backpack.Food.Parent = game.Players.LocalPlayer.Character
+					end
+				else
+					cooldownEat = cooldownEat + 1
+				end
+			end
+
+			if autofarm then
+				game.ReplicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game.Workspace.pleaseno.farm.Humanoid,1)
+			end
+
+			if _G.BossGorillaFarm then
+				if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
+				end
+			end
+
+			if _G.BossCerberFarm then
+				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
+				end
+			end
+
+			if _G.BossDrakeFarm then
+				if game:GetService("Workspace").NPC:FindFirstChild("Drake") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Drake.Humanoid)
+				end
+			end
+
+			if _G.BossDragonSlayerFarm then
+				if game:GetService("Workspace").NPC:FindFirstChild("DragonSlayer") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.DragonSlayer.Humanoid)
+				end
+			end
+
+
+
+			-- AUTOFARM
+			if BossKillFarm then
+
+				if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
+				end
+
+				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
+				end
+			end
+
+
+
+			if BossKillFarmFix then
+				game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+
+				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
+					if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
+						if game:GetService("Workspace").NPC:FindFirstChild("Trex").Humanoid.Health >= game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla").Humanoid.Health then
+							if BossKillFarmFixFocus == "LavaGorilla" then
+								BossKillFarmFixFocus = "Trex"
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-254, -438, 3390)
+							end
+						else
+							if BossKillFarmFixFocus == "Trex" then
+								BossKillFarmFixFocus = "LavaGorilla"
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(588, -347, 2098)
+							end
+						end
+					else
+						if BossKillFarmFixFocus == "LavaGorilla" then
+							BossKillFarmFixFocus = "Trex"
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-254, -438, 3390)
+						end
+					end
+				else
+					if BossKillFarmFixFocus == "Trex" then
+						BossKillFarmFixFocus = "LavaGorilla"
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(588, -347, 2098)
+					end
+				end
+
+
+				if game:GetService("Workspace").NPC:FindFirstChild("Trex") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.Trex.Humanoid)
+				end
+
+				if game:GetService("Workspace").NPC:FindFirstChild("LavaGorilla") then
+					game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(game:GetService("Workspace").NPC.LavaGorilla.Humanoid)
+				end
+			end
+		end
+	end
+	--------- END ANIMAL
+
+
+
+
+
+
+
+	-- Build a boat
+	if game.GameId == 210851291 then
+		if BABFastAutofarm then
+			if TheEnd then
+
+			else
+
+			end
+		end
+
+		if game.Players.LocalPlayer.PlayerGui.RiverResultsGui.Frame.Visible == true then
+			if TheEnd then
+				TheEnd = false
+				autoFarmBAB()
+			end
+		end
+
+		if antiPortalAbuse then
+			if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < -25 then
+				if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z < 900 then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X, 5, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
+				end
+			end
+		end
+	end
+end)
+
+
+--pizza place custom loop
+local function customloopPizza()
+	if game.GameId == 47545 then
+		while alive do
+			wait(0.3)
+			if doCashier then
+				local num = 0
+				repeat
+					wait()
+					num += 1
+					local c = FindFirstCustomer()
+					if c then
+						local dialog = c.Head.Dialog.Correct.ResponseDialog or ''
+						local rootMoved = false
+						if (root.Position-Vector3.new(46.34, 3.80, 82.02)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(46.34, 3.80, 82.02) wait(.1) end
+						local order = "MountainDew"
+						if dialog:sub(-8)=="instead." then
+							dialog = dialog:sub(-30)
+						end
+						if dialog:find("pepperoni",1,true) then
+							order = "PepperoniPizza"
+						elseif dialog:find("sausage",1,true) then
+							order = "SausagePizza"
+						elseif dialog:find("cheese",1,true) then
+							order = "CheesePizza"
+						end
+
+						network:FireServer("OrderComplete", c, order, workspace.Register3)
+						if rootMoved then wait(.1) end
+					end
+				until num == 8
+			end
+
+
+
+			if doCook then
+				local order = getOrders()[1]
+				local topping
+				if order=="Pepperoni" or order=="Sausage" then topping=order end
+				local cookD = FindFirstDew()
+				local raw,cookP,trash
+				if topping then
+					--pepperoni order avoids sausage dough and vice verca
+					raw,cookP,trash = FindDoughAndWithout(topping=="Pepperoni" and "Sausage" or "Pepperoni")
+				else
+					raw,cookP,trash = FindDoughAndWithout()
+				end
+				local rootMoved = false
+				local ovens = workspace.Ovens:GetChildren()
+				for i = #ovens, 2, -1 do --shuffle
+					local j = RNG:NextInteger(1, i)
+					ovens[j], ovens[i] = ovens[i], ovens[j]
+				end
+				--move final pizza
+				if cookP and tick()-cookPtick>0.8 then
+					local oven = getOvenNear(cookP.Position)
+					if oven==nil or oven.IsOpen.Value then
+						cookPtick=tick()
+						if (root.Position-Vector3.new(44.63, 6.60, 45.20)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(44.63, 6.60, 45.20) wait(.1) end
+						network:FireServer("UpdateProperty", cookP, "CFrame", CFrame.new(56,4.1,38))
+					end
+				end
+				if order then
+					if order=="Dew" and cookD and tick()-cookDtick>0.8 then
+						--move dew if ordered
+						if cookD:FindFirstChild("IsBurned") and not cookD.IsBurned.Value then
+							cookDtick=tick()
+							if (root.Position-Vector3.new(44.63, 6.60, 45.20)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(44.63, 6.60, 45.20) wait(.1) end
+							network:FireServer("UpdateProperty", cookD, "CFrame", CFrame.new(53,4.68,36.5))
+						end
+					elseif order~="Dew" and raw and raw.Parent and supplyCounts[order]>0 and supplyCounts.TomatoSauce>0 and supplyCounts.Cheese>0 then
+						--make pizza
+						if raw.Mesh.Scale.Y>1.5 then
+							if (root.Position-Vector3.new(44.63, 6.60, 45.20)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(44.63, 6.60, 45.20) wait(.1) end
+							network:FireServer("UpdateProperty", raw, "CFrame", CFrame.new(RNG:NextNumber(29.6,44.6),3.7,RNG:NextNumber(42.5,48.5)))
+							wait()
+							network:FireServer("SquishDough", raw)
+						else
+							--make sure it will have an oven
+							local oven
+							for _,o in ipairs(ovens) do
+								if isFullyOpen(o) then
+									local other = getDoughNear(o.Bottom.Position)
+									if other==nil or not (other.BrickColor.Name=="Bright orange" and ffc(other.SG.Frame,"TomatoSauce") and ffc(other.SG.Frame,"MeltedCheese")) then
+										if other then
+											--replace mistaken dough
+											if (root.Position-Vector3.new(44.63, 6.60, 45.20)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(44.63, 6.60, 45.20) wait(.1) end
+											network:FireServer("UpdateProperty", other, "CFrame", CFrame.new(RNG:NextNumber(29.6,44.6),3.7,RNG:NextNumber(42.5,48.5)))
+											wait()
+										end
+										oven=o
+										break
+									end
+								end
+							end
+							if oven and raw.Parent==workspace.AllDough then
+								--make
+								if (root.Position-Vector3.new(44.63, 6.60, 45.20)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(44.63, 6.60, 45.20) wait(.1) end
+								network:FireServer("AddIngredientToPizza", raw,"TomatoSauce")
+								network:FireServer("AddIngredientToPizza", raw,"Cheese")
+								network:FireServer("AddIngredientToPizza", raw,topping)
+								network:FireServer("UpdateProperty", raw, "CFrame", oven.Bottom.CFrame+Vector3.new(0,0.7,0))
+								oven.Door.ClickDetector.Detector:FireServer()
+								--mark as cooking
+								cookingDict[order]=cookingDict[order]+1
+								local revoked=false
+								spawn(function()
+									raw.AncestryChanged:Wait()
+									if not revoked then
+										cookingDict[order]=cookingDict[order]-1
+										revoked=true
+									end
+								end)
+								delay(40, function()
+									if not revoked then
+										cookingDict[order]=cookingDict[order]-1
+										revoked=true
+									end
+								end)
+							end
+						end
+					end
+				end
+				--open unnecessarily closed ovens
+				for _,o in ipairs(ovens) do
+					local bar = o.Door.Meter.SurfaceGui.ProgressBar.Bar
+					if o.IsOpen.Value==false and (o.IsCooking.Value==false or (Vector3.new(bar.ImageColor3.r,bar.ImageColor3.g,bar.ImageColor3.b)-Vector3.new(.871,.518,.224)).magnitude>.1) then
+						if (root.Position-Vector3.new(44.63, 6.60, 45.20)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(44.63, 6.60, 45.20) wait(.1) end
+						o.Door.ClickDetector.Detector:FireServer()
+						break
+					end
+				end
+				--trash
+				if trash and (trash.IsBurned.Value==false or getOvenNear(trash.Position)==nil or getOvenNear(trash.Position).IsOpen.Value) then
+					--closed oven breaks if you take burnt out of it
+					if (root.Position-Vector3.new(44.63, 6.60, 45.20)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(44.63, 6.60, 45.20) wait(.1) end
+					network:FireServer("UpdateProperty", trash, "CFrame", CFrame.new(47.9,RNG:NextNumber(-10,-30),72.5))
+				end
+				if rootMoved then wait(.1) end
+			end
+
+
+			if doBoxer then
+				local boxP,boxD = FindBoxingFoods()
+				local closedBox,openBox,fullBox = FindBoxes()
+				local rootMoved = false
+				if boxD and tick()-boxDtick>0.8 then
+					boxDtick=tick()
+					if (root.Position-Vector3.new(54.09, 3.80, 23.150)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(54.09, 3.80, 23.15) wait(.1) end
+					network:FireServer("UpdateProperty", boxD, "CFrame", CFrame.new(63,4.9,-1,-1,0,0,0,1,0,0,0,-1))
+				end
+				if fullBox then
+					if fullBox.Name=="BoxOpen" then
+						if (root.Position-Vector3.new(54.09, 3.80, 23.150)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(54.09, 3.80, 23.15) wait(.1) end
+						network:FireServer("CloseBox", fullBox)
+						--will be moved next loop
+					elseif tick()-boxPtick>0.8 then
+						if (root.Position-Vector3.new(54.09, 3.80, 23.150)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(54.09, 3.80, 23.15) wait(.1) end
+						network:FireServer("UpdateProperty", fullBox, "CFrame", CFrame.new(68.2,4.4,-1,-1,0,0,0,1,0,0,0,-1))
+						boxPtick=tick()
+					end
+				end
+				if closedBox and not openBox then
+					if (root.Position-Vector3.new(54.09, 3.80, 23.150)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(54.09, 3.80, 23.15) wait(.1) end
+					network:FireServer("UpdateProperty", closedBox, "CFrame", CFrame.new(RNG:NextNumber(62.5,70.5),3.5,RNG:NextNumber(11,25)))
+					wait()
+					network:FireServer("OpenBox", closedBox)
+				end
+				if openBox and boxP then
+					if (root.Position-Vector3.new(54.09, 3.80, 23.150)).magnitude>9 then rootMoved = true root.CFrame = CFrame.new(54.09, 3.80, 23.15) wait(.1) end
+					network:FireServer("UpdateProperty", boxP, "Anchored", true)
+					network:FireServer("UpdateProperty", openBox, "Anchored", true)
+					wait()
+					network:FireServer("UpdateProperty", boxP, "CFrame", openBox.CFrame+Vector3.new(0,-2,0))
+					wait()
+					network:FireServer("AssignPizzaToBox", openBox, boxP)
+				end
+				if rootMoved then wait(.1) end
+			end
+
+			if doDelivery then
+				local del = FindFirstDeliveryTool()
+				print(delTool)
+				if delTool==nil then
+					--get tool
+					local invTool = false
+
+					for i, v in pairs(player.Backpack:GetChildren()) do
+						print("v")
+						if v.ClassName=="Tool" and v.Name:match("^%u%d$") and ffc(v,"House") and ffc(v,"Handle") and ffc(v,"Order") and v.Order.Value:match("%a") then
+							print("accepted")
+							invTool = true
+							v.Parent = character
+							wait(0.2)
+							v.Parent = workspace
+						end
+					end
+
+					if not invTool and del then
+						delTool=del
+
+
+						if (root.Position-delTool.Handle.Position).magnitude>19 then
+							root.CFrame = CFrame.new(delTool.Handle.Position+Vector3.new(0,1,-15)) 
+						end
+						delTool.Handle.CanCollide=false
+						delTool.Handle.CFrame = root.CFrame
+						wait(0.9)
+						delay(6,forgetDeliveryTool)
+					end
+				elseif delTool and delTool.Parent==character and delTouched==false then
+					--deliver to house
+					local housePart = getHousePart(delTool.Name)
+					print(housePart)
+					if housePart then
+						delTouched=true
+						root.CFrame = housePart.CFrame+Vector3.new(0,6,0)
+						wait(5)
+						delTool = nil
+						delTouched=false
+					end
+				end
+			end
+
+
+
+
+
+			if doSupplier then
+				local refill=false
+				for s,c in pairs(supplyCounts) do
+					if c <= 70 then
+						refill=true
+						print("refill")
+						break
+					end
+				end
+				if refill then
+					local oldcf = root.CFrame
+					local alt=0
+					local waiting = false
+					local waitingTick = 0
+					local lastBox
+					while doSupplier do
+						--check if refill is done otherwise hit buttons
+						local fulfilled=true
+						local boxes = workspace.AllSupplyBoxes:GetChildren()
+						for s,c in pairs(supplyCounts) do
+							if c < 95 then
+								fulfilled=false
+								local count = 0
+								if #boxes > 30 then
+									for i=1,#boxes do
+										local box = boxes[i]
+										if bcolorToSupply[box.BrickColor.Name]==s and box.Anchored==false and box.Position.Z < -940 then
+											count=count+1
+										end
+									end
+								end
+								if count < 10 then
+									print("tp to button")
+									simTouch(supplyButtons[s])
+									wait(0.3)
+								end
+							end
+						end
+						if fulfilled then
+							break
+						end
+						wait(1.5)
+						--check if can finish waiting for boxes to move
+						if waiting and (lastBox.Position.X>42 or tick()-waitingTick>5) then
+							waiting=false
+							if lastBox.Position.X<42 then
+								--clear boxes if stuck
+								root.CFrame=CFrame.new(20.5,8,-35)
+								wait()
+								local boxes = workspace.AllSupplyBoxes:GetChildren()
+								for i=1,#boxes do
+									local box = boxes[i]
+									if box.Anchored==false and box.Position.Z>-55 then
+										network:FireServer("UpdateProperty", box, "CFrame", CFrame.new(RNG:NextNumber(0,40),RNG:NextNumber(-10,-30),-70))
+										wait()
+									end
+								end
+								wait()
+							end
+						end
+						if not waiting then
+							--move boxes
+							root.CFrame=CFrame.new(8,12.4,-1020)
+							wait()
+							alt=1-alt
+							lastBox=nil
+							local j=0
+							local boxes = workspace.AllSupplyBoxes:GetChildren()
+							for i=1,#boxes do
+								local box = boxes[i]
+								if box.Anchored==false and box.Position.Z < -940 and bcolorToSupply[box.BrickColor.Name] and supplyCounts[bcolorToSupply[box.BrickColor.Name]]<95 then
+									box.CFrame = CFrame.new(38-4*j,5,-7-5*alt)
+									network:FireServer("UpdateProperty", box, "CFrame", box.CFrame)
+									lastBox=box
+									j=j+1
+									if j>8 then break end
+								end
+							end
+							if alt==0 and lastBox then
+								waiting=true
+								waitingTick=tick()
+							end
+						end
+					end
+					root.CFrame=oldcf
+				end
+			end
+
+		end
+
+		--------- END ANIMAL
+	end
+end
+
+spawn(customloopPizza)
+
+local function RobeatsAutoplayAsync()
+	Autoplayer = {
+		noteY = 3879,
+		sliderY = 3878,
+		laneDistanceThreshold = 25,
+		distanceLowerBound = 0.4,
+		distanceUpperBound = 0.6,
+		delayLowerBound = 0.05,
+		delayUpperBound = 0.1,
+		sliderDebounce = 0.08,
+		random = Random.new(),
+		pressedLanes = {},
+		heldLanes = {},
+		currentLanePositionsIndex = nil,
+		lanePositions = {
+			{
+				Vector3.new(-309.00, 387.70, -181.09),
+				Vector3.new(-306.87, 387.70, -178.56),
+				Vector3.new(-304.53, 387.70, -176.21),
+				Vector3.new(-301.99, 387.70, -174.08)
+			},
+
+			{
+				Vector3.new(-301.99, 387.70, -235.64),
+				Vector3.new(-304.53, 387.70, -233.51),
+				Vector3.new(-306.87, 387.70, -231.16),
+				Vector3.new(-309.00, 387.70, -228.60)
+			},
+
+			{
+				Vector3.new(-247.44, 387.70, -228.63),
+				Vector3.new(-249.57, 387.70, -231.16),
+				Vector3.new(-251.92, 387.70, -233.51),
+				Vector3.new(-254.46, 387.70, -235.64)
+			},
+
+			{
+				Vector3.new(-254.46, 387.70, -174.08),
+				Vector3.new(-251.92, 387.70, -176.21),
+				Vector3.new(-249.57, 387.70, -178.56),
+				Vector3.new(-247.44, 387.70, -181.09)
+			}
+		}
+	}
+
+	--robeats func
+	if game.PlaceId == 698448212 then
+		function UpdateLanePositions() -- table.sort cant be used here
+			local nearestDistance = Autoplayer.laneDistanceThreshold
+			local nearestGroupIndex
+
+			for groupIndex, groupPositions in next, Autoplayer.lanePositions do
+				local distance = (groupPositions[1] - camera.CFrame.Position).Magnitude
+
+				if distance < nearestDistance then
+					nearestDistance = distance
+					nearestGroupIndex = groupIndex
+				end
+			end
+
+			Autoplayer.currentLanePositionsIndex = nearestGroupIndex
+		end
+
+		function GetNearestLane(position) -- table.sort cant be used here
+			UpdateLanePositions()
+
+			local nearestDistance = Autoplayer.laneDistanceThreshold
+			local nearestLane
+
+			for laneIndex, lanePosition in next, Autoplayer.lanePositions[Autoplayer.currentLanePositionsIndex] do
+				local distance = (lanePosition - position).Magnitude
+
+				if distance < nearestDistance then
+					nearestDistance = distance
+					nearestLane = {laneIndex, lanePosition}
+				end
+			end
+
+			if not nearestLane then 
+				return
+			end
+
+			return nearestLane[1], nearestLane[2]
+		end
+	end
+	--[[while true do 
+		local breaked = false
+		wait(5)
+
+		spawn(function()
+			wait(30)
+			breaked = true
+		end)]]
+	for index, instance in next, workspace:GetDescendants() do
+		if instance.ClassName == "CylinderHandleAdornment" then
+			wait()
+			instance:GetPropertyChangedSignal("CFrame"):Connect(function()
+				if RobeatsAutoplayToggle and alive and not breaked then
+					if instance.Transparency == 0 and math.floor(instance.CFrame.Y * 10) == Autoplayer.noteY then
+						local noteLane, lanePosition = GetNearestLane(instance.CFrame.Position)
+
+						if noteLane then
+							local randomDistance = Autoplayer.random:NextNumber(Autoplayer.distanceLowerBound, Autoplayer.distanceUpperBound)
+							local distance = instance.CFrame.Position.X - lanePosition.X
+
+							if Autoplayer.currentLanePositionsIndex > 2 then 
+								distance = math.abs(distance)
+							end
+
+							if not Autoplayer.pressedLanes[noteLane] and distance <= randomDistance then
+								Autoplayer.pressedLanes[noteLane] = true
+
+								VirtualInputManager:SendKeyEvent(true, keys[noteLane], false, game)
+								task.wait(Autoplayer.random:NextNumber(Autoplayer.delayLowerBound, Autoplayer.delayUpperBound))
+								VirtualInputManager:SendKeyEvent(false, keys[noteLane], false, game)
+
+								Autoplayer.pressedLanes[noteLane] = false
+							end
+						end
+					elseif instance.Transparency < 1 and instance.Height > 0.2 and math.floor(instance.CFrame.Y * 10) == Autoplayer.sliderY then
+						local noteLane, lanePosition = GetNearestLane(instance.CFrame.Position)
+
+						if noteLane then
+							local randomDistance = Autoplayer.random:NextNumber(Autoplayer.distanceLowerBound, Autoplayer.distanceUpperBound)
+							local distance = (instance.CFrame - instance.CFrame.LookVector * instance.Height / 2).X - lanePosition.X
+
+							if Autoplayer.currentLanePositionsIndex > 2 then 
+								distance = math.abs(distance)
+							end
+
+							if not Autoplayer.heldLanes[noteLane] and distance <= randomDistance then
+								Autoplayer.heldLanes[noteLane] = true
+
+								VirtualInputManager:SendKeyEvent(true, keys[noteLane], false, game)
+
+								repeat
+									task.wait() -- ugly but whatever
+								until (Autoplayer.currentLanePositionsIndex > 2 and math.abs((instance.CFrame + instance.CFrame.LookVector * instance.Height / 2).X - lanePosition.X) or (instance.CFrame + instance.CFrame.LookVector * instance.Height / 2).X - lanePosition.X) <= randomDistance
+
+								VirtualInputManager:SendKeyEvent(false, keys[noteLane], false, game)
+
+								task.wait(Autoplayer.sliderDebounce)
+
+								Autoplayer.heldLanes[noteLane] = false
+							end
+						end
+					end
+				end	
+			end)
+		end
+	end
+	--end
+end
+
+spawn(RobeatsAutoplayAsync)
+
+
+
+
+
+
+
+-- load
+--venyx:SelectPage(venyx.pages[1], true)
+--for theme, color in pairs(themes) do -- all in one theme changer, i know, im cool
+--	venyx:setTheme(theme, color)
+--end
 
 return library
