@@ -1657,8 +1657,7 @@ do
 		return colorpicker
 	end
 
-	function section:addSlider(title, min, default, max, callback)
-		local sel = self 
+	function section:addSlider(title, default, min, max, callback)
 		local slider = utility:Create("ImageButton", {
 			Name = "Slider",
 			Parent = self.container,
@@ -1800,25 +1799,13 @@ do
 
 			if not allowed[text] and not tonumber(text) then
 				textbox.Text = text:sub(1, #text - 1)
-			elseif not allowed[text] then
+			elseif not allowed[text] then	
 				value = self:updateSlider(slider, nil, tonumber(text) or value, min, max)
 				callback(value)
 			end
 		end)
 
-		local sliderfunc = {}
-		function sliderfunc:Set(newva)
-			local text = tonumber(newva)
-
-			if not allowed[text] and not tonumber(text) then
-				textbox.Text = text:sub(1, #text - 1)
-			elseif not allowed[text] then
-				value = sel:updateSlider(slider, nil, tonumber(text) or value, min, max)
-				callback(value)
-			end
-		end 
-
-		return sliderfunc,slider
+		return slider
 	end
 
 	function section:addDropdown(title, list, callback)
