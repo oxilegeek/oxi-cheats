@@ -2446,6 +2446,7 @@ local invisibleWallTable = {}
 local invisibleWallsShowed = false
 local keys = shared.keys or {"A", "S", "D", "F"} -- MAKE THIS YOUR ROBEATS KEYBINDS FROM LEFT TO RIGHT, OR SET IN SHARED.KEYS
 local Autoplayer = {}
+local CanAutoCollectEgg = false
 
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local camera = workspace.CurrentCamera
@@ -2516,6 +2517,12 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
 	wait(1)
 	vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
 
+end)
+
+spawn(function()
+	while wait(0.2) do
+		CanAutoCollectEgg = true
+	end
 end)
 
 
@@ -4420,7 +4427,7 @@ if game.GameId == 2023680558 then
 	ChestPage:addToggle("autocollect", nil, function(value)
 		autocollect = value
 	end)
-	
+
 	ChestPage:addToggle("autocollect egg", nil, function(value)
 		autocollectEgg = value
 	end)
@@ -5132,8 +5139,8 @@ runservice.Stepped:Connect(function()
 			if autocollect then
 				game.ReplicatedStorage.TreasureEvent:FireServer()
 			end
-			
-			if autocollectEgg then
+
+			if autocollectEgg and CanAutoCollectEgg then
 				local args = {
 					[1] = workspace.Eggs.Egg1
 				}
