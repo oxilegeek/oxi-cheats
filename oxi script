@@ -69,7 +69,7 @@ local objects = {}
 
 if not themes then
 	themes = {
-	DarkContrast = Color3.new(0.117647, 0.117647, 0.117647),
+		DarkContrast = Color3.new(0.117647, 0.117647, 0.117647),
 		Glow = Color3.new(0, 0, 0),
 		LightContrast = Color3.new(0.156863, 0.156863, 0.156863),
 		SliderColor = Color3.new(1, 0.443137, 0.2),
@@ -80,7 +80,7 @@ if not themes then
 		Background = Color3.new(0.0980392, 0.0980392, 0.0980392),
 		TextColor = Color3.new(1, 1, 1),
 		Accent = Color3.new(1, 0.443137, 0.2),
-			}
+	}
 end
 
 do
@@ -2370,6 +2370,7 @@ local bot = false
 local bringChest = false
 local toChest = false
 local autocollect = false
+local autocollectEgg = false
 local HideReward = false
 local baseSpeed = game.StarterPlayer.CharacterWalkSpeed
 local baseJump = game.StarterPlayer.CharacterJumpPower
@@ -4419,6 +4420,10 @@ if game.GameId == 2023680558 then
 	ChestPage:addToggle("autocollect", nil, function(value)
 		autocollect = value
 	end)
+	
+	ChestPage:addToggle("autocollect egg", nil, function(value)
+		autocollectEgg = value
+	end)
 
 	ChestPage:addToggle("Hide chest reward", nil, function(value)
 		HideReward = value
@@ -5126,6 +5131,14 @@ runservice.Stepped:Connect(function()
 
 			if autocollect then
 				game.ReplicatedStorage.TreasureEvent:FireServer()
+			end
+			
+			if autocollect then
+				local args = {
+					[1] = workspace.Eggs.Egg7
+				}
+
+				game:GetService("ReplicatedStorage").EggEvent:FireServer(unpack(args))
 			end
 
 			if HideReward then
