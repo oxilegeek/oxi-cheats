@@ -5141,6 +5141,7 @@ runservice.Stepped:Connect(function()
 			end
 
 			if autocollectEgg and CanAutoCollectEgg then
+			CanAutoCollectEgg = false
 				local args = {
 					[1] = workspace.Eggs.Egg1
 				}
