@@ -2446,6 +2446,8 @@ local invisibleWallTable = {}
 local invisibleWallsShowed = false
 local keys = shared.keys or {"A", "S", "D", "F"} -- MAKE THIS YOUR ROBEATS KEYBINDS FROM LEFT TO RIGHT, OR SET IN SHARED.KEYS
 local Autoplayer = {}
+local focusTpPlayer = false
+local focusTpPlayerName
 
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local camera = workspace.CurrentCamera
@@ -3457,6 +3459,12 @@ TeleportPage:addButton("Teleport", function()
 end)
 
 
+
+TeleportPage:addToggle("Spam tp", nil, function(value)
+	focusTpPlayer = value
+end)
+
+
 TeleportPage:addButton("Bring (need tool)", function()
 
 
@@ -3488,21 +3496,21 @@ end)
 
 
 
-BotPage:addTextbox("Bot", "player name", function(value, focusLost)
-	if focusLost then
-		BotFocus = value
-	end
-end)
+--BotPage:addTextbox("Bot", "player name", function(value, focusLost)
+--	if focusLost then
+--		BotFocus = value
+--	end
+--end)
 
-BotPage:addButton("Folow player", function()
-	if FollowBot == false then
-		FollowBot = true
-	end
-end)
+--BotPage:addButton("Folow player", function()
+--	if FollowBot == false then
+--		FollowBot = true
+--	end
+--end)
 
-BotPage:addButton("Stop bot", function()
-	FollowBot = false
-end)
+--BotPage:addButton("Stop bot", function()
+--	FollowBot = false
+--end)
 
 
 
@@ -5103,8 +5111,12 @@ runservice.Stepped:Connect(function()
 			game.Lighting.ClockTime = 0
 		end
 
-
-
+		
+		if focusTpPlayer then
+			spawn(function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players:FindFirstChild(tpPlayerFocus).Character.HumanoidRootPart.Position) end)
+		end
+		
+		
 
 
 
@@ -5134,7 +5146,7 @@ runservice.Stepped:Connect(function()
 			end
 
 			if autocollectEgg then
-			CanAutoCollectEgg = false
+				CanAutoCollectEgg = false
 				local args = {
 					[1] = workspace.Eggs.Egg1
 				}
