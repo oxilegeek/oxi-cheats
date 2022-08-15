@@ -1,4 +1,4 @@
-local name = "Foxi cheats V2 (anti afk always enabled) Update [Visual]!"
+local name = "Foxi cheats V2 (anti afk always enabled) Update [Changelog]!"
 
 
 
@@ -117,7 +117,7 @@ do
 	end
 
 	function utility:Tween(instance, properties, duration, ...)
-		tween:Create(instance, tweeninfo(duration, ...), properties):Play()
+		tween:Create(instance, tweeninfo(duration, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), properties):Play()
 	end
 
 	function utility:Wait()
@@ -409,9 +409,10 @@ do
 		local button = utility:Create("TextButton", {
 			Name = title,
 			Parent = library.pagesContainer,
-			BackgroundTransparency = 1,
+			BackgroundTransparency = 0.3,
+			BackgroundColor3 = Color3.new(0.137255, 0.137255, 0.137255),
 			BorderSizePixel = 0,
-			Size = UDim2.new(1, 0, 0, 26),
+			Size = UDim2.new(1, -6, 0, 26),
 			ZIndex = 3,
 			AutoButtonColor = false,
 			Font = Enum.Font.Gotham,
@@ -422,7 +423,7 @@ do
 				Name = "Title",
 				AnchorPoint = Vector2.new(0, 0.5),
 				BackgroundTransparency = 1,
-				Position = UDim2.new(0, 40, 0.5, 0),
+				Position = UDim2.new(0, 36, 0.5, 0),
 				Size = UDim2.new(0, 76, 1, 0),
 				ZIndex = 3,
 				Font = Enum.Font.Gotham,
@@ -432,12 +433,15 @@ do
 				TextTransparency = 0.65,
 				TextXAlignment = Enum.TextXAlignment.Left
 			}),
+			utility:Create("UICorner", {
+				
+			}),
 			icon and utility:Create("ImageLabel", {
 				Name = "Icon",
 				AnchorPoint = Vector2.new(0, 0.5),
 				BackgroundTransparency = 1,
-				Position = UDim2.new(0, 12, 0.5, 0),
-				Size = UDim2.new(0, 16, 0, 16),
+				Position = UDim2.new(0, 8, 0.5, 0),
+				Size = UDim2.new(0, 20, 0, 20),
 				ZIndex = 3,
 				Image = "rbxassetid://" .. tostring(icon),
 				ImageColor3 = themes.TextColor,
@@ -804,28 +808,103 @@ do
 
 		button.MouseButton1Click:Connect(function()
 
+
+
 			if debounce then
 				return
 			end
 
 			-- animation
-			utility:Pop(button, 10)
+			utility:Pop(button, 15)
 
 			debounce = true
 			text.TextSize = 0
-			utility:Tween(button.Title, {TextSize = 14}, 0.2)
+			utility:Tween(button.Title, {TextSize = 13}, 0.2)
 
 			wait(0.2)
 			utility:Tween(button.Title, {TextSize = 12}, 0.2)
 
-			if callback then
-				callback(function(...)
-					self:updateButton(button, ...)
-				end)
-			end
+			spawn(function()
+				if callback then
+					callback(function(...)
+						self:updateButton(button, ...)
+					end)
+				end
+			end)
+
 
 			debounce = false
 		end)
+		local buttonfunc = {}
+		function buttonfunc:SetText()
+			print("yo")
+		end 
+
+		return buttonfunc,button
+	end
+	
+	function section:addText(title)
+		local button = utility:Create("ImageButton", {
+			Name = "Button",
+			Parent = self.container,
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			Size = UDim2.new(1, 0, 0, 30),
+			ZIndex = 2,
+			Image = "rbxassetid://5028857472",
+			ImageColor3 = themes.ButtonColor,
+			ScaleType = Enum.ScaleType.Slice,
+			SliceCenter = Rect.new(2, 2, 298, 298)
+		}, {
+			utility:Create("TextLabel", {
+				Name = "Title",
+				BackgroundTransparency = 1,
+				Size = UDim2.new(1, 0, 1, 0),
+				ZIndex = 3,
+				Font = Enum.Font.Gotham,
+				Text = title,
+				TextXAlignment = Enum.TextXAlignment.Left,
+				TextColor3 = themes.TextColor,
+				TextSize = 12,
+				TextTransparency = 0.10000000149012
+			})
+		})
+
+		table.insert(self.modules, button)
+		self:Resize()
+
+		local text = button.Title
+		local debounce
+
+		--button.MouseButton1Click:Connect(function()
+
+
+
+		--	if debounce then
+		--		return
+		--	end
+
+		--	-- animation
+		--	utility:Pop(button, 15)
+
+		--	debounce = true
+		--	text.TextSize = 0
+		--	utility:Tween(button.Title, {TextSize = 13}, 0.2)
+
+		--	wait(0.2)
+		--	utility:Tween(button.Title, {TextSize = 12}, 0.2)
+
+		--	spawn(function()
+		--		if callback then
+		--			callback(function(...)
+		--				self:updateButton(button, ...)
+		--			end)
+		--		end
+		--	end)
+
+
+		--	debounce = false
+		--end)
 		local buttonfunc = {}
 		function buttonfunc:SetText()
 			print("yo")
@@ -970,6 +1049,7 @@ do
 					TextTruncate = Enum.TextTruncate.AtEnd,
 					Position = UDim2.new(0, 5, 0, 0),
 					Size = UDim2.new(1, -10, 1, 0),
+					ClearTextOnFocus = false,
 					ZIndex = 3,
 					Font = Enum.Font.GothamSemibold,
 					Text = default or "",
@@ -1953,6 +2033,7 @@ do
 	end
 
 	-- class functions
+	
 
 	function library:SelectPage(page, toggle)
 
@@ -1964,11 +2045,14 @@ do
 
 		if toggle then
 			-- page button
-			button.Title.TextTransparency = 0
-			button.Title.Font = Enum.Font.GothamSemibold
+			--button.Title.TextTransparency = 0
+			
+			utility:Tween(button.Title, {TextTransparency = 0}, 0.5)
+			button.Title.Font = Enum.Font.FredokaOne
 
 			if button:FindFirstChild("Icon") then
-				button.Icon.ImageTransparency = 0
+				utility:Tween(button.Icon, {ImageTransparency = 0}, 0.5)
+				--button.Icon.ImageTransparency = 0
 			end
 
 			-- update selected page
@@ -2028,10 +2112,12 @@ do
 		else
 			-- page button
 			button.Title.Font = Enum.Font.Gotham
-			button.Title.TextTransparency = 0.65
+			--button.Title.TextTransparency = 0.65
+			utility:Tween(button.Title, {TextTransparency = 0.65}, 0.5)
 
 			if button:FindFirstChild("Icon") then
-				button.Icon.ImageTransparency = 0.65
+				--button.Icon.ImageTransparency = 0.65
+				utility:Tween(button.Icon, {ImageTransparency = 0.65}, 0.5)
 			end
 
 			-- sections
@@ -4935,9 +5021,12 @@ end
 ----	print("Selected", text)
 ----end)
 
---testPage:addTextbox("BasePrint", "Default", function(value, focusLost)
---	if focusLost then
---	end
+--BasicHack:addKeybind("test", Enum.KeyCode.E, function(value)
+--	print(value)
+--end)
+
+--testPage:addKeybind("BasePrint", nil, function(value)
+--	print(value)
 --end)
 
 
@@ -5021,6 +5110,21 @@ end)
 OtherGui:addButton("Dex explorer", function()
 	loadstring(game:HttpGet("https://cdn.wearedevs.net/scripts/Dex%20Explorer.txt"))()
 end)
+
+
+
+
+
+-- Changelog
+local changelog = venyx:addPage("Changelog", 10598702721)
+local changelogSection = changelog:addSection("Changelog")
+
+changelogSection:addText(" [=] Page icon are bigger")
+changelogSection:addText(" [=] Improved page change visual")
+changelogSection:addText(" [=] Textbox now not clear text on focus")
+changelogSection:addText(" [=] Fix button broke on error")
+changelogSection:addText(" [=] Changed button animation")
+changelogSection:addText(" [+] Added changelog")
 
 -- cheat engine
 
@@ -5111,12 +5215,12 @@ runservice.Stepped:Connect(function()
 			game.Lighting.ClockTime = 0
 		end
 
-		
+
 		if focusTpPlayer then
 			spawn(function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:FindFirstChild(tpPlayerFocus).Character.HumanoidRootPart.CFrame end)
 		end
-		
-		
+
+
 
 
 
