@@ -5113,7 +5113,7 @@ runservice.Stepped:Connect(function()
 
 		
 		if focusTpPlayer then
-			spawn(function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players:FindFirstChild(tpPlayerFocus).Character.HumanoidRootPart.Position) end)
+			spawn(function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:FindFirstChild(tpPlayerFocus).Character.HumanoidRootPart.CFrame end)
 		end
 		
 		
