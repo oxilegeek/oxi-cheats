@@ -4456,7 +4456,7 @@ GuiPage:addToggle("HideMenu", nil, function(value)
 	else
 		for i, v in pairs(HidedMenuToggle) do
 			if v then
-				v.Enabled = false
+				v.Enabled = true
 			end
 		end
 		HidedMenuToggle = {}
