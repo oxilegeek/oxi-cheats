@@ -5312,7 +5312,7 @@ if game.GameId == 2023680558 then
 
 
 	-- PVP
-	local page = venyx:addPage("PVP", 8988803597)
+	local page = venyx:addPage("PVP", 10609187462)
 
 	local keyboardPage = page:addSection("Autokeyboard")
 	--local ItemPage = page:addSection("GiveItem")
