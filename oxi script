@@ -5795,6 +5795,7 @@ local changelog = venyx:addPage("Changelog", 10598702721)
 local changelogSection = changelog:addSection("Changelog")
 
 changelogSection:addText(' [=] Fixed "Hide gui"')
+changelogSection:addText(" [+] Added invisible in character")
 changelogSection:addText(" [+] Added freecam in visual")
 changelogSection:addText(" [+] Added Jetpack in character")
 changelogSection:addText(" [+] Added Follow player toggle in teleport and spectate")
