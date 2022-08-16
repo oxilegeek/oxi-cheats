@@ -5828,7 +5828,7 @@ UIS.InputBegan:connect(function(UserInput)
 		Action(game.Players.LocalPlayer.Character.Humanoid, function(self)
 			if self:GetState() == Enum.HumanoidStateType.Jumping or self:GetState() == Enum.HumanoidStateType.Freefall then
 				Action(self.Parent.HumanoidRootPart, function(self)
-					self.Velocity = Vector3.new(0, math.random(49000000, 50000000) / 1000000, 0);
+					self.Velocity = Vector3.new(self.Velocity.X, math.random(49000000, 50000000) / 1000000, self.Velocity.Z);
 				end)
 			end
 		end)
@@ -5841,7 +5841,7 @@ UIS.InputBegan:connect(function(UserInput)
 
 		spaceEnabled = true
 		while spaceEnabled do
-			game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, math.random(49000000, 50000000) / 1000000, 0);
+			game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(	game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity.X, math.random(49000000, 50000000) / 1000000, 	game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity.Z);
 			--if not spaceEnabled then
 			--	break
 			--end
