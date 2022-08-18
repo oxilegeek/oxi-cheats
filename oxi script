@@ -1,6 +1,6 @@
 
 
-TheScript = coroutine.create(function()
+local TheScript = coroutine.create(function()
 
 	if (not game:IsLoaded()) then
 		game.Loaded:Wait();
