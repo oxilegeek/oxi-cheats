@@ -38,7 +38,6 @@ TheScript = coroutine.create(function()
 	for i, v in pairs(AcessTable) do
 		if game.Players.LocalPlayer.UserId == v then
 			Acess = true
-			print("yeeeee")
 		end
 	end
 
@@ -849,7 +848,7 @@ TheScript = coroutine.create(function()
 			end)
 			local buttonfunc = {}
 			function buttonfunc:SetText()
-				print("yo")
+
 			end 
 
 			return buttonfunc,button
@@ -919,7 +918,7 @@ TheScript = coroutine.create(function()
 			--end)
 			local buttonfunc = {}
 			function buttonfunc:SetText()
-				print("yo")
+
 			end 
 
 			return buttonfunc,button
@@ -1192,7 +1191,6 @@ TheScript = coroutine.create(function()
 
 			self.binds[keybind] = {callback = function()
 				if not game:GetService("UserInputService"):GetFocusedTextBox() and alive then
-					print(game:GetService("UserInputService"):GetFocusedTextBox())
 					animate()
 
 					if callback then
@@ -2581,7 +2579,6 @@ TheScript = coroutine.create(function()
 
 	-- delete old menu
 	game.CoreGui.ChildAdded:Connect(function(child)
-		print(child:FindFirstChild("imAFox"))
 		if ( child.Name == name or child:FindFirstChild("imAFox") ) and alive == true then
 			deleteGui()
 		end
@@ -3145,7 +3142,6 @@ TheScript = coroutine.create(function()
 			if alive then
 				if i < 11 then
 					if BABFastAutofarm then
-						print(stages[i].Name)
 						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(stages[i].DarknessPart.Position)
 						wait(BABAutofarmSpeed)
 					end
@@ -3164,7 +3160,6 @@ TheScript = coroutine.create(function()
 
 	if game.GameId == 210851291 then
 		game.Players.LocalPlayer.PlayerGui.RiverResultsGui.Frame.Changed:Connect(function()
-			print("respawned")
 			if BABFastAutofarm then
 				autoFarmBAB()
 			end
@@ -3724,7 +3719,9 @@ TheScript = coroutine.create(function()
 
 
 		GetClosestPlayerAndRender = function()
-			MouseVector = Vector2new(Mouse.X, Mouse.Y + Inset);
+			local MousePos = UIS:GetMouseLocation()
+			MouseVector = Vector2.new(Mouse.X, Mouse.Y + Inset);
+			
 			local Closest = create(4);
 			local Vector2Distance = math.huge
 			local Vector3DistanceOnScreen = math.huge
@@ -6438,7 +6435,6 @@ TheScript = coroutine.create(function()
 	----------------------------------------------------------------------------------------------------------------------------
 	print(game.GameId)
 	if game.GameId == 47545 then
-		print("pizza")
 		local page = venyx:addPage("Pizza place", 8988812453)
 
 		local AutoworkPage = page:addSection("Autowork")
@@ -6491,7 +6487,6 @@ TheScript = coroutine.create(function()
 		end)
 
 		AutofarmPage:addSlider("Autofarm speed", 4, 1, 5, function(value)
-			print(value)
 			BABAutofarmSpeed = 6 - value
 		end)
 
@@ -7244,15 +7239,12 @@ TheScript = coroutine.create(function()
 
 				if doDelivery then
 					local del = FindFirstDeliveryTool()
-					print(delTool)
 					if delTool==nil then
 						--get tool
 						local invTool = false
 
 						for i, v in pairs(player.Backpack:GetChildren()) do
-							print("v")
 							if v.ClassName=="Tool" and v.Name:match("^%u%d$") and ffc(v,"House") and ffc(v,"Handle") and ffc(v,"Order") and v.Order.Value:match("%a") then
-								print("accepted")
 								invTool = true
 								v.Parent = character
 								wait(0.2)
@@ -7275,7 +7267,6 @@ TheScript = coroutine.create(function()
 					elseif delTool and delTool.Parent==character and delTouched==false then
 						--deliver to house
 						local housePart = getHousePart(delTool.Name)
-						print(housePart)
 						if housePart then
 							delTouched=true
 							root.CFrame = housePart.CFrame+Vector3.new(0,6,0)
@@ -7295,7 +7286,6 @@ TheScript = coroutine.create(function()
 					for s,c in pairs(supplyCounts) do
 						if c <= 70 then
 							refill=true
-							print("refill")
 							break
 						end
 					end
@@ -7322,7 +7312,6 @@ TheScript = coroutine.create(function()
 										end
 									end
 									if count < 10 then
-										print("tp to button")
 										simTouch(supplyButtons[s])
 										wait(0.3)
 									end
@@ -7553,9 +7542,8 @@ TheScript = coroutine.create(function()
 	--for theme, color in pairs(themes) do -- all in one theme changer, i know, im cool
 	--	venyx:setTheme(theme, color)
 	--end
-	print("sus")
+
 	while wait(1) do
-		print("test")
 		if not alive then
 			wait(1)
 			coroutine.close(TheScript)
