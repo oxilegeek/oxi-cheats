@@ -31,7 +31,7 @@ local TheScript = coroutine.create(function()
 		1137332900, --[[loupbleu]]
 	}
 
-	
+
 
 	local Acess = true
 
@@ -76,7 +76,7 @@ local TheScript = coroutine.create(function()
 	-- themes
 	local objects = {}
 
-	
+
 
 	if not themes then
 		themes = {
@@ -2551,6 +2551,7 @@ local TheScript = coroutine.create(function()
 	local IsInvisible = false
 	local jetpack = false
 	local autocollectEggSpeed = 10
+	local flingEnabled = false
 
 	local VirtualInputManager = game:GetService("VirtualInputManager")
 	local camera = workspace.CurrentCamera
@@ -3721,7 +3722,7 @@ local TheScript = coroutine.create(function()
 		GetClosestPlayerAndRender = function()
 			local MousePos = UIS:GetMouseLocation()
 			MouseVector = Vector2.new(Mouse.X, Mouse.Y + Inset);
-			
+
 			local Closest = create(4);
 			local Vector2Distance = math.huge
 			local Vector3DistanceOnScreen = math.huge
@@ -4524,7 +4525,7 @@ local TheScript = coroutine.create(function()
 	local page = venyx:addPage("Character", 8988743366)
 	local BasicHack = page:addSection("Basic hack")
 	local HumanoidStat = page:addSection("Humanoid stat")
-	local TeleportPage = page:addSection("Teleport and spectate")
+	local TeleportPage = page:addSection("Player utility")
 	--local BotPage = page:addSection("Bot")
 	local FunPage = page:addSection("Fun")
 	local GameAddonPage = page:addSection("GameAddon")
@@ -4698,6 +4699,19 @@ local TheScript = coroutine.create(function()
 		end
 	end)
 
+	BasicHack:addButton("Give btools", function()
+		a = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+		a.BinType = 2
+		b = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+		b.BinType = 3
+		c = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+		c.BinType = 4
+	end)
+	
+	BasicHack:addButton("Respawn", function()
+		respawn(game.Players.LocalPlayer)
+	end)
+
 	BasicHack:addToggle("fly", nil, function(value)
 		_G.FLYING = value
 		FLY()
@@ -4868,6 +4882,34 @@ local TheScript = coroutine.create(function()
 
 	TeleportPage:addToggle("Spam tp", nil, function(value)
 		focusTpPlayer = value
+	end)
+
+
+	TeleportPage:addToggle("Fling player", nil, function(value)
+		flingEnabled = value
+
+
+		local BodyAngularVelocity
+		if value then
+			local Players = game:GetService("Players")
+			local RunService = game:GetService("RunService")
+
+			local LocalPlayer = Players.LocalPlayer
+			local Target = Players:FindFirstChild(tpPlayerFocus)
+
+			BodyAngularVelocity = Instance.new("BodyAngularVelocity")
+			BodyAngularVelocity.AngularVelocity = Vector3.new(10^6, 10^6, 10^6)
+			BodyAngularVelocity.MaxTorque = Vector3.new(10^6, 10^6, 10^6)
+			BodyAngularVelocity.P = 10^6
+
+			-- Start
+			if not Target then return end
+			BodyAngularVelocity.Parent = LocalPlayer.Character.HumanoidRootPart
+		else
+			BodyAngularVelocity.Parent = nil
+			wait(1)
+			respawn(game.Players.LocalPlayer)
+		end
 	end)
 
 
@@ -5680,6 +5722,71 @@ local TheScript = coroutine.create(function()
 			Autoplayer.delayUpperBound = 0.1 * 20 / value
 			Autoplayer.sliderDebounce = 0.08 * 20 / value
 		end)
+	end
+
+
+
+
+
+	game:GetService("RunService").RenderStepped:Wait()
+
+
+	--Base raider
+	if game.PlaceId == 1696916806 then
+		local page = venyx:addPage("Base raider", 10652921362)
+
+		local VaultPage = page:addSection("Bank Vault")
+
+
+		--Func
+		local function ClaimAllVault()
+			local MyTycoon = nil
+
+			for i, v in pairs(workspace.Tycoons:GetChildren()) do
+				if v.Owner.Value == game.Players.LocalPlayer.Name then
+					MyTycoon = v
+				end
+			end
+
+
+			for i, v in pairs(MyTycoon.PlacedContent:GetChildren()) do
+				if v.Name == "Bank Vault" then
+					fireclickdetector(v.Model.Detector.ClickDetector)
+				end
+			end
+		end
+
+
+		VaultPage:addButton("Claim all Bank Vault", function()
+			ClaimAllVault()
+		end)
+
+		local AutoVaultCooldown = 10
+		local AutoVault = false
+		spawn(function()
+			local tempTime = 0
+			while true do
+				repeat 
+					wait(1)
+					tempTime += 1
+				until tempTime >= AutoVaultCooldown
+				
+				tempTime = 0
+				
+				if AutoVault then
+					ClaimAllVault()
+				end
+			end
+		end)
+
+		VaultPage:addToggle("Auto collect bank Vault", nil, function(value)
+			AutoVault = value
+		end)
+
+		VaultPage:addSlider("Auto collect cooldown (in second)", AutoVaultCooldown, 1, 100, function(value)
+			AutoVaultCooldown = value
+		end)
+
 	end
 
 
@@ -6710,6 +6817,12 @@ local TheScript = coroutine.create(function()
 	local changelog = venyx:addPage("Changelog", 10598702721)
 	local changelogSection = changelog:addSection("Changelog")
 	
+	changelogSection:addText(' [+] Added Respawn button')
+	changelogSection:addText(' [+] Added give btools button')
+	changelogSection:addText(' [+] Added a page for base raider')
+	changelogSection:addText(' [+] Added fling in player utility')
+	changelogSection:addText(' [=] Renamed "Teleport and spectate" to "player utility"')
+	changelogSection:addText("--------------------------------------------")
 	changelogSection:addText(' [=] Changed base position')
 	changelogSection:addText(' [+] New ESP / Aimbot page')
 	changelogSection:addText(' [+] New Emotes page')
@@ -6828,6 +6941,12 @@ local TheScript = coroutine.create(function()
 				spawn(function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:FindFirstChild(tpPlayerFocus).Character.HumanoidRootPart.CFrame end)
 			end
 
+
+			if flingEnabled then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:FindFirstChild(tpPlayerFocus).Character.HumanoidRootPart.CFrame * game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Rotation
+				game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new()
+
+			end
 
 
 
@@ -7543,13 +7662,13 @@ local TheScript = coroutine.create(function()
 	--	venyx:setTheme(theme, color)
 	--end
 
-	while wait(1) do
+	while wait() do
 		if not alive then
 			wait(1)
 			coroutine.close(TheScript)
 		end
 	end
-	
+
 	return library
 
 end)
