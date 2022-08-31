@@ -4563,7 +4563,7 @@ TheScript = coroutine.create(function()
 			venyx.notify("Error", 'Tool Required','You need to have an item in your inventory to use this command')
 		end
 	end
-	
+
 	function kill(speaker,target,fast)
 		if tools(speaker) then
 			if target ~= nil then
@@ -4628,7 +4628,7 @@ TheScript = coroutine.create(function()
 
 
 
-local ScreenGui = game.CoreGui:FindFirstChild(name)
+	local ScreenGui = game.CoreGui:FindFirstChild(name)
 
 
 	-- CHARACTER
@@ -4818,7 +4818,7 @@ local ScreenGui = game.CoreGui:FindFirstChild(name)
 		c = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
 		c.BinType = 4
 	end)
-	
+
 	CustomTools:addButton("Give gravity gun", function()
 		--Physics gun
 		function sandbox(var,func)
@@ -6155,7 +6155,7 @@ This script is designed to be used is a regular script. In a local script it wil
 		end
 
 	end)
-	
+
 	TeleportPage:addButton("Kill (need tool)", function()
 
 
@@ -8248,8 +8248,8 @@ This script is designed to be used is a regular script. In a local script it wil
 	--end)
 
 	-- Saved script
-	local setting = venyx:addPage("Games supported", 10772550465)
-	local GamesList = setting:addSection("games (click to teleport)")
+	--local setting = venyx:addPage("Games supported", 10772550465)
+	--local GamesList = setting:addSection("games (click to teleport)")
 
 
 	game:GetService("RunService").RenderStepped:Wait()
@@ -8327,10 +8327,10 @@ This script is designed to be used is a regular script. In a local script it wil
 
 
 	game:GetService("RunService").RenderStepped:Wait()
-	
-	
-	
-	
+
+
+
+
 	-- Gamelist
 	local setting = venyx:addPage("Games supported", 10772550465)
 	local GamesList = setting:addSection("games (click to teleport)")
@@ -8338,39 +8338,39 @@ This script is designed to be used is a regular script. In a local script it wil
 	GamesList:addButton("Animal sim", function()
 		game:GetService("TeleportService"):Teleport(5712833750 , game.Players.LocalPlayer)
 	end)
-	
+
 	GamesList:addButton("Build a boat", function()
 		game:GetService("TeleportService"):Teleport(537413528 , game.Players.LocalPlayer)
 	end)
-	
+
 	GamesList:addButton("Work at a Pizza Place", function()
 		game:GetService("TeleportService"):Teleport(192800 , game.Players.LocalPlayer)
 	end)
-	
+
 	GamesList:addButton("Starving artist", function()
 		game:GetService("TeleportService"):Teleport(8916037983 , game.Players.LocalPlayer)
 	end)
-	
+
 	GamesList:addButton("Farming and friends", function()
 		game:GetService("TeleportService"):Teleport(2772610559 , game.Players.LocalPlayer)
 	end)
-	
+
 	GamesList:addButton("Robeats", function()
 		game:GetService("TeleportService"):Teleport(698448212 , game.Players.LocalPlayer)
 	end)
-	
+
 	GamesList:addButton("Island", function()
 		game:GetService("TeleportService"):Teleport(4872321990 , game.Players.LocalPlayer)
 	end)
-	
+
 	GamesList:addButton("Transfur oubreak", function()
 		game:GetService("TeleportService"):Teleport(5987922834 , game.Players.LocalPlayer)
 	end)
-	
+
 	GamesList:addButton("Lag test 2021", function()
 		game:GetService("TeleportService"):Teleport(6356806222 , game.Players.LocalPlayer)
 	end)
-	
+
 	GamesList:addButton("Base raider", function()
 		game:GetService("TeleportService"):Teleport(6356806222 , game.Players.LocalPlayer)
 	end)
@@ -8379,7 +8379,7 @@ This script is designed to be used is a regular script. In a local script it wil
 	-- Changelog
 	local changelog = venyx:addPage("Changelog", 10598702721)
 	local changelogSection = changelog:addSection("Changelog")
-	
+
 	changelogSection:addText(' [=] Fixed delete location in custom tp')
 	changelogSection:addText(' [+] Added Kill player (tp to void)')
 	changelogSection:addText(' [+] Added "Supported games" tab')
