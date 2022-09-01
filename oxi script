@@ -8247,8 +8247,8 @@ This script is designed to be used is a regular script. In a local script it wil
 					[2] = {
 						[1] = {
 							["playerLocation"] = Vector3.new(849.4759521484375, 167.7027587890625, -192.07177734375),
-							["direction"] = game.Workspace.CurrentCamera.CFrame.LookVector,
-							["strength"] = 0.5
+							["direction"] = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.LookVector,
+							["strength"] = 1
 						}
 					}
 				}
@@ -8258,7 +8258,7 @@ This script is designed to be used is a regular script. In a local script it wil
 				repeat
 					wait(0.1)
 					count += 1
-				until game:GetService("Players").LocalPlayer.PlayerGui.ActionBarScreenGui.ActionBar:FindFirstChild("RoactTree") or count >= 200
+				until game:GetService("Players").LocalPlayer.PlayerGui.ActionBarScreenGui.ActionBar:FindFirstChild("RoactTree") or count >= 150
 				wait()
 				local args2 = {
 					[1] = {
@@ -8269,7 +8269,7 @@ This script is designed to be used is a regular script. In a local script it wil
 				game:GetService("ReplicatedStorage").rbxts_include.node_modules.net.out._NetManaged:FindFirstChild("DvosejhsednqzobbdtGxlnmmhbb/Ukpyunbwugyb"):FireServer(unpack(args2))
 				wait(0.3)
 				game.Players.LocalPlayer.Character.Humanoid.Jump = true
-				wait(0.75)
+				wait(1)
 			end
 		end)
 		
