@@ -4803,7 +4803,7 @@ TheScript = coroutine.create(function()
 
 				--wait(
 				local pos = Vector3.new(mouse.Hit.x, mouse.Hit.y + 5, mouse.Hit.z)
-					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pos)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pos)
 			end
 		end
 	end)
@@ -7914,7 +7914,7 @@ This script is designed to be used is a regular script. In a local script it wil
 
 		--Vars
 		local debugMode = false
-		local CropList = {"wheat", "tomato", "carrot"}
+		local CropList = {"wheat", "tomato", "carrot", "berryBush"}
 		local OreList = {"rockIron", "rockCoal", "rockStone", "rockDiorite", "rockCopper", "rockGranite", "rockAndesite", "rockGold", "marinePlant1", "marinePlant2", "marinePlant3", "marinePlant4", "marinePlant5", "marinePlant6", "rockSandstone", "rockPrismarine", "rockSlate", "bamboo", "acorn", "horseradish", "tomato", "flowerCrocus", "flowerDaffodil", "rockElectrite", "rockMarble", "mushroomRed", "rockBasalt", "rockSandstoneRed", "rockDiamond"}
 		local SickleList = {"sickleIron"}
 
@@ -8128,6 +8128,35 @@ This script is designed to be used is a regular script. In a local script it wil
 			SickleType = value
 		end)
 
+
+
+		CollectCropPage:addButton("Autocollect crop (1 time)", function()
+
+
+
+			local CropTable = {}
+			local maxDistance = 30
+
+			for i, v in pairs(workspace.Islands:GetChildren()) do
+				for i, v in pairs(v.Blocks:GetChildren()) do
+					if v.Name == CropType and v:FindFirstChildOfClass("MeshPart")--[[.Harvestable.Value]] then
+						--if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).Magnitude < maxDistance then
+						table.insert(CropTable, v)
+						--end
+					end
+				end
+			end
+
+			local args = {
+				[1] = SickleType,
+				[2] = CropTable
+			}
+
+			game:GetService("ReplicatedStorage").rbxts_include.node_modules.net.out._NetManaged.SwingSickle:InvokeServer(unpack(args))
+		end)
+
+
+
 		local AutocollectCrop
 		CollectCropPage:addToggle("Autocollect crop", nil, function(value)
 
@@ -8227,13 +8256,13 @@ This script is designed to be used is a regular script. In a local script it wil
 				end)
 			end
 		end)
-		
-		
-		
+
+
+
 		local FishPage = page:addSection("Fish")
-		
-		
-		
+
+
+
 		local AutoFish
 		FishPage:addToggle("AutoFish", nil, function(value)
 			AutoFish = value
@@ -8248,7 +8277,7 @@ This script is designed to be used is a regular script. In a local script it wil
 						[1] = {
 							["playerLocation"] = Vector3.new(849.4759521484375, 167.7027587890625, -192.07177734375),
 							["direction"] = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.LookVector,
-							["strength"] = 1
+							["strength"] = .1
 						}
 					}
 				}
@@ -8272,7 +8301,7 @@ This script is designed to be used is a regular script. In a local script it wil
 				wait(1)
 			end
 		end)
-		
+
 
 
 
@@ -8563,19 +8592,19 @@ This script is designed to be used is a regular script. In a local script it wil
 				buyID = 105
 				merchant = "general"
 			end
-			
+
 			if value == "Sand" then
 				buyID = 102
 				merchant = "general"
 			end
-			
-			
-			
+
+
+
 			if value == "Iron totem" then
 				buyID = 2
 				merchant = "totems"
 			end
-			
+
 			if value == "Coal totem" then
 				buyID = 3
 				merchant = "totems"
@@ -8892,8 +8921,16 @@ This script is designed to be used is a regular script. In a local script it wil
 	--end)
 
 	local page = venyx:addPage("Bruh, this is", 10779535503)
+	local SectionTest = page:addSection("Bruh")
+	SectionTest:addButton("Get a life", function()
+		game.Players.LocalPlayer:Kick("I gave you a life ^^")
+	end)
+	
 	local page = venyx:addPage("a secret page", 10779535503)
-
+	local SectionTest2 = page:addSection("Bruuh")
+	SectionTest2:addButton("Get a life", function()
+		game.Players.LocalPlayer:Kick("I gave you a life ^^")
+	end)
 
 	function Action(Object, Function) if Object ~= nil then Function(Object); end end
 
