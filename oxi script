@@ -1,6 +1,4 @@
-local TheScript
 
-TheScript = coroutine.create(function()
 
 	if (not game:IsLoaded()) then
 		game.Loaded:Wait();
@@ -9742,9 +9740,6 @@ This script is designed to be used is a regular script. In a local script it wil
 			return library
 		end
 	end
-end)
 
-
-coroutine.resume(TheScript)
 
 
