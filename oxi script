@@ -7045,6 +7045,26 @@ if game.PlaceId == 5987922834 then
 			game.Players.LocalPlayer.Character.Humanoid.Health = 0
 		end
 	end)
+	
+	spawn(function()
+		repeat wait() until player.PlayerGui:FindFirstChild("Menu")
+		OldHuman = "rbxassetid://5979500480"
+		OldInfected = "rbxassetid://5990705685"
+
+		NewHuman = player.PlayerGui:WaitForChild("Menu"):WaitForChild("Human").SoundId
+		NewInfected = player.PlayerGui:WaitForChild("Menu"):WaitForChild("Infected").SoundId
+	end)
+	
+	
+	UtilityPage:addToggle("Old music", nil, function(value)
+		if value then
+			player.PlayerGui.Menu.Human.SoundId = OldHuman
+			player.PlayerGui.Menu.Infected.SoundId = OldInfected
+		else
+			player.PlayerGui.Menu.Human.SoundId = NewHuman
+			player.PlayerGui.Menu.Infected.SoundId = NewInfected
+		end
+	end)
 
 	UtilityPage:addButton("Get all words", function()
 		local word = workspace.Collectibles.Des
