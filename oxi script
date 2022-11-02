@@ -7104,6 +7104,60 @@ if game.PlaceId == 5987922834 then
 			task.wait()
 		until game.Players.LocalPlayer.Mind[word.Name].Value
 	end)
+	
+	local ShowHp = false
+	UtilityPage:addToggle("Show HP", nil, function(value)
+		ShowHp = value
+		if ShowHp then
+			while ShowHp do
+				game:GetService("RunService").RenderStepped:Wait()
+				if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+					game:GetService("Players").LocalPlayer.PlayerGui.Stats.HumanoidFrame.HealthFrame.Frame.HealthNum.Text = math.floor(game.Players.LocalPlayer.Character.Humanoid.Health) .."/" ..game.Players.LocalPlayer.Character.Humanoid.MaxHealth .."HP"
+				end
+			end
+		else
+			game:GetService("Players").LocalPlayer.PlayerGui.Stats.HumanoidFrame.HealthFrame.Frame.HealthNum.Text = math.floor(game.Players.LocalPlayer.Character.Humanoid.Health / game.Players.LocalPlayer.Character.Humanoid.MaxHealth * 100) .."%"
+		end
+	end)
+	
+	local ShowBloodTank = false
+	UtilityPage:addToggle("Show blood tank full", nil, function(value)
+		ShowBloodTank = value
+		
+		if value then
+			local BloodTank = Instance.new("ScreenGui", game.CoreGui)
+			BloodTank.Name = "BloodTank"
+			BloodTank.ResetOnSpawn = false
+
+			local BloodTankLabel = Instance.new("TextLabel", BloodTank)
+			BloodTankLabel.Name = "Num"
+			BloodTankLabel.BackgroundTransparency = 1
+			BloodTankLabel.TextScaled = true
+			BloodTankLabel.Size = UDim2.new(0.3, 0, 0.1, 0)
+			BloodTankLabel.Position = UDim2.new(0.7, 0,0.2, 0)
+			BloodTankLabel.TextColor3 = Color3.new(255, 255, 255)
+			BloodTankLabel.TextStrokeTransparency = 0
+
+			while ShowBloodTank do
+				wait(.5)
+				local bloodBanks = {}
+
+				for i, v in pairs(workspace.Collectibles:GetChildren()) do
+					if v.Name == "BloodBank" then
+						if v.Box.LockPart.Attachment.ProximityPrompt.Enabled then
+							table.insert(bloodBanks, v)
+						end
+					end
+				end
+				
+				BloodTankLabel.Text = "Full blood tank : " ..#bloodBanks
+			end
+		else
+			game.CoreGui.BloodTank:Destroy()
+		end
+	end)
+	
+	
 
 	local transfurList = {}
 	for i, v in pairs(workspace.Cones:GetChildren()) do
@@ -7239,8 +7293,8 @@ if game.PlaceId == 8916037983 then
 	NormalPage:addButton("Start paint", function()
 		PaintID += 1
 
-		local imageBytes = {}
-		local IDPAINT = PaintID
+		 imageBytes = {}
+		 IDPAINT = PaintID
 
 
 		for i=1,1024 do
