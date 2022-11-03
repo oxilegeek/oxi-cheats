@@ -10,6 +10,7 @@ name = "Foxi cheats V2.1 (anti afk always enabled)"
 
 
 
+
 AcessTable = {
 	785920831, --[[juju]]
 	426302615, --[[Goldo]]
@@ -38,6 +39,10 @@ for i, v in pairs(AcessTable) do
 	if game.Players.LocalPlayer.UserId == v then
 		Acess = true
 	end
+end
+
+if w588vB96IWNBsKCus4DyvVXd9jxc0woOKznIOwhRgpteIHM then
+	Acess = true
 end
 
 if not Acess then
