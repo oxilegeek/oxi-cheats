@@ -4588,6 +4588,9 @@ function tools(plr)
 end
 
 function attach(speaker,target)
+	local num = 0
+	if not tools(speaker) then repeat wait(1) num += 1 until num == 10 or tools(speaker) end
+	
 	if tools(speaker) then
 		local char = speaker.Character
 		local tchar = target
@@ -6237,7 +6240,10 @@ TeleportPage:addButton("Bring (need tool)", function()
 
 	else
 		spawn(function()
+			local pos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
 			bring(game.Players.LocalPlayer, game:GetService("Players"):FindFirstChild(tpPlayerFocus).Character, false)
+			wait(game.Players.RespawnTime + 1)
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pos)
 		end)
 	end
 
