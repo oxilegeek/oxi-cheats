@@ -8,9 +8,6 @@ end
 name = "Foxi cheats V2.1 (anti afk always enabled)"
 
 
-
-
-
 AcessTable = {
 	785920831, --[[juju]]
 	426302615, --[[Goldo]]
@@ -29,7 +26,6 @@ AcessTable = {
 	2264001548, --[[jefaikaka_desbrindil]]
 	1137332900, --[[loupbleu]]
 	3442755377, --[[0xiFox]]
---629407021
 }
 
 
@@ -40,10 +36,6 @@ for i, v in pairs(AcessTable) do
 	if game.Players.LocalPlayer.UserId == v then
 		Acess = true
 	end
-end
-
-if w588vB96IWNBsKCus4DyvVXd9jxc0woOKznIOwhRgpteIHM then
-	Acess = true
 end
 
 if not Acess then
@@ -917,8 +909,46 @@ do
 		local text = button.Title
 		local debounce
 
-		button.MouseButton1Click:Connect(function()
 
+		--OnMouseAnim
+		button.MouseEnter:Connect(function()
+			local clone = button:Clone()
+
+			clone.AnchorPoint = Vector2.new(0.5, 0.5)
+			clone.Position = UDim2.new(0.5, 0, 0.5, 0)
+
+			clone.Parent = button
+			clone:ClearAllChildren()
+
+			button.ImageTransparency = 1
+			button.Title.Font = Enum.Font.FredokaOne
+			utility:Tween(clone, {Size = button.Size + UDim2.new(0, 3, 0, 3)}, 0.05)
+
+			spawn(function()
+				clone.MouseButton1Down:Wait()
+				if clone then
+					button.ImageTransparency = 0
+					button.Title.Font = Enum.Font.Gotham
+					clone:Destroy()
+				end
+			end)
+
+			button.MouseLeave:Wait()
+
+			utility:Tween(clone, {Size = button.Size}, 0.05)
+
+			spawn(function()
+				button.Title.Font = Enum.Font.Gotham
+				wait(.1)
+				if clone then
+					button.ImageTransparency = 0
+					clone:Destroy()
+				end
+			end)
+		end)
+
+
+		button.MouseButton1Up:Connect(function()
 
 
 			if debounce then
@@ -986,6 +1016,13 @@ do
 
 		local text = button.Title
 		local debounce
+
+		button.MouseEnter:Connect(function()
+			button.Title.Font = Enum.Font.FredokaOne
+
+			button.MouseLeave:Wait()
+			button.Title.Font = Enum.Font.Gotham
+		end)
 
 		--button.MouseButton1Click:Connect(function()
 
@@ -1089,6 +1126,13 @@ do
 		local active = default
 		self:updateToggle(toggle, nil, active)
 
+		toggle.MouseEnter:Connect(function()
+			toggle.Title.Font = Enum.Font.FredokaOne
+
+			toggle.MouseLeave:Wait()
+			toggle.Title.Font = Enum.Font.Gotham
+		end)
+
 		toggle.MouseButton1Click:Connect(function()
 			active = not active
 			self:updateToggle(toggle, nil, active)
@@ -1175,6 +1219,13 @@ do
 
 		local button = textbox.Button
 		local input = button.Textbox
+
+		textbox.MouseEnter:Connect(function()
+			textbox.Title.Font = Enum.Font.FredokaOne
+
+			textbox.MouseLeave:Wait()
+			textbox.Title.Font = Enum.Font.Gotham
+		end)
 
 		textbox.MouseButton1Click:Connect(function()
 
@@ -1304,6 +1355,13 @@ do
 		if default and callback then
 			self:updateKeybind(keybind, nil, default)
 		end
+
+		keybind.MouseEnter:Connect(function()
+			keybind.Title.Font = Enum.Font.FredokaOne
+
+			keybind.MouseLeave:Wait()
+			keybind.Title.Font = Enum.Font.Gotham
+		end)
 
 		keybind.MouseButton1Click:Connect(function()
 
@@ -1725,6 +1783,13 @@ do
 			end
 		end
 
+		colorpicker.MouseEnter:Connect(function()
+			colorpicker.Title.Font = Enum.Font.FredokaOne
+
+			colorpicker.MouseLeave:Wait()
+			colorpicker.Title.Font = Enum.Font.Gotham
+		end)
+
 		canvas.MouseButton1Down:Connect(function()
 			draggingCanvas = true
 
@@ -1968,6 +2033,13 @@ do
 
 		utility:DraggingEnded(function()
 			dragging = false
+		end)
+
+		slider.MouseEnter:Connect(function()
+			slider.Title.Font = Enum.Font.FredokaOne
+
+			slider.MouseLeave:Wait()
+			slider.Title.Font = Enum.Font.Gotham
 		end)
 
 		slider.MouseButton1Down:Connect(function(input)
@@ -4596,17 +4668,21 @@ spawn(function()
 	while wait() do
 		if FollowBot then
 			local plrtrack = game.Players:FindFirstChild(tpPlayerFocus)
-			if plrtrack and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+			if plrtrack and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and plrtrack.Character:FindFirstChild("HumanoidRootPart") then
 				local path = game:GetService("PathfindingService"):ComputeRawPathAsync(game.Players.LocalPlayer.Character.HumanoidRootPart.Position,plrtrack.Character.HumanoidRootPart.Position,512)
 				if path.Status == Enum.PathStatus.Success then
 					local points = path:GetPointCoordinates()
 					if #points < 3 then
-						game.Players.LocalPlayer.Character.Humanoid:MoveTo(plrtrack.Character.HumanoidRootPart.Position)
+						if plrtrack.Character and plrtrack.Character:FindFirstChild("HumanoidRootPart") then
+							game.Players.LocalPlayer.Character.Humanoid:MoveTo(plrtrack.Character.HumanoidRootPart.Position)
+						end
 					else
 						game.Players.LocalPlayer.Character.Humanoid:MoveTo(points[3])
 					end
 				else
-					game.Players.LocalPlayer.Character.Humanoid:MoveTo(plrtrack.Character.HumanoidRootPart.Position)
+					if plrtrack.Character and plrtrack.Character:FindFirstChild("HumanoidRootPart") then
+						game.Players.LocalPlayer.Character.Humanoid:MoveTo(plrtrack.Character.HumanoidRootPart.Position)
+					end
 				end
 			end
 		end
@@ -7051,7 +7127,7 @@ if game.PlaceId == 5987922834 then
 			game.Players.LocalPlayer.Character.Humanoid.Health = 0
 		end
 	end)
-	
+
 	spawn(function()
 		repeat wait() until player.PlayerGui:FindFirstChild("Menu")
 		OldHuman = "rbxassetid://5979500480"
@@ -7060,8 +7136,8 @@ if game.PlaceId == 5987922834 then
 		NewHuman = player.PlayerGui:WaitForChild("Menu"):WaitForChild("Human").SoundId
 		NewInfected = player.PlayerGui:WaitForChild("Menu"):WaitForChild("Infected").SoundId
 	end)
-	
-	
+
+
 	UtilityPage:addToggle("Old music", nil, function(value)
 		if value then
 			player.PlayerGui.Menu.Human.SoundId = OldHuman
@@ -7110,60 +7186,6 @@ if game.PlaceId == 5987922834 then
 			task.wait()
 		until game.Players.LocalPlayer.Mind[word.Name].Value
 	end)
-	
-	local ShowHp = false
-	UtilityPage:addToggle("Show HP", nil, function(value)
-		ShowHp = value
-		if ShowHp then
-			while ShowHp do
-				game:GetService("RunService").RenderStepped:Wait()
-				if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
-					game:GetService("Players").LocalPlayer.PlayerGui.Stats.HumanoidFrame.HealthFrame.Frame.HealthNum.Text = math.floor(game.Players.LocalPlayer.Character.Humanoid.Health) .."/" ..game.Players.LocalPlayer.Character.Humanoid.MaxHealth .."HP"
-				end
-			end
-		else
-			game:GetService("Players").LocalPlayer.PlayerGui.Stats.HumanoidFrame.HealthFrame.Frame.HealthNum.Text = math.floor(game.Players.LocalPlayer.Character.Humanoid.Health / game.Players.LocalPlayer.Character.Humanoid.MaxHealth * 100) .."%"
-		end
-	end)
-	
-	local ShowBloodTank = false
-	UtilityPage:addToggle("Show blood tank full", nil, function(value)
-		ShowBloodTank = value
-		
-		if value then
-			local BloodTank = Instance.new("ScreenGui", game.CoreGui)
-			BloodTank.Name = "BloodTank"
-			BloodTank.ResetOnSpawn = false
-
-			local BloodTankLabel = Instance.new("TextLabel", BloodTank)
-			BloodTankLabel.Name = "Num"
-			BloodTankLabel.BackgroundTransparency = 1
-			BloodTankLabel.TextScaled = true
-			BloodTankLabel.Size = UDim2.new(0.3, 0, 0.1, 0)
-			BloodTankLabel.Position = UDim2.new(0.7, 0,0.2, 0)
-			BloodTankLabel.TextColor3 = Color3.new(255, 255, 255)
-			BloodTankLabel.TextStrokeTransparency = 0
-
-			while ShowBloodTank do
-				wait(.5)
-				local bloodBanks = {}
-
-				for i, v in pairs(workspace.Collectibles:GetChildren()) do
-					if v.Name == "BloodBank" then
-						if v.Box.LockPart.Attachment.ProximityPrompt.Enabled then
-							table.insert(bloodBanks, v)
-						end
-					end
-				end
-				
-				BloodTankLabel.Text = "Full blood tank : " ..#bloodBanks
-			end
-		else
-			game.CoreGui.BloodTank:Destroy()
-		end
-	end)
-	
-	
 
 	local transfurList = {}
 	for i, v in pairs(workspace.Cones:GetChildren()) do
@@ -7299,8 +7321,8 @@ if game.PlaceId == 8916037983 then
 	NormalPage:addButton("Start paint", function()
 		PaintID += 1
 
-		 imageBytes = {}
-		 IDPAINT = PaintID
+		local imageBytes = {}
+		local IDPAINT = PaintID
 
 
 		for i=1,1024 do
