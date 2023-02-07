@@ -921,7 +921,7 @@ do
 			clone:ClearAllChildren()
 
 			button.ImageTransparency = 1
-			button.Title.Font = Enum.Font.FredokaOne
+			--button.Title.Font = Enum.Font.FredokaOne
 			utility:Tween(clone, {Size = button.Size + UDim2.new(0, 3, 0, 3)}, 0.05)
 
 			spawn(function()
@@ -1018,7 +1018,7 @@ do
 		local debounce
 
 		button.MouseEnter:Connect(function()
-			button.Title.Font = Enum.Font.FredokaOne
+			--button.Title.Font = Enum.Font.FredokaOne
 
 			button.MouseLeave:Wait()
 			button.Title.Font = Enum.Font.Gotham
@@ -1127,7 +1127,7 @@ do
 		self:updateToggle(toggle, nil, active)
 
 		toggle.MouseEnter:Connect(function()
-			toggle.Title.Font = Enum.Font.FredokaOne
+			--toggle.Title.Font = Enum.Font.FredokaOne
 
 			toggle.MouseLeave:Wait()
 			toggle.Title.Font = Enum.Font.Gotham
@@ -1221,7 +1221,7 @@ do
 		local input = button.Textbox
 
 		textbox.MouseEnter:Connect(function()
-			textbox.Title.Font = Enum.Font.FredokaOne
+			--textbox.Title.Font = Enum.Font.FredokaOne
 
 			textbox.MouseLeave:Wait()
 			textbox.Title.Font = Enum.Font.Gotham
@@ -1357,7 +1357,7 @@ do
 		end
 
 		keybind.MouseEnter:Connect(function()
-			keybind.Title.Font = Enum.Font.FredokaOne
+			--keybind.Title.Font = Enum.Font.FredokaOne
 
 			keybind.MouseLeave:Wait()
 			keybind.Title.Font = Enum.Font.Gotham
@@ -1784,7 +1784,7 @@ do
 		end
 
 		colorpicker.MouseEnter:Connect(function()
-			colorpicker.Title.Font = Enum.Font.FredokaOne
+			--colorpicker.Title.Font = Enum.Font.FredokaOne
 
 			colorpicker.MouseLeave:Wait()
 			colorpicker.Title.Font = Enum.Font.Gotham
@@ -2036,7 +2036,7 @@ do
 		end)
 
 		slider.MouseEnter:Connect(function()
-			slider.Title.Font = Enum.Font.FredokaOne
+			--slider.Title.Font = Enum.Font.FredokaOne
 
 			slider.MouseLeave:Wait()
 			slider.Title.Font = Enum.Font.Gotham
