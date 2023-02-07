@@ -4666,27 +4666,30 @@ end
 
 spawn(function()
 	while wait() do
-		if FollowBot then
-			local plrtrack = game.Players:FindFirstChild(tpPlayerFocus)
-			if plrtrack and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and plrtrack.Character:FindFirstChild("HumanoidRootPart") then
-				local path = game:GetService("PathfindingService"):ComputeRawPathAsync(game.Players.LocalPlayer.Character.HumanoidRootPart.Position,plrtrack.Character.HumanoidRootPart.Position,512)
-				if path.Status == Enum.PathStatus.Success then
-					local points = path:GetPointCoordinates()
-					if #points < 3 then
+		spawn(function()
+			if FollowBot then
+				local plrtrack = game.Players:FindFirstChild(tpPlayerFocus)
+				if plrtrack and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and plrtrack.Character:FindFirstChild("HumanoidRootPart") then
+					local path = game:GetService("PathfindingService"):ComputeRawPathAsync(game.Players.LocalPlayer.Character.HumanoidRootPart.Position,plrtrack.Character.HumanoidRootPart.Position,512)
+					if path.Status == Enum.PathStatus.Success then
+						local points = path:GetPointCoordinates()
+						if #points < 3 then
+							if plrtrack.Character and plrtrack.Character:FindFirstChild("HumanoidRootPart") then
+								game.Players.LocalPlayer.Character.Humanoid:MoveTo(plrtrack.Character.HumanoidRootPart.Position)
+							end
+						else
+							game.Players.LocalPlayer.Character.Humanoid:MoveTo(points[3])
+						end
+					else
 						if plrtrack.Character and plrtrack.Character:FindFirstChild("HumanoidRootPart") then
 							game.Players.LocalPlayer.Character.Humanoid:MoveTo(plrtrack.Character.HumanoidRootPart.Position)
 						end
-					else
-						game.Players.LocalPlayer.Character.Humanoid:MoveTo(points[3])
-					end
-				else
-					if plrtrack.Character and plrtrack.Character:FindFirstChild("HumanoidRootPart") then
-						game.Players.LocalPlayer.Character.Humanoid:MoveTo(plrtrack.Character.HumanoidRootPart.Position)
 					end
 				end
 			end
-		end
 
+
+		end)
 		if not alive then
 			break
 		end
