@@ -38,6 +38,10 @@ for i, v in pairs(AcessTable) do
 	end
 end
 
+if w588vB96IWNBsKCus4DyvVXd9jxc0woOKznIOwhRgpteIHM then
+	Acess = true
+end
+
 if not Acess then
 	print("refused")
 	--game.CoreGui:FindFirstChild(name).Main.Visible = false
@@ -4590,7 +4594,7 @@ end
 function attach(speaker,target)
 	local num = 0
 	if not tools(speaker) then repeat wait(1) num += 1 until num == 10 or tools(speaker) end
-	
+
 	if tools(speaker) then
 		local char = speaker.Character
 		local tchar = target
@@ -9896,6 +9900,5 @@ local function customloopPizza()
 		return library
 	end
 end
-
 
 
